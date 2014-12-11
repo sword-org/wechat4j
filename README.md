@@ -5,16 +5,18 @@ wechat4j
 wechat develop framework for java(微信开发框架JAVA版，最简单易用微信开发框架)
 
 ##wechat4j可以用来干什么？
-  wechat4j是一个帮助你开发微信应用的java包，使用它，你开发微信公众号应用只需要几秒钟的时间，完全不用关注太细节的东西。
+  wechat4j是一个帮助你开发微信应用的jar包，使用它，你开发微信公众号应用只需要几秒钟的时间，完全不用关注太细节的东西。
 
 ##wechat4j快速开始
     使用wechat4j只需要两步就可以搭建微信开发环境。
 1. 创建一个web工程，导入jdk和相关的web工程jar包。
 2. 下载wechat4j.jar包，下载地址[wechat4j下载](https://github.com/sword-org/wechat4j/releases)。下载wechat4j的依赖包
-  *commons-codec.jar  1.3以上
-  *commons-lang3.jar
-  *log4j.jar 1.2以上
-  *servlet-api.jar  如果你是web工程，导入支持web工程的包就会包括，例如tomcat包
+
+*commons-codec.jar  1.3以上
+*commons-lang3.jar
+*log4j.jar 1.2以上
+*servlet-api.jar  如果你是web工程，导入支持web工程的包就会包括，例如tomcat包
+
 3. 创建wechat4j配置文件，在src目录下（java根目录）创建wechat4j.properties文件，配置你微信公众号的相关信息。内容如下：
 ```java
  #you wechat token 
@@ -72,21 +74,26 @@ public class Lejian extends WechatSupport{
 ##如何响应用户信息
 以文本信息为例，响应文本信息只需要在你的``onText``方法中使用``responseText(content)``即可（参见上面的代码例子）
 
+##wechat4j示例项目
+
+
 ##技术支持
 *wechat4j技术交流QQ	群 423134346
 *wechat4j暂无论坛，欢迎开通论坛交流版块，如果开通请邮件，我会添加到这里。
 
 
 ##贡献代码
+
 1.如果你觉得本项目不错，希望你能够点击一下右上角的star
 2.如果你希望参与改进本项目，那么请点击右上角的fork，修改之后pull request即可。如果你的贡献不错，你就会收到加入[sword](https://github.com/sword-org)开源社区的邀请。
 3.如果你发现了一个bug，请你创建一个issue来报告。
 
 非常非常欢迎你能够参与本项目的建设，每人做出一点点贡献，对整个项目来说就是一个非常大的贡献，希望集合众人的力量，让项目走的更好，能够为更多的人服务。
 
+
 贡献者列表
-* @chengn
-* @truecn
+*@chengn
+*@truecn
 
 
 
