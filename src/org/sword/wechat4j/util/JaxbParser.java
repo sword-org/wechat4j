@@ -13,14 +13,10 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
-import org.sword.wechat4j.request.WechatRequest;
-import org.sword.wechat4j.response.WechatResponse;
 
-import sun.util.logging.resources.logging;
 
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
-import com.sun.org.apache.xml.internal.serializer.ToXMLSAXHandler;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 /**
@@ -34,19 +30,27 @@ public class JaxbParser {
 	private Class clazz;
 	private String[] cdataNode;
 	
+	/**
+	 * 
+	 * @param clazz
+	 */
 	public JaxbParser(Class clazz){
 		this.clazz = clazz;
 	}
 	
-//	public String[] getCdataNode() {
-//		return cdataNode;
-//	}
-
+	/**
+	 * 设置需要包含CDATA的节点
+	 * @param cdataNode
+	 */
 	public void setCdataNode(String[] cdataNode) {
 		this.cdataNode = cdataNode;
 	}
 
-
+	/**
+	 * 转为xml串
+	 * @param obj
+	 * @return
+	 */
 	public String toXML(Object obj){
 		String result = null;
 		try {
@@ -55,32 +59,10 @@ public class JaxbParser {
 			m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			m.setProperty(Marshaller.JAXB_FRAGMENT, true);// 去掉报文头
-//			
-//		    OutputStream os = new ByteOutputStream();
-//			XMLSerializer serializer = getXMLSerializer();
-//			m.marshal(obj, serializer.asContentHandler());
-
-//	        serializer.setOutputByteStream(os);
-//			m.marshal(obj, os);
-//			result = os.toString();		
-			
-			
-			
-			
-//			
-//			
-//			context = JAXBContext.newInstance(WechatResponse.class);
-//			Marshaller m = context.createMarshaller();
-//			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//			m.setProperty(Marshaller.JAXB_FRAGMENT, true);// 去掉报文头
-
 		    OutputStream os = new ByteOutputStream();
 			StringWriter writer = new StringWriter();
 			XMLSerializer serializer = getXMLSerializer(os);
 			m.marshal(obj, serializer.asContentHandler());
-
-//	        serializer.setOutputCharStream(writer);
-//			result = writer.toString();
 			result = os.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,13 +72,16 @@ public class JaxbParser {
 	}
 	
 
-	
+	/**
+	 * 转为对象
+	 * @param is
+	 * @return
+	 */
 	public Object toObj(InputStream is){
 		JAXBContext context;
 		try {
 			context = JAXBContext.newInstance(clazz);
 			Unmarshaller um = context.createUnmarshaller();
-//			um.setProperty(Marshaller.JAXB_ENCODING,"UTF-8");
 			Object obj = um.unmarshal(is);
 			return obj;
 		} catch (Exception e) {
@@ -106,11 +91,21 @@ public class JaxbParser {
 		return null;
 	}
 	
+	/**
+	 * XML转为对象
+	 * @param xmlStr
+	 * @return
+	 */
 	public Object toObj(String xmlStr){
 		InputStream is = new ByteArrayInputStream(xmlStr.getBytes());
 		return toObj(is);
 	}
 	
+	/**
+	 * 设置属性
+	 * @param os
+	 * @return
+	 */
 	private XMLSerializer getXMLSerializer(OutputStream os) {
         OutputFormat of = new OutputFormat();
         formatCDataTag();
@@ -118,15 +113,14 @@ public class JaxbParser {
         of.setPreserveSpace(true);
         of.setIndenting(true);
         of.setOmitXMLDeclaration(true);
-//        of.setVersion("");
-//        StringWriter writer = new StringWriter();
-        // create the serializer
         XMLSerializer serializer = new XMLSerializer(of);
         serializer.setOutputByteStream(os);
-        
         return serializer;
     }
 	
+	/**
+	 * 适配cdata tag
+	 */
 	private void formatCDataTag(){
 		for(int i=0;i<cdataNode.length;i++){
 			cdataNode[i] = "^" + cdataNode[i];

@@ -9,6 +9,15 @@ package org.sword.wechat4j.response;
  */
 public class VoiceResponse {
 
-
 	private String MediaId;
+
+	public String getMediaId() {
+		return MediaId;
+	}
+
+	public void setMediaId(String mediaId) {
+		MediaId = mediaId;
+	}
+	
+	
 }

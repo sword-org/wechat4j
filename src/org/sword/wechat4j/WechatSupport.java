@@ -3,9 +3,9 @@
  */
 package org.sword.wechat4j;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,8 +15,15 @@ import org.sword.wechat4j.event.EventType;
 import org.sword.wechat4j.event.MsgType;
 import org.sword.wechat4j.param.SignatureParam;
 import org.sword.wechat4j.request.WechatRequest;
+import org.sword.wechat4j.response.ArticleResponse;
+import org.sword.wechat4j.response.ImageResponse;
+import org.sword.wechat4j.response.MusicResponse;
+import org.sword.wechat4j.response.VideoResponse;
+import org.sword.wechat4j.response.VoiceResponse;
 import org.sword.wechat4j.response.WechatResponse;
 import org.sword.wechat4j.util.JaxbParser;
+import org.sword.wechat4j.util.StreamUtils;
+
 
 
 
@@ -29,7 +36,6 @@ public abstract class WechatSupport {
 	Logger logger = Logger.getLogger(WechatSupport.class);
 	
 	private HttpServletRequest request;
-	private String postData;
 	private String token;
 	
 	protected WechatRequest wechatRequest;
@@ -52,7 +58,7 @@ public abstract class WechatSupport {
 	 * wechat调用入口，进行数据接收，事件分发
 	 * @return
 	 */
-	public String run(){
+	public String execute(){
 		logger.debug("WechatSupport run");
 		SignatureParam param = new SignatureParam(request);
 		String signature =param.getSignature();
@@ -69,7 +75,7 @@ public abstract class WechatSupport {
      		return echostr;
 		}
 		//分发消息，得到响应
-		String result = distribute();
+		String result = dispatch();
 		logger.info("response data:" + result);
 		return result;
 	}
@@ -78,10 +84,10 @@ public abstract class WechatSupport {
 	 * 分发处理，得到响应
 	 * @return
 	 */
-	private String distribute() {
+	private String dispatch() {
 		String postDataStr = null;
 		try {
-			 postDataStr = stream2String(request.getInputStream());
+			 postDataStr = StreamUtils.streamToString(request.getInputStream());
 		} catch (IOException e) {
 			logger.error("post data deal failed!");
 			e.printStackTrace();
@@ -89,24 +95,13 @@ public abstract class WechatSupport {
 		// 解析数据
 		setPostData(postDataStr);
 		// 消息分发处理
-		distributeMessage();
+		dispatchMessage();
 		// 响应事件
 		String result = response();
 		return result;
 	}
 	
-	private String stream2String(InputStream is){
-		ByteArrayOutputStream   baos   =   new   ByteArrayOutputStream(); 
-        int i=-1; 
-        try {
-			while((i=is.read())!=-1){ 
-			baos.write(i); 
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
-       return   baos.toString(); 
-	}
+
 	
 	/**
 	 * 得到post数据，对象化
@@ -126,7 +121,7 @@ public abstract class WechatSupport {
 	/**
 	 * 消息事件分发
 	 */
-	public void distributeMessage(){
+	private void dispatchMessage(){
 		logger.info("distributeMessage start");
 		if(StringUtils.isBlank(wechatRequest.getMsgType())){
 			logger.info("msgType is null");
@@ -134,7 +129,7 @@ public abstract class WechatSupport {
 		MsgType msgType = MsgType.valueOf(wechatRequest.getMsgType());
 		switch (msgType) {
 		case event:
-			distributeEvent();
+			dispatchEvent();
 			break;
 		case text:
 			onText();
@@ -152,13 +147,12 @@ public abstract class WechatSupport {
 			onUnknown();
 			break;
 		}
-		
 	}
 	
 	/**
 	 * event事件分发
 	 */
-	private void distributeEvent(){
+	private void dispatchEvent(){
 		EventType event = EventType.valueOf(wechatRequest.getEvent());
 			switch (event) {
 			case CLICK:
@@ -182,7 +176,6 @@ public abstract class WechatSupport {
 			default:
 				break;
 			}
-		
 	}
 	
 	/**
@@ -213,12 +206,121 @@ public abstract class WechatSupport {
 	}
 	
 	/**
-	 * 文本消息响应
-	 * @param content
+	 * 回复文本消息
+	 * @param content 回复的消息内容（换行：在content中能够换行，微信客户端就支持换行显示）
 	 */
 	public void responseText(String content){
 		responseBase();
 		wechatResponse.setContent(content);
+	}
+	
+	/**
+	 * 回复图片消息
+	 * @param mediaId 通过上传多媒体文件，得到的id
+	 */
+	public void responseImage(String mediaId){
+		responseBase();
+		ImageResponse image = new ImageResponse();
+		image.setMediaId(mediaId);
+		wechatResponse.setImage(image);
+	}
+	
+	/**
+	 * 回复语音消息
+	 * @param mediaId  通过上传多媒体文件，得到的id
+	 */
+	public void responseVoice(String mediaId){
+		responseBase();
+		VoiceResponse voice = new VoiceResponse();
+		voice.setMediaId(mediaId);
+		wechatResponse.setVoice(voice);
+	}
+	
+	/**
+	 * 回复视频消息
+	 * @param mediaId      通过上传多媒体文件，得到的id
+	 * @param title        视频消息的标题
+	 * @param description  视频消息的描述
+	 */
+	public void responseVideo(String mediaId,String title,String description){
+		VideoResponse video = new VideoResponse();
+		video.setMediaId(mediaId);
+		video.setTitle(title);
+		video.setDescription(description);
+		responseVideo(video);
+	}
+	
+	/**
+	 * 回复视频消息
+	 * @param video  视频消息
+	 */
+	public void responseVideo(VideoResponse video){
+		responseBase();
+		wechatResponse.setVideo(video);
+	}
+	
+	/**
+	 * 回复音乐消息
+	 * @param title         音乐标题
+	 * @param description   音乐描述
+	 * @param musicURL      音乐链接
+	 * @param hQMusicUrl    高质量音乐链接，WIFI环境优先使用该链接播放音乐
+	 * @param thumbMediaId  缩略图的媒体id，通过上传多媒体文件，得到的id
+	 */
+	public void responseMusic(String title,String description,
+			String musicURL,String hQMusicUrl,String thumbMediaId){
+		MusicResponse music = new MusicResponse();
+		music.setTitle(title);
+		music.setDescription(description);
+		music.setMusicURL(musicURL);
+		music.setHQMusicUrl(hQMusicUrl);
+		music.setThumbMediaId(thumbMediaId);
+		responseMusic(music);
+	}
+	
+	/**
+	 * 回复音乐消息
+	 * @param music  音乐消息
+	 */
+	public void responseMusic(MusicResponse music){
+		responseBase();
+		wechatResponse.setMusic(music);
+	}
+	
+	/**
+	 * 回复图文消息，单条图文消息
+	 * @param Title         图文消息标题
+	 * @param Description   图文消息描述
+	 * @param PicUrl        图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+	 * @param Url           点击图文消息跳转链接
+	 */
+	public void responseNew(String title,String description,String picUrl,String url){
+		ArticleResponse item = new ArticleResponse();
+		item.setTitle(title);
+		item.setDescription(description);
+		item.setPicUrl(picUrl);
+		item.setUrl(url);
+		responseNews(item);
+	}
+	
+	/**
+	 * 回复图文消息单条
+	 * @param items
+	 */
+	public void responseNews(ArticleResponse item){
+		responseBase();
+		List<ArticleResponse> items = new ArrayList<ArticleResponse>();
+		items.add(item);
+		wechatResponse.setArticle(items);
+	}
+	
+	/**
+	 * 回复图文消息
+	 * @param items
+	 */
+	public void responseNews(List<ArticleResponse> items){
+		responseBase();
+		wechatResponse.setArticle(items);
 	}
 	
 	
