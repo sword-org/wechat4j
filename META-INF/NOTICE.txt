@@ -4,8 +4,8 @@ https://github.com/sword-org/wachat4j
 ====need jar 
 commons-codec-1.9.jar
 commons-lang3-3.1.jar
+commons-httpclient-3.1.jar
+fastjson-1.2.0.jar
 log4j-1.2.14.jar
 servlet-api.jar
 
-
-jar包参考 https://github.com/mongodb/mongo-java-driver/releases

@@ -13,5 +13,9 @@ public enum MsgType {
 	text,
 	image,
 	location,
-	link;
+	link,
+	voice,
+	video,
+	music,
+	news;
 }
