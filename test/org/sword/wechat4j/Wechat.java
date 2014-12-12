@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class Wechat extends WechatSupport{
 
-	public Wechat(HttpServletRequest request, String token) {
-		super(request, token);
+	public Wechat(HttpServletRequest request) {
+		super(request);
 	}
 
 	@Override
