@@ -1,4 +1,4 @@
-wechat4j
+﻿wechat4j
 ========
 
 ##What is wechat4j?
@@ -14,12 +14,17 @@ wechat develop framework for java(微信开发框架JAVA版，最简单易用微
 
 3. 创建wechat4j配置文件，在src目录下（java根目录）创建wechat4j.properties文件，配置你微信公众号的相关信息。内容如下：
 ```java
- #you wechat token 
- wechat.token=lejian 
- #wechat appid
- wechat.appid=appid
- #wechat app secret
- wechat.appsecret=secret
+#you server url
+wechat.url=
+#you wechat token
+wechat.token=token
+#message secret key,if don't set then message is cleartext
+wechat.encodingaeskey=
+
+#wechat appid
+wechat.appid=appid
+#wechat app secret
+wechat.appsecret=secret
 ```
 你也可以在jar包的META-INF目录下找到wechat4j.properties.sample文件，复制到src目录下修改名称即可。wechat4j.properties配置文件的配置项意义参见[wechat4j配置文件解读](https://github.com/sword-org/wechat4j/wiki/wechat4j%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A7%A3%E8%AF%BB)
 
@@ -29,7 +34,9 @@ wechat develop framework for java(微信开发框架JAVA版，最简单易用微
 wechat4j.jar的依赖包
 > * commons-codec.jar  1.3以上
 > * commons-lang3.jar
+> * commons-httpclient-3.1.jar
 > * log4j.jar 1.2以上
+> * fastjson-1.2.0.jar
 > * servlet-api.jar  如果你是web工程，导入支持web工程的包就会包括，例如tomcat包
 
 ##开发自己的微信应用
@@ -57,12 +64,12 @@ public class Lejian extends WechatSupport{
 ```java
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Lejian lejian = new Lejian(request, TOKEN);
-		String result = lejian.run();
+		String result = lejian.execute();
 		response.getOutputStream().write(result.getBytes());
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Lejian lejian = new Lejian(request, TOKEN);
-		String result = lejian.run();
+		String result = lejian.execute();
 		response.getOutputStream().write(result.getBytes());
 
 	}
