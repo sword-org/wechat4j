@@ -92,8 +92,8 @@ public class Lejian extends WechatSupport{
 非常非常欢迎你能够参与本项目的建设，每人做出一点点贡献，对整个项目来说就是一个非常大的贡献，希望集合众人的力量，让项目走的更好，能够为更多的人服务。
 
 ###贡献者列表
-* @ chengn
-* @ truecn
+* [@chengn](https://github.com/chengn)
+* [@truecn](https://github.com/truecn)
 
 
 
