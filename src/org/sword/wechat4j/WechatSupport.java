@@ -21,6 +21,7 @@ import org.sword.wechat4j.response.MusicResponse;
 import org.sword.wechat4j.response.VideoResponse;
 import org.sword.wechat4j.response.VoiceResponse;
 import org.sword.wechat4j.response.WechatResponse;
+import org.sword.wechat4j.util.Config;
 import org.sword.wechat4j.util.JaxbParser;
 import org.sword.wechat4j.util.StreamUtils;
 
@@ -36,7 +37,6 @@ public abstract class WechatSupport {
 	Logger logger = Logger.getLogger(WechatSupport.class);
 	
 	private HttpServletRequest request;
-	private String token;
 	
 	protected WechatRequest wechatRequest;
 	protected WechatResponse wechatResponse;
@@ -47,9 +47,8 @@ public abstract class WechatSupport {
 	 * @param request   微信服务发过来的http请求
 	 * @param token     token
 	 */
-	public WechatSupport(HttpServletRequest request,String token){
+	public WechatSupport(HttpServletRequest request){
 		this.request = request;
-		this.token = token;
 		this.wechatRequest = new WechatRequest();
 		this.wechatResponse = new WechatResponse();
 	}
@@ -65,9 +64,10 @@ public abstract class WechatSupport {
 		String timestamp = param.getTimestamp();
 		String nonce = param.getNonce();
 		String echostr = param.getEchostr();
+		String token = Config.instance().getToken();
 		
 		ValidateSignature validateSignature = new ValidateSignature(signature, 
-				timestamp, nonce, this.token);
+				timestamp, nonce, token);
 		if(!validateSignature.check()){
 			return "error";
 		}
