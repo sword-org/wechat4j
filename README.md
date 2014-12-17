@@ -39,6 +39,8 @@ wechat4j.jar的依赖包
 > * fastjson-1.2.0.jar
 > * servlet-api.jar  如果你是web工程，导入支持web工程的包就会包括，例如tomcat包
 
+你可以去集中下载这些jar包的集合[wechat4j所需jar下载](http://files.cnblogs.com/chengn/wechat4j-lib.rar),也可以去maven库或者对应jar包的项目官网下载.
+
 ##开发自己的微信应用
  wechat4j开发环境搭好之后，就可以开始开发自己的微信应用了。比如我有一个微信号lejian,下面就以她为例子来说明。
 ###创建自己公众号服务类
