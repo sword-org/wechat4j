@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.sword.wechat4j.util;
+package org.sword.wechat4j.common;
 
 import java.io.IOException;
 import java.io.InputStream;

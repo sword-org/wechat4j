@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.sword.wechat4j;
+package org.sword.wechat4j.common;
 
 import java.util.Arrays;
 

@@ -2,13 +2,14 @@
  * http请求方式: POST
  * https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN
  */
-package org.sword.wechat4j;
+package org.sword.wechat4j.message;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.sword.wechat4j.common.AccessToken;
 import org.sword.wechat4j.event.MsgType;
 import org.sword.wechat4j.response.ArticleResponse;
 import org.sword.wechat4j.response.MusicResponse;
@@ -23,8 +24,8 @@ import com.alibaba.fastjson.JSONObject;
  * @author ChengNing
  * @date   2014年12月11日
  */
-public class SendMsg {
-	private static Logger logger = Logger.getLogger(SendMsg.class);
+public class CustomerMsg {
+	private static Logger logger = Logger.getLogger(CustomerMsg.class);
 	
 	private static final String MSG_URL = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=";
 	
@@ -41,7 +42,7 @@ public class SendMsg {
 	 * @param toUserOpenId
 	 */
 	@Deprecated
-	public SendMsg(String toUserOpenId){
+	public CustomerMsg(String toUserOpenId){
 		this.toUserOpenId = toUserOpenId;
 	}
 	
@@ -51,7 +52,7 @@ public class SendMsg {
 	 * @param toUserOpenId
 	 * @param accessToken
 	 */
-	public SendMsg(String toUserOpenId,String accessToken){
+	public CustomerMsg(String toUserOpenId,String accessToken){
 		this.toUserOpenId = toUserOpenId;
 		this.accessToken = accessToken;
 	}
