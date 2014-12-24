@@ -31,8 +31,8 @@ public class CustomerMsg {
 	
 	private String accessToken;
 	private String toUserOpenId;
-	private String msgType;
-	private String msgBody;
+	private String msgType;   //msgtype
+	private String msgBody;   //发送的消息post数据
 	
 	
 	/**
@@ -57,10 +57,10 @@ public class CustomerMsg {
 		this.accessToken = accessToken;
 	}
 	
-	
-	public String getMsgBody() {
-		return msgBody;
-	}
+//	
+//	public String getMsgBody() {
+//		return msgBody;
+//	}
 
 	/**
 	 * 发送客服消息

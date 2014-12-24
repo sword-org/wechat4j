@@ -30,6 +30,7 @@ public class WechatRequest {
 	private String PicUrl;
 	private String MediaId;
 	private String Format;
+	private String Status;
 	
 
 	@XmlElement(name="Format")
@@ -151,6 +152,14 @@ public class WechatRequest {
 	public void setContent(String content) {
 		Content = content;
 	}
+	@XmlElement(name="Status")
+	public String getStatus() {
+		return Status;
+	}
+	public void setStatus(String status) {
+		Status = status;
+	}
+	
 	
 	
 }

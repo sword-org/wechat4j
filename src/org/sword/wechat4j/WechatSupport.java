@@ -174,6 +174,8 @@ public abstract class WechatSupport {
 			case VIEW:
 				view();
 				break;
+			case TEMPLATESENDJOBFINISH:
+				templateMsgCallback();
 			default:
 				break;
 			}
@@ -372,5 +374,9 @@ public abstract class WechatSupport {
 	 * view 事件处理
 	 */
 	protected abstract void view();
+	/**
+	 * 模板消息发送回调
+	 */
+	protected abstract void templateMsgCallback();
 
 }
