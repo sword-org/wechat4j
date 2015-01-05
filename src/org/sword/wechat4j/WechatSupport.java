@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.sword.wechat4j.common.Config;
+import org.sword.wechat4j.common.ValidateSignature;
 import org.sword.wechat4j.event.EventType;
 import org.sword.wechat4j.event.MsgType;
 import org.sword.wechat4j.param.SignatureParam;
@@ -21,7 +23,6 @@ import org.sword.wechat4j.response.MusicResponse;
 import org.sword.wechat4j.response.VideoResponse;
 import org.sword.wechat4j.response.VoiceResponse;
 import org.sword.wechat4j.response.WechatResponse;
-import org.sword.wechat4j.util.Config;
 import org.sword.wechat4j.util.JaxbParser;
 import org.sword.wechat4j.util.StreamUtils;
 
@@ -173,6 +174,8 @@ public abstract class WechatSupport {
 			case VIEW:
 				view();
 				break;
+			case TEMPLATESENDJOBFINISH:
+				templateMsgCallback();
 			default:
 				break;
 			}
@@ -202,7 +205,6 @@ public abstract class WechatSupport {
 		wechatResponse.setToUserName(this.wechatRequest.getFromUserName());
 		wechatResponse.setFromUserName(wechatRequest.getToUserName());
 		wechatResponse.setCreateTime(wechatRequest.getCreateTime());
-		wechatResponse.setMsgType(wechatRequest.getMsgType());
 	}
 	
 	/**
@@ -211,6 +213,7 @@ public abstract class WechatSupport {
 	 */
 	public void responseText(String content){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.text.name());
 		wechatResponse.setContent(content);
 	}
 	
@@ -220,6 +223,7 @@ public abstract class WechatSupport {
 	 */
 	public void responseImage(String mediaId){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.image.name());
 		ImageResponse image = new ImageResponse();
 		image.setMediaId(mediaId);
 		wechatResponse.setImage(image);
@@ -231,6 +235,7 @@ public abstract class WechatSupport {
 	 */
 	public void responseVoice(String mediaId){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.voice.name());
 		VoiceResponse voice = new VoiceResponse();
 		voice.setMediaId(mediaId);
 		wechatResponse.setVoice(voice);
@@ -256,6 +261,7 @@ public abstract class WechatSupport {
 	 */
 	public void responseVideo(VideoResponse video){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.video.name());
 		wechatResponse.setVideo(video);
 	}
 	
@@ -284,6 +290,7 @@ public abstract class WechatSupport {
 	 */
 	public void responseMusic(MusicResponse music){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.music.name());
 		wechatResponse.setMusic(music);
 	}
 	
@@ -308,10 +315,9 @@ public abstract class WechatSupport {
 	 * @param items
 	 */
 	public void responseNews(ArticleResponse item){
-		responseBase();
 		List<ArticleResponse> items = new ArrayList<ArticleResponse>();
 		items.add(item);
-		wechatResponse.setArticle(items);
+		responseNews(items);
 	}
 	
 	/**
@@ -320,7 +326,10 @@ public abstract class WechatSupport {
 	 */
 	public void responseNews(List<ArticleResponse> items){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.news.name());
+		wechatResponse.setArticleCount(String.valueOf(items.size()));
 		wechatResponse.setArticle(items);
+		
 	}
 	
 	
@@ -371,5 +380,9 @@ public abstract class WechatSupport {
 	 * view 事件处理
 	 */
 	protected abstract void view();
+	/**
+	 * 模板消息发送回调
+	 */
+	protected abstract void templateMsgCallback();
 
 }

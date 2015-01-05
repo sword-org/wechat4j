@@ -86,7 +86,9 @@ public class Lejian extends WechatSupport{
 以文本信息为例，响应文本信息只需要在你的``onText``方法中使用``responseText(content)``即可（参见上面的代码例子）
 
 ##wechat4j示例项目
+* [wechat4jDemo](https://github.com/repoproject/wechat4jDemo)
 
+如果你有好的demo项目，请邮件或者修改本文件然后pull request给我，我会列在上面。
 
 ##技术支持
 * wechat4j技术交流QQ群  **423134346**

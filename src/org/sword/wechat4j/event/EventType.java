@@ -14,5 +14,6 @@ public enum EventType {
 	CLICK,
 	SCAN,
 	LOCATION,
-	VIEW
+	VIEW,
+	TEMPLATESENDJOBFINISH
 }

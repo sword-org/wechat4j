@@ -3,6 +3,7 @@ package org.sword.wechat4j.util;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.sword.wechat4j.common.Config;
 
 public class ConfigTest {
 
