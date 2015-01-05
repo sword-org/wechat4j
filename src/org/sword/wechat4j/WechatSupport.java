@@ -205,7 +205,6 @@ public abstract class WechatSupport {
 		wechatResponse.setToUserName(this.wechatRequest.getFromUserName());
 		wechatResponse.setFromUserName(wechatRequest.getToUserName());
 		wechatResponse.setCreateTime(wechatRequest.getCreateTime());
-		wechatResponse.setMsgType(wechatRequest.getMsgType());
 	}
 	
 	/**
@@ -214,6 +213,7 @@ public abstract class WechatSupport {
 	 */
 	public void responseText(String content){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.text.name());
 		wechatResponse.setContent(content);
 	}
 	
@@ -223,6 +223,7 @@ public abstract class WechatSupport {
 	 */
 	public void responseImage(String mediaId){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.image.name());
 		ImageResponse image = new ImageResponse();
 		image.setMediaId(mediaId);
 		wechatResponse.setImage(image);
@@ -234,6 +235,7 @@ public abstract class WechatSupport {
 	 */
 	public void responseVoice(String mediaId){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.voice.name());
 		VoiceResponse voice = new VoiceResponse();
 		voice.setMediaId(mediaId);
 		wechatResponse.setVoice(voice);
@@ -259,6 +261,7 @@ public abstract class WechatSupport {
 	 */
 	public void responseVideo(VideoResponse video){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.video.name());
 		wechatResponse.setVideo(video);
 	}
 	
@@ -287,6 +290,7 @@ public abstract class WechatSupport {
 	 */
 	public void responseMusic(MusicResponse music){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.music.name());
 		wechatResponse.setMusic(music);
 	}
 	
@@ -311,10 +315,9 @@ public abstract class WechatSupport {
 	 * @param items
 	 */
 	public void responseNews(ArticleResponse item){
-		responseBase();
 		List<ArticleResponse> items = new ArrayList<ArticleResponse>();
 		items.add(item);
-		wechatResponse.setArticle(items);
+		responseNews(items);
 	}
 	
 	/**
@@ -323,7 +326,10 @@ public abstract class WechatSupport {
 	 */
 	public void responseNews(List<ArticleResponse> items){
 		responseBase();
+		wechatResponse.setMsgType(MsgType.news.name());
+		wechatResponse.setArticleCount(String.valueOf(items.size()));
 		wechatResponse.setArticle(items);
+		
 	}
 	
 	

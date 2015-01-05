@@ -81,4 +81,10 @@ public class Wechat extends WechatSupport{
 		
 	}
 
+	@Override
+	protected void templateMsgCallback() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
