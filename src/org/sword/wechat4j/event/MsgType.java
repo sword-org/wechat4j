@@ -9,8 +9,8 @@ package org.sword.wechat4j.event;
  * @date   2014-12-4
  */
 public enum MsgType {
-	event,
-	text,
+	event,        //事件
+	text,         //文本消息
 	image,
 	location,
 	link,

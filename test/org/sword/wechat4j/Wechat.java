@@ -28,6 +28,18 @@ public class Wechat extends WechatSupport{
 	}
 
 	@Override
+	protected void onVoice() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void onVideo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	protected void onLocation() {
 		// TODO Auto-generated method stub
 		
@@ -86,5 +98,42 @@ public class Wechat extends WechatSupport{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	protected void scanCodePush() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void scanCodeWaitMsg() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void picSysPhoto() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void picPhotoOrAlbum() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void picWeixin() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void locationSelect() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
