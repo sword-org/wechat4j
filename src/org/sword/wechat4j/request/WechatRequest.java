@@ -8,6 +8,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
+ * 微信request的对象属性
+ * 不用cdata标记直接可以解析
+ * 包括所有类型的节点,若报文中无此属性则解析的时候不会生成本属性
  * @author ChengNing
  * @date   2014-12-4
  */
@@ -18,6 +21,7 @@ public class WechatRequest {
 	private String CreateTime;
 	private String MsgType;
 	private String Event;	
+	private String EventKey;
 	private String MsgId;
 	private String Content;
 	private String Location_X;
@@ -31,6 +35,15 @@ public class WechatRequest {
 	private String MediaId;
 	private String Format;
 	private String Status;
+	private String Latitude;  //上报地理位置事件Latitude
+	private String Longitude; //上报地理位置事件Longitude
+	private String Precision; //上报地理位置事件Precision
+	private String Ticket;    //扫描带参数二维码事件Ticket
+	private String ThumbMediaId; //视频消息 ThumbMediaId 视频消息缩略图的媒体id，可以调用多媒体文件下载接口拉取数据
+	private String ScanCodeInfo; //扫描信息
+	private String ScanType;     //扫描类型，一般是qrcode
+	private String ScanResult;   //扫描结果，即二维码对应的字符串信息
+	private SendPicsInfo SendPicsInfo; //发送的图片信息
 	
 
 	@XmlElement(name="Format")
@@ -145,6 +158,13 @@ public class WechatRequest {
 	public void setEvent(String event) {
 		Event = event;
 	}
+	@XmlElement(name="EventKey")
+	public String getEventKey() {
+		return EventKey;
+	}
+	public void setEventKey(String eventKey) {
+		EventKey = eventKey;
+	}
 	@XmlElement(name="Content")
 	public String getContent() {
 		return Content;
@@ -159,6 +179,71 @@ public class WechatRequest {
 	public void setStatus(String status) {
 		Status = status;
 	}
+	@XmlElement(name="Latitude")
+	public String getLatitude() {
+		return Latitude;
+	}
+	public void setLatitude(String latitude) {
+		Latitude = latitude;
+	}
+	@XmlElement(name="Longitude")
+	public String getLongitude() {
+		return Longitude;
+	}
+	public void setLongitude(String longitude) {
+		Longitude = longitude;
+	}
+	@XmlElement(name="Precision")
+	public String getPrecision() {
+		return Precision;
+	}
+	public void setPrecision(String precision) {
+		Precision = precision;
+	}
+	@XmlElement(name="Ticket")
+	public String getTicket() {
+		return Ticket;
+	}
+	public void setTicket(String ticket) {
+		Ticket = ticket;
+	}
+	@XmlElement(name="ThumbMediaId")
+	public String getThumbMediaId() {
+		return ThumbMediaId;
+	}
+	public void setThumbMediaId(String thumbMediaId) {
+		ThumbMediaId = thumbMediaId;
+	}
+	@XmlElement(name="ScanCodeInfo")
+	public String getScanCodeInfo() {
+		return ScanCodeInfo;
+	}
+	public void setScanCodeInfo(String scanCodeInfo) {
+		ScanCodeInfo = scanCodeInfo;
+	}
+	@XmlElement(name="ScanType")
+	public String getScanType() {
+		return ScanType;
+	}
+	public void setScanType(String scanType) {
+		ScanType = scanType;
+	}
+	@XmlElement(name="ScanResult")
+	public String getScanResult() {
+		return ScanResult;
+	}
+	public void setScanResult(String scanResult) {
+		ScanResult = scanResult;
+	}
+	@XmlElement(name="SendPicsInfo")
+	public SendPicsInfo getSendPicsInfo() {
+		return SendPicsInfo;
+	}
+	public void setSendPicsInfo(SendPicsInfo sendPicsInfo) {
+		SendPicsInfo = sendPicsInfo;
+	}
+	
+	
 	
 	
 	

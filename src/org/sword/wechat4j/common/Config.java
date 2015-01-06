@@ -41,7 +41,7 @@ public class Config {
 			logger.error("load wechat4j.properties error");
 			e.printStackTrace();
 		}
-		logger.error("load wechat4j.properties success");
+		logger.info("load wechat4j.properties success");
 	}
 	
 	public static Config instance(){

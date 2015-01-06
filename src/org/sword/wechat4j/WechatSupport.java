@@ -30,6 +30,8 @@ import org.sword.wechat4j.util.StreamUtils;
 
 
 /**
+ * wechat支持入口
+ * 抽象方法中，on开头的是msgtype的事件，无on的是event事件
  * @author ChengNing
  * @date   2014-12-4
  */
@@ -109,7 +111,7 @@ public abstract class WechatSupport {
 	 * @param xmlStr
 	 */
 	private void setPostData(String xmlStr){
-		logger.info("parse post data");
+		logger.info("parse post data:" + xmlStr);
 		try {
 			JaxbParser jaxbParser = new JaxbParser(WechatRequest.class);
 			this.wechatRequest = (WechatRequest)jaxbParser.toObj(xmlStr);
@@ -128,6 +130,7 @@ public abstract class WechatSupport {
 			logger.info("msgType is null");
 		}
 		MsgType msgType = MsgType.valueOf(wechatRequest.getMsgType());
+		logger.info("msgType is " + msgType.name());
 		switch (msgType) {
 		case event:
 			dispatchEvent();
@@ -137,6 +140,12 @@ public abstract class WechatSupport {
 			break;
 		case image:
 			onImage();
+			break;
+		case voice:
+			onVoice();
+			break;
+		case video:
+			onVideo();
 			break;
 		case location:
 			onLocation();
@@ -153,34 +162,55 @@ public abstract class WechatSupport {
 	/**
 	 * event事件分发
 	 */
-	private void dispatchEvent(){
+	private void dispatchEvent() {
 		EventType event = EventType.valueOf(wechatRequest.getEvent());
-			switch (event) {
-			case CLICK:
-				click();
-				break;
-			case subscribe:
-				subscribe();
-				break;
-			case unsubscribe:
-				unSubscribe();
-				break;
-			case SCAN:
-				scan();
-				break;
-			case LOCATION:
-				location();
-				break;
-			case VIEW:
-				view();
-				break;
-			case TEMPLATESENDJOBFINISH:
-				templateMsgCallback();
-			default:
-				break;
-			}
+		logger.info("dispatch event,event is " + event.name());
+		switch (event) {
+		case CLICK:
+			click();
+			break;
+		case subscribe:
+			subscribe();
+			break;
+		case unsubscribe:
+			unSubscribe();
+			break;
+		case SCAN:
+			scan();
+			break;
+		case LOCATION:
+			location();
+			break;
+		case VIEW:
+			view();
+			break;
+		case TEMPLATESENDJOBFINISH:
+			templateMsgCallback();
+			break;
+		case scancode_push:
+			scanCodePush();
+			break;
+		case scancode_waitmsg:
+			scanCodeWaitMsg();
+		    break;
+		case pic_sysphoto:
+			picSysPhoto();
+		    break;
+		case pic_photo_or_album:
+			picPhotoOrAlbum();
+		    break;
+		case pic_weixin:
+			picWeixin();
+		    break;
+		case location_select:
+			locationSelect();
+		    break;
+		default:
+			break;
+		}
 	}
 	
+
 	/**
 	 * 返回响应数据
 	 * @return
@@ -335,19 +365,27 @@ public abstract class WechatSupport {
 	
 	
 	/**
-	 * 文本消息处理
+	 * 文本消息处理Msgtype=text
 	 */
     protected abstract void onText();
 	/**
-	 * 图像
+	 * 图像消息Msgtype=image
 	 */
     protected abstract void onImage();
 	/**
-	 * location消息处理msgtype=location
+	 * 语音消息 Msgtype=voice
+	 */
+    protected abstract void onVoice();
+	/**
+	 * 视频 消息Msgtype=video
+	 */
+    protected abstract void onVideo();
+	/**
+	 * 地理位置消息Msgtype=location
 	 */
     protected abstract void onLocation();
 	/**
-	 * link消息处理
+	 * 链接消息Msgtype=link
 	 */
     protected abstract void onLink();
 	/**
@@ -357,7 +395,7 @@ public abstract class WechatSupport {
 	
 	
 	/**
-	 * click点击事件处理
+	 * click点击事件处理event=location
 	 */
 	protected abstract void click();
 	/**
@@ -377,12 +415,35 @@ public abstract class WechatSupport {
 	 */
 	protected abstract void location();
 	/**
-	 * view 事件处理
+	 * view 事件处理event=location
 	 */
 	protected abstract void view();
 	/**
 	 * 模板消息发送回调
 	 */
 	protected abstract void templateMsgCallback();
-
+	/**
+	 * 扫码推事件
+	 */
+	protected abstract void scanCodePush();
+	/**
+	 * 扫码推事件且弹出“消息接收中”提示框的事件
+	 */
+	protected abstract void scanCodeWaitMsg();
+	/**
+	 * 弹出系统拍照发图的事件
+	 */
+	protected abstract void picSysPhoto();
+	/**
+	 * 弹出拍照或者相册发图的事件
+	 */
+	protected abstract void picPhotoOrAlbum();
+	/**
+	 * 扫码推事件且弹出“消息接收中”提示框的事件
+	 */
+	protected abstract void picWeixin();
+	/**
+	 * 弹出地理位置选择器的事件
+	 */
+	protected abstract void locationSelect();
 }
