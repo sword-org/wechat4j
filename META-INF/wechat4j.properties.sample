@@ -1,0 +1,17 @@
+
+#you server url
+wechat.url=
+#you wechat token
+wechat.token=token
+#message secret key,if don't set then message is cleartext
+wechat.encodingaeskey=
+
+#wechat appid
+wechat.appid=appid
+#wechat app secret
+wechat.appsecret=secret
+
+#wechat access token server ,when you save in db,must implement you server class
+#this class must extend org.sword.wechat4j.token.DbAccessTokenServer
+#if no this property,then token server is default memery accesstoken server()
+wechat.accessToken.server.class=
