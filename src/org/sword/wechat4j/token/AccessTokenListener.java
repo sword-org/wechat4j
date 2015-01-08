@@ -21,7 +21,8 @@ public class AccessTokenListener implements ServletContextListener{
     private static Logger log = Logger.getLogger(AccessTokenListener.class);
 	
 	private Timer timer = null;
-	private static final long accessTokenExpire = 7200; //accessToken有效期，秒
+	//accessToken有效期7200秒,提前200秒请求新的token
+	private static final long accessTokenExpire = 7000; 
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
