@@ -8,11 +8,10 @@ wechat develop framework for java(微信开发框架JAVA版，最简单易用微
   wechat4j是一个帮助你开发微信应用的jar包，使用它，你开发微信公众号应用只需要几秒钟的时间，完全不用关注太细节的东西。
 
 ##wechat4j快速开始
-    使用wechat4j只需要两步就可以搭建微信开发环境。
-1. 创建一个web工程，导入jdk和相关的web工程jar包。
-2. 下载wechat4j.jar包，下载地址[wechat4j下载](https://github.com/sword-org/wechat4j/releases)。
-
-3. 创建wechat4j配置文件，在src目录下（java根目录）创建wechat4j.properties文件，配置你微信公众号的相关信息。内容如下：
+   可以去下载wechat4j示例项目，然后在其基础之上修改即可。如果你要自己搭建，那么使用wechat4j只需要两步就可以搭建微信开发环境。 
+ 1. 创建一个web工程，导入jdk和相关的web工程jar包。 
+ 2. 下载wechat4j.jar包，下载地址[wechat4j下载](https://github.com/sword-org/wechat4j/releases)。 
+ 3. 创建wechat4j配置文件，在src目录下（java根目录）创建wechat4j.properties文件，配置你微信公众号的相关信息。内容如下：
 ```java
 #you server url
 wechat.url=
@@ -25,24 +24,33 @@ wechat.encodingaeskey=
 wechat.appid=appid
 #wechat app secret
 wechat.appsecret=secret
+
+#wechat access token server ,when you save in db,must implement you server class
+#this class must extend org.sword.wechat4j.token.DbAccessTokenServer
+#if no this property,then token server is default memery accesstoken server()
+wechat.accessToken.server.class=
 ```
 你也可以在jar包的META-INF目录下找到wechat4j.properties.sample文件，复制到src目录下修改名称即可。wechat4j.properties配置文件的配置项意义参见[wechat4j配置文件解读](https://github.com/sword-org/wechat4j/wiki/wechat4j%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A7%A3%E8%AF%BB)
 
 通过以上步骤，你的微信工程就完全搭好了。
 
-##wehchat4j 依赖的jar包
-wechat4j.jar的依赖包
+##wechat4j 运行环境
+ wechat4j要求的最低java运行环境是jdk1.6  
+
+ wechat4j.jar的依赖jar包
 > * commons-codec.jar  1.3以上
 > * commons-lang3.jar
-> * commons-httpclient-3.1.jar
 > * log4j.jar 1.2以上
 > * fastjson-1.2.0.jar
+> * fluent-hc-4.3.6.jar（httpclient依赖）
+> * httpclient-4.3.6.jar
+> * httpcore-4.3.3.jar （httpclient依赖）
 > * servlet-api.jar  如果你是web工程，导入支持web工程的包就会包括，例如tomcat包
 
 你可以去集中下载这些jar包的集合[wechat4j所需jar下载](http://files.cnblogs.com/chengn/wechat4j-lib.rar),也可以去maven库或者对应jar包的项目官网下载.
 
 ##开发自己的微信应用
- wechat4j开发环境搭好之后，就可以开始开发自己的微信应用了。比如我有一个微信号lejian,下面就以她为例子来说明。
+ wechat4j开发环境搭好之后，就可以开始开发自己的微信应用了。比如我有一个微信号的token是lejian,下面就以她为例子来说明。
 ###创建自己公众号服务类
 创建自己的微信公众号服务类，需要继承wechat4j的WechatSupport类，然后实现其抽象方法即可，下面以文本消息处理为例子
 ```java

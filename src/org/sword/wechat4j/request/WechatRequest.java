@@ -40,10 +40,9 @@ public class WechatRequest {
 	private String Precision; //上报地理位置事件Precision
 	private String Ticket;    //扫描带参数二维码事件Ticket
 	private String ThumbMediaId; //视频消息 ThumbMediaId 视频消息缩略图的媒体id，可以调用多媒体文件下载接口拉取数据
-	private String ScanCodeInfo; //扫描信息
-	private String ScanType;     //扫描类型，一般是qrcode
-	private String ScanResult;   //扫描结果，即二维码对应的字符串信息
+	private ScanCodeInfo ScanCodeInfo; //扫描信息
 	private SendPicsInfo SendPicsInfo; //发送的图片信息
+	private SendLocationInfo SendLocationInfo;   //发送的位置信息
 	
 
 	@XmlElement(name="Format")
@@ -215,25 +214,11 @@ public class WechatRequest {
 		ThumbMediaId = thumbMediaId;
 	}
 	@XmlElement(name="ScanCodeInfo")
-	public String getScanCodeInfo() {
+	public ScanCodeInfo getScanCodeInfo() {
 		return ScanCodeInfo;
 	}
-	public void setScanCodeInfo(String scanCodeInfo) {
+	public void setScanCodeInfo(ScanCodeInfo scanCodeInfo) {
 		ScanCodeInfo = scanCodeInfo;
-	}
-	@XmlElement(name="ScanType")
-	public String getScanType() {
-		return ScanType;
-	}
-	public void setScanType(String scanType) {
-		ScanType = scanType;
-	}
-	@XmlElement(name="ScanResult")
-	public String getScanResult() {
-		return ScanResult;
-	}
-	public void setScanResult(String scanResult) {
-		ScanResult = scanResult;
 	}
 	@XmlElement(name="SendPicsInfo")
 	public SendPicsInfo getSendPicsInfo() {
@@ -241,6 +226,13 @@ public class WechatRequest {
 	}
 	public void setSendPicsInfo(SendPicsInfo sendPicsInfo) {
 		SendPicsInfo = sendPicsInfo;
+	}
+	@XmlElement(name="SendLocationInfo")
+	public SendLocationInfo getSendLocationInfo() {
+		return SendLocationInfo;
+	}
+	public void setSendLocationInfo(SendLocationInfo sendLocationInfo) {
+		SendLocationInfo = sendLocationInfo;
 	}
 	
 	
