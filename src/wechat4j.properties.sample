@@ -10,3 +10,8 @@ wechat.encodingaeskey=
 wechat.appid=appid
 #wechat app secret
 wechat.appsecret=secret
+
+#wechat access token server ,when you save in db,must implement you server class
+#this class must extend org.sword.wechat4j.token.DbAccessTokenServer
+#if no this property,then token server is default memery accesstoken server()
+wechat.accessToken.server.class=

@@ -1,10 +1,10 @@
 /**
  * 
  */
-package org.sword.wechat4j.common;
-
+package org.sword.wechat4j.token;
 
 /**
+ * 内存中控服务器
  * access_token 中控服务器
  * access_token保存在内存中,过期则自动刷新
  * 此中控服务器采用单例模式，提供单一的访问点，并且持有全局唯一的accessToken对象
@@ -12,18 +12,19 @@ package org.sword.wechat4j.common;
  * 因为AccessToken需要为其他类型的中控服务器提供服务，
  * 比如是定时器刷新存数据库或者文件之类的就不需要提供全局唯一
  * @author ChengNing
- * @date   2015年1月7日
+ * @date   2015年1月8日
  */
-public class AccessTokenServer {
+public class MemAccessTokenServer implements AccessTokenServer{
+
 	
-	private static AccessTokenServer tokenServer = new AccessTokenServer();
+	private static MemAccessTokenServer tokenServer = new MemAccessTokenServer();
 	private AccessToken accessToken = new AccessToken();
-	private int requestTimes = 10;//token请求失败后重新请求的次数
+	private int requestTimes = 1;//token请求失败后重新请求的次数
 	
 	/**
 	 * 私有构造
 	 */
-	private AccessTokenServer(){
+	private MemAccessTokenServer(){
 		//获取新的token
 		refresh();
 	}
@@ -32,7 +33,7 @@ public class AccessTokenServer {
 	 * token中控服务器实例
 	 * @return
 	 */
-	public static AccessTokenServer instance(){
+	public static MemAccessTokenServer instance(){
 		return tokenServer;
 	}
 	
@@ -66,5 +67,4 @@ public class AccessTokenServer {
 				break;
 		}
 	}
-	
 }

@@ -24,11 +24,16 @@ public class Config {
 	private String encodingAESKey;
 	private String appid;
 	private String appSecret;
+	private String accessTokenServer;
 	private static Config config = new Config();
 	
 	private Config(){
 		Properties p = new Properties();
 		InputStream inStream = this.getClass().getResourceAsStream(configFile);
+		if(inStream == null){
+			logger.error("根目录下找不到wechat4j.properties文件");
+			return;
+		}
 		try {
 			p.load(inStream);
 			this.url = p.getProperty("wechat.url");
@@ -36,9 +41,10 @@ public class Config {
 			this.token = p.getProperty("wechat.token");
 			this.appid = p.getProperty("wechat.appid");
 			this.appSecret = p.getProperty("wechat.appsecret");
+			this.accessTokenServer = p.getProperty("wechat.accessToken.server.class");
 			inStream.close();
 		} catch (IOException e) {
-			logger.error("load wechat4j.properties error");
+			logger.error("load wechat4j.properties error,class根目录下找不到wechat4j.properties文件");
 			e.printStackTrace();
 		}
 		logger.info("load wechat4j.properties success");
@@ -63,6 +69,10 @@ public class Config {
 
 	public String getEncodingAESKey() {
 		return encodingAESKey;
+	}
+	
+	public String getAccessTokenServer(){
+		return accessTokenServer;
 	}
 	
 }

@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.sword.wechat4j.common;
+package org.sword.wechat4j.token;
 
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.jasper.tagplugins.jstl.core.If;
 import org.apache.log4j.Logger;
+import org.sword.wechat4j.common.Config;
 import org.sword.wechat4j.util.HttpUtils;
 
 import com.alibaba.fastjson.JSONObject;

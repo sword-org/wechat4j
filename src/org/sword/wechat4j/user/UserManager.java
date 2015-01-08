@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.sword.wechat4j.common.AccessTokenServer;
+import org.sword.wechat4j.token.AccessTokenServer;
 import org.sword.wechat4j.util.HttpUtils;
 
 import com.alibaba.fastjson.JSONArray;
