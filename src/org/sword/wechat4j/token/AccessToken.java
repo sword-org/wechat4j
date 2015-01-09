@@ -13,7 +13,7 @@ import org.sword.wechat4j.util.HttpUtils;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * Access token处理
+ * Access token实体模型
  * @author ChengNing
  * @date   2014年12月12日
  */
