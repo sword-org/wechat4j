@@ -16,6 +16,10 @@ import org.sword.wechat4j.common.Config;
 public class AccessTokenTimer extends TimerTask{
 	
 	private static Logger logger = Logger.getLogger(AccessTokenTimer.class);
+	
+	//accessToken有效期7200秒,提前200秒请求新的token
+	public static final long PERIOD = 7000 * 1000;
+	public static final long DELAY = 0; //此任务的延迟时间为0，即立即执行
 
 	@Override
 	public void run() {
@@ -24,15 +28,9 @@ public class AccessTokenTimer extends TimerTask{
 		AccessToken accessToken = new AccessToken();
 		//获取成功之后持久化accessToken
 		if(accessToken.request()){
-			String className = Config.instance().getToken();
-			try {
-				Class clazz = Class.forName(className);
-				DbAccessTokenServer accessTokenServer = (DbAccessTokenServer)clazz.newInstance();
-				accessTokenServer.save();
-			} catch (Exception e) {
-				logger.error("accessToken初始化失败，" + e.getMessage());
-				e.printStackTrace();
-			}
+			AccessTokenServer accessTokenServer = new AccessTokenServer();
+			DbAccessTokenServer customerServer = (DbAccessTokenServer)accessTokenServer.customerServer();
+			customerServer.save();
 		}
 	}
 

@@ -14,7 +14,7 @@ package org.sword.wechat4j.token;
  * @author ChengNing
  * @date   2015年1月8日
  */
-public class MemAccessTokenServer implements AccessTokenServer{
+public class MemAccessTokenServer implements IAccessTokenServer{
 
 	
 	private static MemAccessTokenServer tokenServer = new MemAccessTokenServer();

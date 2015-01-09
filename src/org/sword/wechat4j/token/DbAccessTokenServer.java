@@ -9,7 +9,7 @@ package org.sword.wechat4j.token;
  * @author ChengNing
  * @date   2015年1月8日
  */
-public abstract class DbAccessTokenServer implements AccessTokenServer{
+public abstract class DbAccessTokenServer implements IAccessTokenServer{
 
 	@Override
 	public String getAccessToken() {
