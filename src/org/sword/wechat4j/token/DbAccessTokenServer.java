@@ -21,7 +21,7 @@ public abstract class DbAccessTokenServer implements IAccessTokenServer{
 	 * 由客户自己实现数据库插入或者更新操作
 	 * @return
 	 */
-	public abstract boolean save();
+	public abstract boolean save(AccessToken accessToken);
 	/**
 	 * 从数据库得到accessToken
 	 * 由客户自己实现数据库的查询操作

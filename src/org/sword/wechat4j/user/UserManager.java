@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.sword.wechat4j.token.AccessTokenServer;
+import org.sword.wechat4j.token.AccessTokenProxy;
 import org.sword.wechat4j.util.HttpUtils;
 
 import com.alibaba.fastjson.JSONArray;
@@ -32,8 +32,8 @@ public class UserManager {
 	private long total = 0;
 	
 	
-	public UserManager(String accessToken){
-		this.accessToken = accessToken;
+	public UserManager(){
+		this.accessToken = AccessTokenProxy.token();
 	}
 	
 	/**

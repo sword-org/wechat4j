@@ -14,6 +14,7 @@ import org.sword.wechat4j.response.ArticleResponse;
 import org.sword.wechat4j.response.MusicResponse;
 import org.sword.wechat4j.response.VideoResponse;
 import org.sword.wechat4j.token.AccessToken;
+import org.sword.wechat4j.token.AccessTokenProxy;
 import org.sword.wechat4j.util.HttpUtils;
 
 import com.alibaba.fastjson.JSONArray;
@@ -29,7 +30,7 @@ public class CustomerMsg {
 	
 	private static final String MSG_URL = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=";
 	
-	private String accessToken;
+//	private String accessToken;
 	private String toUserOpenId;
 	private String msgType;   //msgtype
 	private String msgBody;   //发送的消息post数据
@@ -41,20 +42,8 @@ public class CustomerMsg {
 	 * 然后使用SendMsg(String toUserOpenId,String accessToken)来替代本方法
 	 * @param toUserOpenId
 	 */
-	@Deprecated
 	public CustomerMsg(String toUserOpenId){
 		this.toUserOpenId = toUserOpenId;
-	}
-	
-	/**
-	 * 使用现有的access_token
-	 * 由中控服务器获取之后保存，2个小时有效
-	 * @param toUserOpenId
-	 * @param accessToken
-	 */
-	public CustomerMsg(String toUserOpenId,String accessToken){
-		this.toUserOpenId = toUserOpenId;
-		this.accessToken = accessToken;
 	}
 	
 //	
@@ -67,17 +56,17 @@ public class CustomerMsg {
 	 * @param msgBody
 	 */
 	private void send(){
+		String accessToken = AccessTokenProxy.token();
 		if(StringUtils.isBlank(this.toUserOpenId))
 			return;
 		//token不存在则重新刷新token
-		if(StringUtils.isBlank(this.accessToken)){
-			AccessToken token = new AccessToken();
-			token.request();
-			this.accessToken = token.getAccessToken();
+		if(StringUtils.isBlank(accessToken)){
+			logger.error("发送失败，无法得到accessToken");
+			return;
 		}
 		//需要判断一下，防止上面刷新token失败
-		if(StringUtils.isNotBlank(this.accessToken)){
-			String url = MSG_URL + this.accessToken;
+		if(StringUtils.isNotBlank(accessToken)){
+			String url = MSG_URL + accessToken;
 			HttpUtils.post(url, msgBody);
 		}
 	}
