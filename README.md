@@ -12,7 +12,7 @@ wechat develop framework for java(微信开发框架JAVA版，最简单易用微
  1. 创建一个web工程，导入jdk和相关的web工程jar包。 
  2. 下载wechat4j.jar包，下载地址[wechat4j下载](https://github.com/sword-org/wechat4j/releases)。 
  3. 创建wechat4j配置文件，在src目录下（java根目录）创建wechat4j.properties文件，配置你微信公众号的相关信息。内容如下：
-```java
+```properties
 #you server url
 wechat.url=
 #you wechat token
