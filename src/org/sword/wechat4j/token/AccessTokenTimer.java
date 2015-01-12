@@ -30,7 +30,7 @@ public class AccessTokenTimer extends TimerTask{
 		if(accessToken.request()){
 			AccessTokenServer accessTokenServer = new AccessTokenServer();
 			DbAccessTokenServer customerServer = (DbAccessTokenServer)accessTokenServer.customerServer();
-			customerServer.save();
+			customerServer.save(accessToken);
 		}
 	}
 

@@ -7,10 +7,10 @@ package org.sword.wechat4j.message;
 import org.apache.log4j.Logger;
 import org.sword.wechat4j.message.template.TemplateMsgBody;
 import org.sword.wechat4j.message.template.TemplateMsgData;
+import org.sword.wechat4j.token.AccessTokenProxy;
 import org.sword.wechat4j.util.HttpUtils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPObject;
 
 /**
  * 模板消息接口
@@ -30,8 +30,8 @@ public class TemplateMsg {
 	
 	private String accessToken;
 	
-	public TemplateMsg(String accessToken){
-		this.accessToken = accessToken;
+	public TemplateMsg(){
+		this.accessToken = AccessTokenProxy.token();
 	}
 	
 	/**
