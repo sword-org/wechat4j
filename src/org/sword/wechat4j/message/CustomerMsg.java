@@ -9,13 +9,13 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.sword.lang.HttpUtils;
 import org.sword.wechat4j.event.MsgType;
 import org.sword.wechat4j.response.ArticleResponse;
 import org.sword.wechat4j.response.MusicResponse;
 import org.sword.wechat4j.response.VideoResponse;
 import org.sword.wechat4j.token.AccessToken;
 import org.sword.wechat4j.token.AccessTokenProxy;
-import org.sword.wechat4j.util.HttpUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
