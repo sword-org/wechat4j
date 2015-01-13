@@ -42,6 +42,7 @@ wechat.accessToken.server.class=
 > * commons-lang3.jar
 > * log4j.jar 1.2以上
 > * fastjson-1.2.0.jar
+> * sword-lang-1.2 (https://github.com/sword-org/sword-lang/releases)
 > * fluent-hc-4.3.6.jar（httpclient依赖）
 > * httpclient-4.3.6.jar
 > * httpcore-4.3.3.jar （httpclient依赖）
