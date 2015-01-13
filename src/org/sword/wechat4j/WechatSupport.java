@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.sword.lang.JaxbParser;
+import org.sword.lang.StreamUtils;
 import org.sword.wechat4j.common.Config;
 import org.sword.wechat4j.common.ValidateSignature;
 import org.sword.wechat4j.event.EventType;
@@ -23,8 +25,6 @@ import org.sword.wechat4j.response.MusicResponse;
 import org.sword.wechat4j.response.VideoResponse;
 import org.sword.wechat4j.response.VoiceResponse;
 import org.sword.wechat4j.response.WechatResponse;
-import org.sword.wechat4j.util.JaxbParser;
-import org.sword.wechat4j.util.StreamUtils;
 
 
 

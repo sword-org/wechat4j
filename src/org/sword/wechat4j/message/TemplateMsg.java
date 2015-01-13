@@ -5,10 +5,10 @@
 package org.sword.wechat4j.message;
 
 import org.apache.log4j.Logger;
+import org.sword.lang.HttpUtils;
 import org.sword.wechat4j.message.template.TemplateMsgBody;
 import org.sword.wechat4j.message.template.TemplateMsgData;
 import org.sword.wechat4j.token.AccessTokenProxy;
-import org.sword.wechat4j.util.HttpUtils;
 
 import com.alibaba.fastjson.JSONObject;
 
