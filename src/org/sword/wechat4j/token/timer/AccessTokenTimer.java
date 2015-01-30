@@ -1,12 +1,14 @@
 /**
  * 
  */
-package org.sword.wechat4j.token;
+package org.sword.wechat4j.token.timer;
 
 import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
-import org.sword.wechat4j.common.Config;
+import org.sword.wechat4j.token.AccessToken;
+import org.sword.wechat4j.token.server.AccessTokenServer;
+import org.sword.wechat4j.token.server.CustomerServer;
 
 /**
  * access token 定时器
@@ -29,7 +31,7 @@ public class AccessTokenTimer extends TimerTask{
 		//获取成功之后持久化accessToken
 		if(accessToken.request()){
 			AccessTokenServer accessTokenServer = new AccessTokenServer();
-			DbAccessTokenServer customerServer = (DbAccessTokenServer)accessTokenServer.customerServer();
+			CustomerServer customerServer = (CustomerServer)accessTokenServer.customerServer();
 			customerServer.save(accessToken);
 		}
 	}

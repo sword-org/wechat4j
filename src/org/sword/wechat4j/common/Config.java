@@ -25,6 +25,7 @@ public class Config {
 	private String appid;
 	private String appSecret;
 	private String accessTokenServer;
+	private String jsApiTicketServer;
 	private static Config config = new Config();
 	
 	private Config(){
@@ -42,6 +43,7 @@ public class Config {
 			this.appid = p.getProperty("wechat.appid");
 			this.appSecret = p.getProperty("wechat.appsecret");
 			this.accessTokenServer = p.getProperty("wechat.accessToken.server.class");
+			this.jsApiTicketServer = p.getProperty("wechat.ticket.jsapi.server.class");
 			inStream.close();
 		} catch (IOException e) {
 			logger.error("load wechat4j.properties error,class根目录下找不到wechat4j.properties文件");
@@ -74,5 +76,10 @@ public class Config {
 	public String getAccessTokenServer(){
 		return accessTokenServer;
 	}
+
+	public String getJsApiTicketServer() {
+		return jsApiTicketServer;
+	}
+	
 	
 }
