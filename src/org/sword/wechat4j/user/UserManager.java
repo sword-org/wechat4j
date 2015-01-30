@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.sword.lang.HttpUtils;
-import org.sword.wechat4j.token.AccessTokenProxy;
+import org.sword.wechat4j.token.TokenProxy;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -33,7 +33,7 @@ public class UserManager {
 	
 	
 	public UserManager(){
-		this.accessToken = AccessTokenProxy.token();
+		this.accessToken = TokenProxy.accessToken();
 	}
 	
 	/**

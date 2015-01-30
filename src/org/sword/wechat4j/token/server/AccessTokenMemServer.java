@@ -1,7 +1,11 @@
 /**
  * 
  */
-package org.sword.wechat4j.token;
+package org.sword.wechat4j.token.server;
+
+import org.sword.wechat4j.token.AccessToken;
+import org.sword.wechat4j.token.Ticket;
+import org.sword.wechat4j.token.TicketType;
 
 /**
  * 内存中控服务器
@@ -14,17 +18,19 @@ package org.sword.wechat4j.token;
  * @author ChengNing
  * @date   2015年1月8日
  */
-public class MemAccessTokenServer implements IAccessTokenServer{
+public class AccessTokenMemServer implements IServer{
 
 	
-	private static MemAccessTokenServer tokenServer = new MemAccessTokenServer();
+	private static AccessTokenMemServer tokenServer = new AccessTokenMemServer();
+	
 	private AccessToken accessToken = new AccessToken();
+	
 	private int requestTimes = 1;//token请求失败后重新请求的次数
 	
 	/**
 	 * 私有构造
 	 */
-	private MemAccessTokenServer(){
+	private AccessTokenMemServer(){
 		//获取新的token
 		refresh();
 	}
@@ -33,7 +39,7 @@ public class MemAccessTokenServer implements IAccessTokenServer{
 	 * token中控服务器实例
 	 * @return
 	 */
-	public static MemAccessTokenServer instance(){
+	public static AccessTokenMemServer instance(){
 		return tokenServer;
 	}
 	
@@ -53,8 +59,8 @@ public class MemAccessTokenServer implements IAccessTokenServer{
 	 * 通过中控服务器得到accessToken
 	 * @return
 	 */
-	public String getAccessToken(){
-		return accessToken().getAccessToken();
+	public String token(){
+		return accessToken().getToken();
 	}
 	
 	/**

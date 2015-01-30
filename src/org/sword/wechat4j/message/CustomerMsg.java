@@ -15,7 +15,7 @@ import org.sword.wechat4j.response.ArticleResponse;
 import org.sword.wechat4j.response.MusicResponse;
 import org.sword.wechat4j.response.VideoResponse;
 import org.sword.wechat4j.token.AccessToken;
-import org.sword.wechat4j.token.AccessTokenProxy;
+import org.sword.wechat4j.token.TokenProxy;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -56,7 +56,7 @@ public class CustomerMsg {
 	 * @param msgBody
 	 */
 	private void send(){
-		String accessToken = AccessTokenProxy.token();
+		String accessToken = TokenProxy.accessToken();
 		if(StringUtils.isBlank(this.toUserOpenId))
 			return;
 		//token不存在则重新刷新token

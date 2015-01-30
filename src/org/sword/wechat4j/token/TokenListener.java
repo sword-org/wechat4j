@@ -9,6 +9,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
+import org.sword.wechat4j.token.timer.AccessTokenTimer;
+import org.sword.wechat4j.token.timer.JsApiTicketTimer;
 
 
 /**
@@ -16,9 +18,9 @@ import org.apache.log4j.Logger;
  * @author ChengNing
  * @date   2015年1月8日
  */
-public class AccessTokenListener implements ServletContextListener{
+public class TokenListener implements ServletContextListener{
 	
-    private static Logger log = Logger.getLogger(AccessTokenListener.class);
+    private static Logger log = Logger.getLogger(TokenListener.class);
     
 	private Timer timer = null;
 
@@ -28,6 +30,8 @@ public class AccessTokenListener implements ServletContextListener{
 		timer = new Timer(true);
 		//注册定时任务
 		registeAccessTokenTimer();
+		//注册jsapi_ticket定时器
+		registeJsApiTicketTimer();
 	}
 	
 	@Override
@@ -42,6 +46,14 @@ public class AccessTokenListener implements ServletContextListener{
 		AccessTokenTimer accessTokenTimer = new AccessTokenTimer();
 		timer.schedule(accessTokenTimer, AccessTokenTimer.DELAY,AccessTokenTimer.PERIOD);
 		log.info("accessToken定时器注册成功，执行间隔为" + AccessTokenTimer.PERIOD);
+	}
+	
+	/**
+	 * 注册jsapi_ticket定时器
+	 */
+	private void registeJsApiTicketTimer(){
+		JsApiTicketTimer jsApiTicketTimer = new JsApiTicketTimer();
+		timer.schedule(jsApiTicketTimer, JsApiTicketTimer.DELAY,JsApiTicketTimer.PERIOD);
 	}
 	
 }
