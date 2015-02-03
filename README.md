@@ -96,6 +96,7 @@ public class Lejian extends WechatSupport{
 * wechat4j技术交流QQ群  **423134346**
 * 支持邮件 sword_org@163.com
 * wechat4j暂无论坛，欢迎开通论坛交流版块，如果开通请邮件，我会添加到这里。
+* [wechat4j接口文档](http://www.chengn.com/wechat4j/)
 
 
 ##贡献代码
