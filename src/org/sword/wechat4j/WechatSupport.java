@@ -48,7 +48,6 @@ public abstract class WechatSupport {
 	/**
 	 * 构建微信处理
 	 * @param request   微信服务发过来的http请求
-	 * @param token     token
 	 */
 	public WechatSupport(HttpServletRequest request){
 		this.request = request;
@@ -326,10 +325,10 @@ public abstract class WechatSupport {
 	
 	/**
 	 * 回复图文消息，单条图文消息
-	 * @param Title         图文消息标题
-	 * @param Description   图文消息描述
-	 * @param PicUrl        图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
-	 * @param Url           点击图文消息跳转链接
+	 * @param title         图文消息标题
+	 * @param description   图文消息描述
+	 * @param picUrl        图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+	 * @param url           点击图文消息跳转链接
 	 */
 	public void responseNew(String title,String description,String picUrl,String url){
 		ArticleResponse item = new ArticleResponse();
@@ -342,7 +341,7 @@ public abstract class WechatSupport {
 	
 	/**
 	 * 回复图文消息单条
-	 * @param items
+	 * @param item
 	 */
 	public void responseNews(ArticleResponse item){
 		List<ArticleResponse> items = new ArrayList<ArticleResponse>();

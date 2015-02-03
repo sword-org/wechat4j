@@ -27,7 +27,6 @@ public abstract class Token {
 	
 	/**
 	 * 得到access token
-	 * @return
 	 */
 	public String getToken(){
 		return this.token;
@@ -35,7 +34,6 @@ public abstract class Token {
 	
 	/**
 	 * 得到有效时间
-	 * @return
 	 */
 	public long getExpires() {
 		return expires;
@@ -47,7 +45,6 @@ public abstract class Token {
 		https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
 		{"access_token":"ACCESS_TOKEN","expires_in":7200}
 		{"errcode":40013,"errmsg":"invalid appid"}
-	 * @return
 	 */
 	public boolean request(){
 		String url = accessTokenUrl();

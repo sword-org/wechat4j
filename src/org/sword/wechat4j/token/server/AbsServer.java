@@ -26,7 +26,7 @@ public abstract class AbsServer implements IServer{
 	}
 	/**
 	 * 得到系统可用的中控服务器
-	 * @return
+	 * @return 正在使用的中控服务器
 	 */
 	public IServer server(){
 		if(isCustomer())
@@ -36,7 +36,7 @@ public abstract class AbsServer implements IServer{
 	
 	/**
 	 * 加载自定义中控服务器
-	 * @return
+	 * @return 自定义的中控服务器
 	 */
 	public IServer customerServer(){
 		String className = customerServerClass;
@@ -54,7 +54,7 @@ public abstract class AbsServer implements IServer{
 	
 	/**
 	 * 如果配置文件中配置了AccessTokenServer，那么使用客户自定义server
-	 * @return
+	 * @return 是否配置了自定义中控服务器
 	 */
 	public boolean isCustomer(){
 		if(StringUtils.isBlank(customerServerClass))
@@ -64,7 +64,7 @@ public abstract class AbsServer implements IServer{
 	
 	/**
 	 * 指定的默认中控服务器
-	 * @return
+	 * @return 默认的中控服务器
 	 */
 	public abstract IServer defaultServer() ;
 
