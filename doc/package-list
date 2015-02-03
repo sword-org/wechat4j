@@ -1,0 +1,12 @@
+org.sword.wechat4j
+org.sword.wechat4j.common
+org.sword.wechat4j.event
+org.sword.wechat4j.message
+org.sword.wechat4j.message.template
+org.sword.wechat4j.param
+org.sword.wechat4j.request
+org.sword.wechat4j.response
+org.sword.wechat4j.token
+org.sword.wechat4j.token.server
+org.sword.wechat4j.token.timer
+org.sword.wechat4j.user
