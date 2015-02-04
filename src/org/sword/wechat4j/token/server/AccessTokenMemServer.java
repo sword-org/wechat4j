@@ -37,7 +37,7 @@ public class AccessTokenMemServer implements IServer{
 	
 	/**
 	 * token中控服务器实例
-	 * @return
+	 * @return 中控服务器实例
 	 */
 	public static AccessTokenMemServer instance(){
 		return tokenServer;

@@ -207,9 +207,9 @@ public class CustomerMsg {
 	 * 发送音乐消息
 	 * @param title
 	 * @param description
-	 * @param musicurl
-	 * @param hqmusicurl
-	 * @param thumb_media_id
+	 * @param musicURL
+	 * @param hQMusicUrl
+	 * @param thumbMediaId
 	 */
 	public void sendMusic(String title,String description,String musicURL,String hQMusicUrl,String thumbMediaId){
 		MusicResponse music = new MusicResponse();

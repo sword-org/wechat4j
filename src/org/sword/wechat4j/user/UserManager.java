@@ -38,7 +38,7 @@ public class UserManager {
 	
 	/**
 	 * 调用之后的nextOpenId
-	 * @return
+	 * @return 下一个开始的openid
 	 */
 	public String getNextOpenId(){
 		return this.nextOpenId;
@@ -46,7 +46,7 @@ public class UserManager {
 	
 	/**
 	 * 关注者总数,必须先调用一下subscriberList方法才能得到total
-	 * @return
+	 * @return 关注者总数
 	 */
 	public long getTotal(){
 		return this.total;

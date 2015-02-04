@@ -29,7 +29,7 @@ public class JsApiTicketMemServer implements IServer{
 	
 	/**
 	 * token中控服务器实例
-	 * @return
+	 * @return ticket服务器实例
 	 */
 	public static JsApiTicketMemServer instance(){
 		return ticketServer;

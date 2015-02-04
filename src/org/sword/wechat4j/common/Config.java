@@ -37,13 +37,13 @@ public class Config {
 		}
 		try {
 			p.load(inStream);
-			this.url = p.getProperty("wechat.url");
-			this.encodingAESKey = p.getProperty("wechat.encodingaeskey");
-			this.token = p.getProperty("wechat.token");
-			this.appid = p.getProperty("wechat.appid");
-			this.appSecret = p.getProperty("wechat.appsecret");
-			this.accessTokenServer = p.getProperty("wechat.accessToken.server.class");
-			this.jsApiTicketServer = p.getProperty("wechat.ticket.jsapi.server.class");
+			this.url = p.getProperty("wechat.url").trim();
+			this.encodingAESKey = p.getProperty("wechat.encodingaeskey").trim();
+			this.token = p.getProperty("wechat.token").trim();
+			this.appid = p.getProperty("wechat.appid").trim();
+			this.appSecret = p.getProperty("wechat.appsecret").trim();
+			this.accessTokenServer = p.getProperty("wechat.accessToken.server.class").trim();
+			this.jsApiTicketServer = p.getProperty("wechat.ticket.jsapi.server.class").trim();
 			inStream.close();
 		} catch (IOException e) {
 			logger.error("load wechat4j.properties error,class根目录下找不到wechat4j.properties文件");

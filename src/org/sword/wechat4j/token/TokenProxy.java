@@ -20,7 +20,6 @@ public class TokenProxy {
 	
 	/**
 	 * 通过代理得到accessToken的串
-	 * @return
 	 */
 	public static String accessToken(){
 		TokenServer accessTokenServer = new AccessTokenServer();
@@ -29,7 +28,6 @@ public class TokenProxy {
 	
 	/**
 	 * 通过代理得到jsapi_ticket
-	 * @return
 	 */
 	public static String jsApiTicket(){
 		TicketServer ticketServer = new JsApiTicketServer();
