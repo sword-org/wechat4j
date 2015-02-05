@@ -186,7 +186,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 					<li id="n-.E8.AE.BE.E7.BD.AE.E7.94.A8.E6.88.B7.E5.A4.87.E6.B3.A8.E5.90.8D"><a href="../1/4a566d20d67def0b3c1afc55121d2419.html">设置用户备注名</a></li>
 					<li id="n-.E8.8E.B7.E5.8F.96.E7.94.A8.E6.88.B7.E5.9F.BA.E6.9C.AC.E4.BF.A1.E6.81.AF.28UnionID.E6.9C.BA.E5.88.B6.29"><a href="../14/bb5031008f1494a59c6f71fa0f319c66.html">获取用户基本信息(UnionID机制)</a></li>
 					-->
-					<li id="n-.E8.8E.B7.E5.8F.96.E7.94.A8.E6.88.B7.E5.88.97.E8.A1.A8"><a href="../0/d0e07720fc711c02a3eab6ec33054804.html">获取用户列表</a></li>
+					<li id="n-.E8.8E.B7.E5.8F.96.E7.94.A8.E6.88.B7.E5.88.97.E8.A1.A8"><a href="getUserList.html">获取用户列表</a></li>
 					<!--
 					<li id="n-.E8.8E.B7.E5.8F.96.E7.94.A8.E6.88.B7.E5.9C.B0.E7.90.86.E4.BD.8D.E7.BD.AE"><a href="../8/1b86529d05db9f960e48c3c7ca5be288.html">获取用户地理位置</a></li>
 					<li id="n-.E7.BD.91.E9.A1.B5.E6.8E.88.E6.9D.83.E8.8E.B7.E5.8F.96.E7.94.A8.E6.88.B7.E5.9F.BA.E6.9C.AC.E4.BF.A1.E6.81.AF"><a href="../17/c0f37d5704f0b64713d5d2c37b468d75.html">网页授权获取用户基本信息</a></li>
@@ -441,21 +441,8 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 						</div>
 						<!-- /jumpto -->
 						<!-- bodytext -->
-						<p><b>开发者通过继承WechatSupport类，实现其抽象方法来接收普通消息，如果不处理对应的消息，则其抽象方法为空实现。</b></p>
-						<p>对于每一个POST请求，开发者在响应包（Get）中返回特定XML结构，对该消息进行响应（现支持回复文本、图片、图文、语音、视频、音乐）。请注意，回复图片等多媒体消息时需要预先上传多媒体文件到微信服务器，只支持认证服务号。
-</p><p><b>微信服务器在五秒内收不到响应会断掉连接，并且重新发起请求，总共重试三次</b>，如果在调试中，发现用户无法收到响应的消息，可以检查是否消息处理超时。
-</p><p>关于重试的消息排重，有msgid的消息推荐使用msgid排重。事件类型消息推荐使用FromUserName + CreateTime 排重。
-</p><p>发送被动响应消息其实并不是一种接口，而是对微信服务器发过来消息的一次回复，<b>假如服务器无法保证在五秒内处理并回复，必须做下述回复，微信服务器不会对此作任何处理，并且不会发起重试（这种情况下，可以使用客服消息接口进行异步回复）：</b>
-</p>
-<pre>1、直接回复空串（指字节长度为0的空字符串，而不是XML结构体中content字段的内容为空）
-2、直接回复success
-</pre>
-<p>请开发者注意，一旦遇到以下情况，微信都会在公众号会话中，向用户下发系统提示“该公众号暂时无法提供服务，请稍后再试”：
-</p>
-<pre>1、开发者在5秒内未回复任何内容
-2、开发者回复了异常数据，比如JSON数据等
-</pre>
-<p>各消息类型需要的XML数据包结构如下。
+						<p><b>开发者通过继承WechatSupport类，实现其抽象方法来接收普通消息，然后在普通消息接收方法中回复消息。</b></p>
+						
 </p>
 <table id="toc" class="toc"><tbody><tr><td><div id="toctitle"><h2>目录</h2></div>
 <ul>
@@ -468,67 +455,25 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </ul>
 </td></tr></tbody></table>
 <h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E6.96.87.E6.9C.AC.E6.B6.88.E6.81.AF"><b>回复文本消息</b></span></h3>
-<pre>&lt;xml&gt;
-&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
-&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
-&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
-&lt;MsgType&gt;&lt;![CDATA[text]]&gt;&lt;/MsgType&gt;
-&lt;Content&gt;&lt;![CDATA[你好]]&gt;&lt;/Content&gt;
-&lt;/xml&gt;
+<pre>responseText(content);
 </pre>
 <table border="1" cellspacing="0" cellpadding="4" align="center">
 <tbody><tr>
 <th style="width:120px">参数
 </th>
-<th style="width:120px">是否必须
+<th style="width:120px">必须
 </th>
-<th style="width:470px">描述
+<th>描述
 </th></tr>
-<tr>
-<td> ToUserName
-</td>
-<td> 是
-</td>
-<td> 接收方帐号（收到的OpenID）
-</td></tr>
-<tr>
-<td> FromUserName
-</td>
-<td> 是
-</td>
-<td> <b>开发者</b>微信号
-</td></tr>
-<tr>
-<td> CreateTime
-</td>
-<td> 是
-</td>
-<td> 消息创建时间 （整型）
-</td></tr>
-<tr>
-<td> MsgType
-</td>
-<td> 是
-</td>
-<td> text
-</td></tr>
 <tr>
 <td> Content
 </td>
 <td> 是
 </td>
-<td> 回复的消息内容（换行：在content中能够换行，微信客户端就支持换行显示）
+<td> 回复的消息内容（换行：在content中能够换行，微信客户端就支持换行显示，链接使用html的链接语法）
 </td></tr></tbody></table>
 <h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E5.9B.BE.E7.89.87.E6.B6.88.E6.81.AF"><b>回复图片消息</b></span></h3>
-<pre>&lt;xml&gt;
-&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
-&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
-&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
-&lt;MsgType&gt;&lt;![CDATA[image]]&gt;&lt;/MsgType&gt;
-&lt;Image&gt;
-&lt;MediaId&gt;&lt;![CDATA[media_id]]&gt;&lt;/MediaId&gt;
-&lt;/Image&gt;
-&lt;/xml&gt;
+<pre>responseImage(mediaId);
 </pre>
 <table border="1" cellspacing="0" cellpadding="4" align="center" width="640px">
 <tbody><tr>
@@ -538,34 +483,6 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </th>
 <th>说明
 </th></tr>
-<tr>
-<td> ToUserName
-</td>
-<td> 是
-</td>
-<td> 接收方帐号（收到的OpenID）
-</td></tr>
-<tr>
-<td> FromUserName
-</td>
-<td> 是
-</td>
-<td> <b>开发者</b>微信号
-</td></tr>
-<tr>
-<td> CreateTime
-</td>
-<td> 是
-</td>
-<td> 消息创建时间 （整型）
-</td></tr>
-<tr>
-<td> MsgType
-</td>
-<td> 是
-</td>
-<td> image
-</td></tr>
 <tr>
 <td> MediaId
 </td>
@@ -576,15 +493,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 <p><br>
 </p>
 <h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E8.AF.AD.E9.9F.B3.E6.B6.88.E6.81.AF"><b>回复语音消息</b></span></h3>
-<pre>&lt;xml&gt;
-&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
-&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
-&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
-&lt;MsgType&gt;&lt;![CDATA[voice]]&gt;&lt;/MsgType&gt;
-&lt;Voice&gt;
-&lt;MediaId&gt;&lt;![CDATA[media_id]]&gt;&lt;/MediaId&gt;
-&lt;/Voice&gt;
-&lt;/xml&gt;
+<pre>responseVoice(mediaId);
 </pre>
 <table border="1" cellspacing="0" cellpadding="4" align="center" width="640px">
 <tbody><tr>
@@ -593,35 +502,8 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 <th style="width:120px">是否必须
 </th>
 <th>说明
-</th></tr>
-<tr>
-<td> ToUserName
-</td>
-<td> 是
-</td>
-<td> 接收方帐号（收到的OpenID）
-</td></tr>
-<tr>
-<td> FromUserName
-</td>
-<td> 是
-</td>
-<td> <b>开发者</b>微信号
-</td></tr>
-<tr>
-<td> CreateTime
-</td>
-<td> 是
-</td>
-<td> 消息创建时间戳 （整型）
-</td></tr>
-<tr>
-<td> MsgType
-</td>
-<td> 是
-</td>
-<td> 语音，voice
-</td></tr>
+</th>
+</tr>
 <tr>
 <td> MediaId
 </td>
@@ -633,17 +515,15 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 <p><br>
 </p>
 <h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E8.A7.86.E9.A2.91.E6.B6.88.E6.81.AF"><b>回复视频消息</b></span></h3>
-<pre>&lt;xml&gt;
-&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
-&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
-&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
-&lt;MsgType&gt;&lt;![CDATA[video]]&gt;&lt;/MsgType&gt;
-&lt;Video&gt;
-&lt;MediaId&gt;&lt;![CDATA[media_id]]&gt;&lt;/MediaId&gt;
-&lt;Title&gt;&lt;![CDATA[title]]&gt;&lt;/Title&gt;
-&lt;Description&gt;&lt;![CDATA[description]]&gt;&lt;/Description&gt;
-&lt;/Video&gt; 
-&lt;/xml&gt;
+<pre>
+	法一：
+		VideoResponse video = new VideoResponse();
+		video.setTitle(title);
+		video.setDescription(description);
+		video.setMediaId(mediaId);
+		responseVideo(video);
+	法二：
+		responseVideo(mediaId, title, description);
 </pre>
 <table border="1" cellspacing="0" cellpadding="4" align="center" width="640px">
 <tbody><tr>
@@ -652,35 +532,8 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 <th style="width:120px">是否必须
 </th>
 <th>说明
-</th></tr>
-<tr>
-<td> ToUserName
-</td>
-<td> 是
-</td>
-<td> 接收方帐号（收到的OpenID）
-</td></tr>
-<tr>
-<td> FromUserName
-</td>
-<td> 是
-</td>
-<td> <b>开发者</b>微信号
-</td></tr>
-<tr>
-<td> CreateTime
-</td>
-<td> 是
-</td>
-<td> 消息创建时间 （整型）
-</td></tr>
-<tr>
-<td> MsgType
-</td>
-<td> 是
-</td>
-<td> video
-</td></tr>
+</th>
+</tr>
 <tr>
 <td> MediaId
 </td>
@@ -703,19 +556,17 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 <td> 视频消息的描述
 </td></tr></tbody></table>
 <h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E9.9F.B3.E4.B9.90.E6.B6.88.E6.81.AF"><b>回复音乐消息</b></span></h3>
-<pre>&lt;xml&gt;
-&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
-&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
-&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
-&lt;MsgType&gt;&lt;![CDATA[music]]&gt;&lt;/MsgType&gt;
-&lt;Music&gt;
-&lt;Title&gt;&lt;![CDATA[TITLE]]&gt;&lt;/Title&gt;
-&lt;Description&gt;&lt;![CDATA[DESCRIPTION]]&gt;&lt;/Description&gt;
-&lt;MusicUrl&gt;&lt;![CDATA[MUSIC_Url]]&gt;&lt;/MusicUrl&gt;
-&lt;HQMusicUrl&gt;&lt;![CDATA[HQ_MUSIC_Url]]&gt;&lt;/HQMusicUrl&gt;
-&lt;ThumbMediaId&gt;&lt;![CDATA[media_id]]&gt;&lt;/ThumbMediaId&gt;
-&lt;/Music&gt;
-&lt;/xml&gt;
+<pre>
+	法一：
+		MusicResponse music = new MusicResponse();
+		music.setTitle(title);
+		music.setDescription(description);
+		music.setMusicURL(musicURL);
+		music.setHQMusicUrl(hQMusicUrl);
+		music.setThumbMediaId(thumbMediaId);
+		responseMusic(music);
+	法二：	
+		responseMusic(title, description, musicURL, hQMusicUrl, thumbMediaId);
 </pre>
 <table border="1" cellspacing="0" cellpadding="4" align="center" width="640px">
 <tbody><tr>
@@ -724,35 +575,8 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 <th style="width:120px">是否必须
 </th>
 <th>说明
-</th></tr>
-<tr>
-<td> ToUserName
-</td>
-<td> 是
-</td>
-<td> 接收方帐号（收到的OpenID）
-</td></tr>
-<tr>
-<td> FromUserName
-</td>
-<td> 是
-</td>
-<td> <b>开发者</b>微信号
-</td></tr>
-<tr>
-<td> CreateTime
-</td>
-<td> 是
-</td>
-<td> 消息创建时间 （整型）
-</td></tr>
-<tr>
-<td> MsgType
-</td>
-<td> 是
-</td>
-<td> music
-</td></tr>
+</th>
+</tr>
 <tr>
 <td> Title
 </td>
@@ -791,27 +615,21 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 <p><br>
 </p>
 <h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E5.9B.BE.E6.96.87.E6.B6.88.E6.81.AF"><b>回复图文消息</b></span></h3>
-<pre>&lt;xml&gt;
-&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
-&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
-&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
-&lt;MsgType&gt;&lt;![CDATA[news]]&gt;&lt;/MsgType&gt;
-&lt;ArticleCount&gt;2&lt;/ArticleCount&gt;
-&lt;Articles&gt;
-&lt;item&gt;
-&lt;Title&gt;&lt;![CDATA[title1]]&gt;&lt;/Title&gt; 
-&lt;Description&gt;&lt;![CDATA[description1]]&gt;&lt;/Description&gt;
-&lt;PicUrl&gt;&lt;![CDATA[picurl]]&gt;&lt;/PicUrl&gt;
-&lt;Url&gt;&lt;![CDATA[url]]&gt;&lt;/Url&gt;
-&lt;/item&gt;
-&lt;item&gt;
-&lt;Title&gt;&lt;![CDATA[title]]&gt;&lt;/Title&gt;
-&lt;Description&gt;&lt;![CDATA[description]]&gt;&lt;/Description&gt;
-&lt;PicUrl&gt;&lt;![CDATA[picurl]]&gt;&lt;/PicUrl&gt;
-&lt;Url&gt;&lt;![CDATA[url]]&gt;&lt;/Url&gt;
-&lt;/item&gt;
-&lt;/Articles&gt;
-&lt;/xml&gt; 
+<pre>	
+单条图文:	
+		法一：	
+			responseNew(title, description, picUrl, url);
+		法二：
+			ArticleResponse item = new ArticleResponse();
+			item.setTitle(title);
+			item.setDescription(description);
+			item.setUrl(url);
+			item.setPicUrl(picUrl);
+			responseNews(item);
+多条图文：	
+			List<ArticleResponse> items = new ArrayList<ArticleResponse>();
+			items.add(item);
+			responseNews(items);
 </pre>
 <table border="1" cellspacing="0" cellpadding="4" align="center" width="640px">
 <tbody><tr>
@@ -820,50 +638,8 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 <th style="width:120px">是否必须
 </th>
 <th>说明
-</th></tr>
-<tr>
-<td> ToUserName
-</td>
-<td> 是
-</td>
-<td> 接收方帐号（收到的OpenID）
-</td></tr>
-<tr>
-<td> FromUserName
-</td>
-<td> 是
-</td>
-<td> <b>开发者</b>微信号
-</td></tr>
-<tr>
-<td> CreateTime
-</td>
-<td> 是
-</td>
-<td> 消息创建时间 （整型）
-</td></tr>
-<tr>
-<td> MsgType
-</td>
-<td> 是
-</td>
-<td> news
-</td></tr>
-<tr>
-<td> ArticleCount
-</td>
-<td> 是
-</td>
-<td> 图文消息个数，限制为10条以内
-</td></tr>
-<tr>
-<td> Articles
-</td>
-<td> 是
-</td>
-<td> 多条图文消息信息，默认第一个item为大图,注意，如果图文数超过10，则将会无响应
-</td></tr>
-<tr>
+</th>
+</tr>
 <td> Title
 </td>
 <td> 否
