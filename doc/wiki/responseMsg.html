@@ -154,7 +154,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 					<li id="n-.E9.AA.8C.E8.AF.81.E6.B6.88.E6.81.AF.E7.9C.9F.E5.AE.9E.E6.80.A7"><a href="msgValidation.html">验证消息真实性</a></li>
 					<li id="n-.E6.8E.A5.E6.94.B6.E6.99.AE.E9.80.9A.E6.B6.88.E6.81.AF"><a href="commonMsg.html">接收普通消息</a></li>
 					<li id="n-.E6.8E.A5.E6.94.B6.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81"><a href="eventMsg.html">接收事件推送</a></li>
-					<li id="n-.E6.8E.A5.E6.94.B6.E8.AF.AD.E9.9F.B3.E8.AF.86.E5.88.AB.E7.BB.93.E6.9E.9C"><a href="voiceText.html">接收语音识别结果</a></li>
+					<li id="n-.E6.8E.A5.E6.94.B6.E8.AF.AD.E9.9F.B3.E8.AF.86.E5.88.AB.E7.BB.93.E6.9E.9C"><a href="voiceTextMsg.html">接收语音识别结果</a></li>
 				</ul>
 			</div>
 </div>
@@ -420,14 +420,14 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 					<div id="mw-js-message" style="display:none;"></div>
 										<!-- firstHeading -->
 					<div class="content_hd">
-						<h2 id="firstHeading" class="">首页</h2>
+						<h2 id="firstHeading" class="">被动回复用户消息</h2>
 						<div class="info">
 							 
 						</div>
 					</div>
 					<!-- /firstHeading -->
 					<!-- bodyContent -->
-					<div id="bodyContent" class="bodyContent">
+<div id="bodyContent" class="bodyContent">
 						<!-- tagline -->
 						<div id="siteSub">出自微信公众平台开发者文档</div>
 						<!-- /tagline -->
@@ -440,46 +440,467 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 							<a href="#p-search">搜索</a>
 						</div>
 						<!-- /jumpto -->
-												<!-- bodytext -->
-						<h3> <span class="mw-headline" id=".E5.85.AC.E4.BC.97.E5.B9.B3.E5.8F.B0.E5.BC.80.E5.8F.91.E6.8E.A5.E5.8F.A3.E4.BB.8B.E7.BB.8D"><b>公众平台开发接口介绍</b></span></h3>
-<p>公众平台是为微信用户提供服务的平台，而公众平台开发接口则是提供服务的基础，开发者在公众平台网站中创建公众号、获取接口权限后，可以通过阅读本接口文档来帮助开发。
-</p><p>公众平台开发接口提供与用户进行消息交互、自定义菜单交互的能力。对于成功接入公众平台开发接口的公众账号，当用户发消息给公众号，微信公众平台服务器会使用http请求对接入的网址进行消息推送，第三方服务器可通过响应包回复特定结构，从而达到回复消息的目的。
+						<!-- bodytext -->
+						<p><b>开发者通过继承WechatSupport类，实现其抽象方法来接收普通消息，如果不处理对应的消息，则其抽象方法为空实现。</b></p>
+						<p>对于每一个POST请求，开发者在响应包（Get）中返回特定XML结构，对该消息进行响应（现支持回复文本、图片、图文、语音、视频、音乐）。请注意，回复图片等多媒体消息时需要预先上传多媒体文件到微信服务器，只支持认证服务号。
+</p><p><b>微信服务器在五秒内收不到响应会断掉连接，并且重新发起请求，总共重试三次</b>，如果在调试中，发现用户无法收到响应的消息，可以检查是否消息处理超时。
+</p><p>关于重试的消息排重，有msgid的消息推荐使用msgid排重。事件类型消息推荐使用FromUserName + CreateTime 排重。
+</p><p>发送被动响应消息其实并不是一种接口，而是对微信服务器发过来消息的一次回复，<b>假如服务器无法保证在五秒内处理并回复，必须做下述回复，微信服务器不会对此作任何处理，并且不会发起重试（这种情况下，可以使用客服消息接口进行异步回复）：</b>
 </p>
-<h3> <span class="mw-headline" id=".E5.85.B8.E5.9E.8B.E6.A1.88.E4.BE.8B.E4.BB.8B.E7.BB.8D"><b>典型案例介绍</b></span></h3>
-<p>值得借鉴的公众帐号主要是服务号，试列举并介绍如下：
-</p><p><b>招商银行信用卡中心</b>
-</p>
-<div class="center"><div class="floatnone"><a href="#" class="image"><img alt="招商银行.png" src="../static/assets/bff467b80a54da10cf47cc92cc3c1ff5.png" width="600" height="467"></a></div></div>
-<p>如果你是持卡人，可快捷查询信用卡账单、额度及积分；快速还款、申请账单分期；微信转接人工服务；信用卡消费，微信免费笔笔提醒。如果不是持卡人，可以微信办卡！
-</p>
-<pre>招商银行公众号通过提示消息引导用户将自己的微信号和信用卡号安全绑定。
-用户可以通过该公众号查询账单、收取刷卡通知等功能，这是由招行开发人员通过公众号接口实现的功能。
+<pre>1、直接回复空串（指字节长度为0的空字符串，而不是XML结构体中content字段的内容为空）
+2、直接回复success
 </pre>
-<p><b>中国南方航空</b>
+<p>请开发者注意，一旦遇到以下情况，微信都会在公众号会话中，向用户下发系统提示“该公众号暂时无法提供服务，请稍后再试”：
 </p>
-<div class="center"><div class="floatnone"><a href="#" class="image"><img alt="南方航空.png" src="../static/assets/14b7fb732f5e42bedce86fa717e38556.png" width="600" height="465"></a></div></div>
-<p>你可以办理值机手续，挑选座位，查询航班信息，查询目的地城市天气，并为明珠会员提供专业的服务。
-</p>
-<pre>南方航空公众号可以让用户将明珠会员服务和微信号绑定起来。
-用户可以通过该公众号预订机票、查询订单，甚至办理登机牌。
+<pre>1、开发者在5秒内未回复任何内容
+2、开发者回复了异常数据，比如JSON数据等
 </pre>
-<p><b>广东联通</b>
+<p>各消息类型需要的XML数据包结构如下。
 </p>
-<div class="center"><div class="floatnone"><a href="#" class="image"><img alt="广东联通.png" src="../static/assets/52364d366ef5b9d9d32537984a925742.png" width="600" height="464"></a></div></div>
-<p>你可以在微信里绑定手机号、积分流量，套餐余量、手机上网流量，微信专属流量查询，客服咨询。
-</p>
-<pre>广东联通公众号可以绑定手机号，来查询流量、套餐等等功能。
-广东联通更与微信深度合作，购买微信沃卡可以获得微信五大特权。
+<table id="toc" class="toc"><tbody><tr><td><div id="toctitle"><h2>目录</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#.E5.9B.9E.E5.A4.8D.E6.96.87.E6.9C.AC.E6.B6.88.E6.81.AF"><span class="tocnumber">1</span> <span class="toctext">回复文本消息</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#.E5.9B.9E.E5.A4.8D.E5.9B.BE.E7.89.87.E6.B6.88.E6.81.AF"><span class="tocnumber">2</span> <span class="toctext">回复图片消息</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="#.E5.9B.9E.E5.A4.8D.E8.AF.AD.E9.9F.B3.E6.B6.88.E6.81.AF"><span class="tocnumber">3</span> <span class="toctext">回复语音消息</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="#.E5.9B.9E.E5.A4.8D.E8.A7.86.E9.A2.91.E6.B6.88.E6.81.AF"><span class="tocnumber">4</span> <span class="toctext">回复视频消息</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="#.E5.9B.9E.E5.A4.8D.E9.9F.B3.E4.B9.90.E6.B6.88.E6.81.AF"><span class="tocnumber">5</span> <span class="toctext">回复音乐消息</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="#.E5.9B.9E.E5.A4.8D.E5.9B.BE.E6.96.87.E6.B6.88.E6.81.AF"><span class="tocnumber">6</span> <span class="toctext">回复图文消息</span></a></li>
+</ul>
+</td></tr></tbody></table>
+<h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E6.96.87.E6.9C.AC.E6.B6.88.E6.81.AF"><b>回复文本消息</b></span></h3>
+<pre>&lt;xml&gt;
+&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[text]]&gt;&lt;/MsgType&gt;
+&lt;Content&gt;&lt;![CDATA[你好]]&gt;&lt;/Content&gt;
+&lt;/xml&gt;
 </pre>
+<table border="1" cellspacing="0" cellpadding="4" align="center">
+<tbody><tr>
+<th style="width:120px">参数
+</th>
+<th style="width:120px">是否必须
+</th>
+<th style="width:470px">描述
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> 是
+</td>
+<td> 接收方帐号（收到的OpenID）
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 是
+</td>
+<td> <b>开发者</b>微信号
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 是
+</td>
+<td> 消息创建时间 （整型）
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 是
+</td>
+<td> text
+</td></tr>
+<tr>
+<td> Content
+</td>
+<td> 是
+</td>
+<td> 回复的消息内容（换行：在content中能够换行，微信客户端就支持换行显示）
+</td></tr></tbody></table>
+<h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E5.9B.BE.E7.89.87.E6.B6.88.E6.81.AF"><b>回复图片消息</b></span></h3>
+<pre>&lt;xml&gt;
+&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[image]]&gt;&lt;/MsgType&gt;
+&lt;Image&gt;
+&lt;MediaId&gt;&lt;![CDATA[media_id]]&gt;&lt;/MediaId&gt;
+&lt;/Image&gt;
+&lt;/xml&gt;
+</pre>
+<table border="1" cellspacing="0" cellpadding="4" align="center" width="640px">
+<tbody><tr>
+<th style="width:120px">参数
+</th>
+<th style="width:120px">是否必须
+</th>
+<th>说明
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> 是
+</td>
+<td> 接收方帐号（收到的OpenID）
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 是
+</td>
+<td> <b>开发者</b>微信号
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 是
+</td>
+<td> 消息创建时间 （整型）
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 是
+</td>
+<td> image
+</td></tr>
+<tr>
+<td> MediaId
+</td>
+<td> 是
+</td>
+<td> 通过上传多媒体文件，得到的id。
+</td></tr></tbody></table>
+<p><br>
+</p>
+<h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E8.AF.AD.E9.9F.B3.E6.B6.88.E6.81.AF"><b>回复语音消息</b></span></h3>
+<pre>&lt;xml&gt;
+&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[voice]]&gt;&lt;/MsgType&gt;
+&lt;Voice&gt;
+&lt;MediaId&gt;&lt;![CDATA[media_id]]&gt;&lt;/MediaId&gt;
+&lt;/Voice&gt;
+&lt;/xml&gt;
+</pre>
+<table border="1" cellspacing="0" cellpadding="4" align="center" width="640px">
+<tbody><tr>
+<th style="width:120px">参数
+</th>
+<th style="width:120px">是否必须
+</th>
+<th>说明
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> 是
+</td>
+<td> 接收方帐号（收到的OpenID）
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 是
+</td>
+<td> <b>开发者</b>微信号
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 是
+</td>
+<td> 消息创建时间戳 （整型）
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 是
+</td>
+<td> 语音，voice
+</td></tr>
+<tr>
+<td> MediaId
+</td>
+<td> 是
+</td>
+<td> 通过上传多媒体文件，得到的id
+</td></tr>
+</tbody></table>
+<p><br>
+</p>
+<h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E8.A7.86.E9.A2.91.E6.B6.88.E6.81.AF"><b>回复视频消息</b></span></h3>
+<pre>&lt;xml&gt;
+&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[video]]&gt;&lt;/MsgType&gt;
+&lt;Video&gt;
+&lt;MediaId&gt;&lt;![CDATA[media_id]]&gt;&lt;/MediaId&gt;
+&lt;Title&gt;&lt;![CDATA[title]]&gt;&lt;/Title&gt;
+&lt;Description&gt;&lt;![CDATA[description]]&gt;&lt;/Description&gt;
+&lt;/Video&gt; 
+&lt;/xml&gt;
+</pre>
+<table border="1" cellspacing="0" cellpadding="4" align="center" width="640px">
+<tbody><tr>
+<th style="width:120px">参数
+</th>
+<th style="width:120px">是否必须
+</th>
+<th>说明
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> 是
+</td>
+<td> 接收方帐号（收到的OpenID）
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 是
+</td>
+<td> <b>开发者</b>微信号
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 是
+</td>
+<td> 消息创建时间 （整型）
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 是
+</td>
+<td> video
+</td></tr>
+<tr>
+<td> MediaId
+</td>
+<td> 是
+</td>
+<td> 通过上传多媒体文件，得到的id
+</td></tr>
+<tr>
+<td> Title
+</td>
+<td> 否
+</td>
+<td> 视频消息的标题
+</td></tr>
+<tr>
+<td> Description
+</td>
+<td> 否
+</td>
+<td> 视频消息的描述
+</td></tr></tbody></table>
+<h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E9.9F.B3.E4.B9.90.E6.B6.88.E6.81.AF"><b>回复音乐消息</b></span></h3>
+<pre>&lt;xml&gt;
+&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[music]]&gt;&lt;/MsgType&gt;
+&lt;Music&gt;
+&lt;Title&gt;&lt;![CDATA[TITLE]]&gt;&lt;/Title&gt;
+&lt;Description&gt;&lt;![CDATA[DESCRIPTION]]&gt;&lt;/Description&gt;
+&lt;MusicUrl&gt;&lt;![CDATA[MUSIC_Url]]&gt;&lt;/MusicUrl&gt;
+&lt;HQMusicUrl&gt;&lt;![CDATA[HQ_MUSIC_Url]]&gt;&lt;/HQMusicUrl&gt;
+&lt;ThumbMediaId&gt;&lt;![CDATA[media_id]]&gt;&lt;/ThumbMediaId&gt;
+&lt;/Music&gt;
+&lt;/xml&gt;
+</pre>
+<table border="1" cellspacing="0" cellpadding="4" align="center" width="640px">
+<tbody><tr>
+<th style="width:120px">参数
+</th>
+<th style="width:120px">是否必须
+</th>
+<th>说明
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> 是
+</td>
+<td> 接收方帐号（收到的OpenID）
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 是
+</td>
+<td> <b>开发者</b>微信号
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 是
+</td>
+<td> 消息创建时间 （整型）
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 是
+</td>
+<td> music
+</td></tr>
+<tr>
+<td> Title
+</td>
+<td> 否
+</td>
+<td> 音乐标题
+</td></tr>
+<tr>
+<td> Description
+</td>
+<td> 否
+</td>
+<td> 音乐描述
+</td></tr>
+<tr>
+<td> MusicURL
+</td>
+<td> 否
+</td>
+<td> 音乐链接
+</td></tr>
+<tr>
+<td> HQMusicUrl
+</td>
+<td> 否
+</td>
+<td> 高质量音乐链接，WIFI环境优先使用该链接播放音乐
+</td></tr>
+<tr>
+<td> ThumbMediaId
+</td>
+<td> 是
+</td>
+<td> 缩略图的媒体id，通过上传多媒体文件，得到的id
+</td></tr></tbody></table>
+<p><br>
+</p>
+<h3> <span class="mw-headline" id=".E5.9B.9E.E5.A4.8D.E5.9B.BE.E6.96.87.E6.B6.88.E6.81.AF"><b>回复图文消息</b></span></h3>
+<pre>&lt;xml&gt;
+&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[news]]&gt;&lt;/MsgType&gt;
+&lt;ArticleCount&gt;2&lt;/ArticleCount&gt;
+&lt;Articles&gt;
+&lt;item&gt;
+&lt;Title&gt;&lt;![CDATA[title1]]&gt;&lt;/Title&gt; 
+&lt;Description&gt;&lt;![CDATA[description1]]&gt;&lt;/Description&gt;
+&lt;PicUrl&gt;&lt;![CDATA[picurl]]&gt;&lt;/PicUrl&gt;
+&lt;Url&gt;&lt;![CDATA[url]]&gt;&lt;/Url&gt;
+&lt;/item&gt;
+&lt;item&gt;
+&lt;Title&gt;&lt;![CDATA[title]]&gt;&lt;/Title&gt;
+&lt;Description&gt;&lt;![CDATA[description]]&gt;&lt;/Description&gt;
+&lt;PicUrl&gt;&lt;![CDATA[picurl]]&gt;&lt;/PicUrl&gt;
+&lt;Url&gt;&lt;![CDATA[url]]&gt;&lt;/Url&gt;
+&lt;/item&gt;
+&lt;/Articles&gt;
+&lt;/xml&gt; 
+</pre>
+<table border="1" cellspacing="0" cellpadding="4" align="center" width="640px">
+<tbody><tr>
+<th style="width:120px">参数
+</th>
+<th style="width:120px">是否必须
+</th>
+<th>说明
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> 是
+</td>
+<td> 接收方帐号（收到的OpenID）
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 是
+</td>
+<td> <b>开发者</b>微信号
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 是
+</td>
+<td> 消息创建时间 （整型）
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 是
+</td>
+<td> news
+</td></tr>
+<tr>
+<td> ArticleCount
+</td>
+<td> 是
+</td>
+<td> 图文消息个数，限制为10条以内
+</td></tr>
+<tr>
+<td> Articles
+</td>
+<td> 是
+</td>
+<td> 多条图文消息信息，默认第一个item为大图,注意，如果图文数超过10，则将会无响应
+</td></tr>
+<tr>
+<td> Title
+</td>
+<td> 否
+</td>
+<td> 图文消息标题
+</td></tr>
+<tr>
+<td> Description
+</td>
+<td> 否
+</td>
+<td> 图文消息描述
+</td></tr>
+<tr>
+<td> PicUrl
+</td>
+<td> 否
+</td>
+<td> 图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+</td></tr>
+<tr>
+<td> Url
+</td>
+<td> 否
+</td>
+<td> 点击图文消息跳转链接
+</td></tr></tbody></table>
+
 <!-- 
 NewPP limit report
-Preprocessor node count: 6/1000000
+Preprocessor node count: 23/1000000
 Post-expand include size: 0/2097152 bytes
 Template argument size: 0/2097152 bytes
 Expensive parser function count: 0/100
 -->
 <div class="printfooter">
-取自“<a href="../16/120262449894cf77b710f5bfb18ddf80.html">../16/120262449894cf77b710f5bfb18ddf80.html</a>”</div>
+取自“<a href="../18/c66a9f0b5aa952346e46dc39de20f672.html">../18/c66a9f0b5aa952346e46dc39de20f672.html</a>”</div>
 						<!-- /bodytext -->
 												<!-- catlinks -->
 						<div id="catlinks" class="catlinks catlinks-allhidden"></div>						<!-- /catlinks -->

@@ -155,7 +155,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 					<li id="n-.E9.AA.8C.E8.AF.81.E6.B6.88.E6.81.AF.E7.9C.9F.E5.AE.9E.E6.80.A7"><a href="msgValidation.html">验证消息真实性</a></li>
 					<li id="n-.E6.8E.A5.E6.94.B6.E6.99.AE.E9.80.9A.E6.B6.88.E6.81.AF"><a href="commonMsg.html">接收普通消息</a></li>
 					<li id="n-.E6.8E.A5.E6.94.B6.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81"><a href="eventMsg.html">接收事件推送</a></li>
-					<li id="n-.E6.8E.A5.E6.94.B6.E8.AF.AD.E9.9F.B3.E8.AF.86.E5.88.AB.E7.BB.93.E6.9E.9C"><a href="voiceText.html">接收语音识别结果</a></li>
+					<li id="n-.E6.8E.A5.E6.94.B6.E8.AF.AD.E9.9F.B3.E8.AF.86.E5.88.AB.E7.BB.93.E6.9E.9C"><a href="voiceTextMsg.html">接收语音识别结果</a></li>
 				</ul>
 			</div>
 </div>
@@ -420,7 +420,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 					<div id="mw-js-message" style="display:none;"></div>
 										<!-- firstHeading -->
 					<div class="content_hd">
-						<h2 id="firstHeading" class="">首页</h2>
+						<h2 id="firstHeading" class="">接收事件推送</h2>
 						<div class="info">
 							 
 						</div>
@@ -441,36 +441,429 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 						</div>
 						<!-- /jumpto -->
 												<!-- bodytext -->
-						<h3> <span class="mw-headline" id=".E5.85.AC.E4.BC.97.E5.B9.B3.E5.8F.B0.E5.BC.80.E5.8F.91.E6.8E.A5.E5.8F.A3.E4.BB.8B.E7.BB.8D"><b>公众平台开发接口介绍</b></span></h3>
-<p>公众平台是为微信用户提供服务的平台，而公众平台开发接口则是提供服务的基础，开发者在公众平台网站中创建公众号、获取接口权限后，可以通过阅读本接口文档来帮助开发。
-</p><p>公众平台开发接口提供与用户进行消息交互、自定义菜单交互的能力。对于成功接入公众平台开发接口的公众账号，当用户发消息给公众号，微信公众平台服务器会使用http请求对接入的网址进行消息推送，第三方服务器可通过响应包回复特定结构，从而达到回复消息的目的。
+						<p><b>开发者通过继承WechatSupport类，实现其抽象方法来接收普通消息，如果不处理对应的消息，则其抽象方法为空实现。</b></p>	
+						<table id="toc" class="toc"><tbody><tr><td><div id="toctitle"><h2>目录</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#.E5.85.B3.E6.B3.A8.2F.E5.8F.96.E6.B6.88.E5.85.B3.E6.B3.A8.E4.BA.8B.E4.BB.B6"><span class="tocnumber">1</span> <span class="toctext">关注/取消关注事件</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#.E6.89.AB.E6.8F.8F.E5.B8.A6.E5.8F.82.E6.95.B0.E4.BA.8C.E7.BB.B4.E7.A0.81.E4.BA.8B.E4.BB.B6"><span class="tocnumber">2</span> <span class="toctext">扫描带参数二维码事件</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="#.E4.B8.8A.E6.8A.A5.E5.9C.B0.E7.90.86.E4.BD.8D.E7.BD.AE.E4.BA.8B.E4.BB.B6"><span class="tocnumber">3</span> <span class="toctext">上报地理位置事件</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="#.E8.87.AA.E5.AE.9A.E4.B9.89.E8.8F.9C.E5.8D.95.E4.BA.8B.E4.BB.B6"><span class="tocnumber">4</span> <span class="toctext">自定义菜单事件</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="#.E7.82.B9.E5.87.BB.E8.8F.9C.E5.8D.95.E6.8B.89.E5.8F.96.E6.B6.88.E6.81.AF.E6.97.B6.E7.9A.84.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81"><span class="tocnumber">5</span> <span class="toctext">点击菜单拉取消息时的事件推送</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="#.E7.82.B9.E5.87.BB.E8.8F.9C.E5.8D.95.E8.B7.B3.E8.BD.AC.E9.93.BE.E6.8E.A5.E6.97.B6.E7.9A.84.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81"><span class="tocnumber">6</span> <span class="toctext">点击菜单跳转链接时的事件推送</span></a></li>
+</ul>
+</td></tr></tbody></table>
+<h2> <span class="mw-headline" id=".E5.85.B3.E6.B3.A8.2F.E5.8F.96.E6.B6.88.E5.85.B3.E6.B3.A8.E4.BA.8B.E4.BB.B6"><b>关注/取消关注事件subscribe/unSubscribe</b></span></h2>
+<p>用户在关注与取消关注公众号时，微信会把这个事件推送到开发者填写的URL。方便开发者给用户下发欢迎消息或者做帐号的解绑。
+</p><p><b>微信服务器在五秒内收不到响应会断掉连接，并且重新发起请求，总共重试三次</b>
+</p><p>关于重试的消息排重，推荐使用FromUserName + CreateTime 排重。
+</p><p><b>假如服务器无法保证在五秒内处理并回复，可以直接回复空串，微信服务器不会对此作任何处理，并且不会发起重试。</b> 
+</p><p>推送XML数据包示例：
 </p>
-<h3> <span class="mw-headline" id=".E5.85.B8.E5.9E.8B.E6.A1.88.E4.BE.8B.E4.BB.8B.E7.BB.8D"><b>典型案例介绍</b></span></h3>
-<p>值得借鉴的公众帐号主要是服务号，试列举并介绍如下：
-</p><p><b>招商银行信用卡中心</b>
-</p>
-<div class="center"><div class="floatnone"><a href="#" class="image"><img alt="招商银行.png" src="../static/assets/bff467b80a54da10cf47cc92cc3c1ff5.png" width="600" height="467"></a></div></div>
-<p>如果你是持卡人，可快捷查询信用卡账单、额度及积分；快速还款、申请账单分期；微信转接人工服务；信用卡消费，微信免费笔笔提醒。如果不是持卡人，可以微信办卡！
-</p>
-<pre>招商银行公众号通过提示消息引导用户将自己的微信号和信用卡号安全绑定。
-用户可以通过该公众号查询账单、收取刷卡通知等功能，这是由招行开发人员通过公众号接口实现的功能。
+<pre>&lt;xml&gt;
+&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[FromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;123456789&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[event]]&gt;&lt;/MsgType&gt;
+&lt;Event&gt;&lt;![CDATA[subscribe]]&gt;&lt;/Event&gt;
+&lt;/xml&gt;
 </pre>
-<p><b>中国南方航空</b>
+<p>参数说明：
 </p>
-<div class="center"><div class="floatnone"><a href="#" class="image"><img alt="南方航空.png" src="../static/assets/14b7fb732f5e42bedce86fa717e38556.png" width="600" height="465"></a></div></div>
-<p>你可以办理值机手续，挑选座位，查询航班信息，查询目的地城市天气，并为明珠会员提供专业的服务。
+<table border="1" cellspacing="0" cellpadding="4" align="center">
+<tbody><tr>
+<th style="width:180px">参数
+</th>
+<th style="width:470px">描述
+</th>
+<th style="width:470px">wechat4j
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> <b>开发者</b>微信号
+</td><td> wechatRequest.getToUserName();
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 发送方帐号（一个OpenID）
+</td><td> wechatRequest.getFromUserName();
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 消息创建时间 （整型）
+</td><td> wechatRequest.getCreateTime();
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 消息类型，event
+</td><td> wechatRequest.getMsgType();
+</td></tr>
+<tr>
+<td> Event
+</td>
+<td> 事件类型，subscribe(订阅)、unsubscribe(取消订阅)
+</td><td> wechatRequest.getEvent();
+</td></tr>
+</tbody></table>
+<p><a href="https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&amp;type=消息接口调试&amp;form=事件消息" class="external text" rel="nofollow" target="_blank">使用网页调试工具调试该接口</a>
 </p>
-<pre>南方航空公众号可以让用户将明珠会员服务和微信号绑定起来。
-用户可以通过该公众号预订机票、查询订单，甚至办理登机牌。
+<h2> <span class="mw-headline" id=".E6.89.AB.E6.8F.8F.E5.B8.A6.E5.8F.82.E6.95.B0.E4.BA.8C.E7.BB.B4.E7.A0.81.E4.BA.8B.E4.BB.B6"><b>扫描带参数二维码事件</b></span></h2>
+<p>用户扫描带场景值二维码时，可能推送以下两种事件：
+</p>
+<ol><li> 如果用户还未关注公众号，则用户可以关注公众号，关注后微信会将带场景值关注事件推送给开发者。
+</li><li> 如果用户已经关注公众号，则微信会将带场景值扫描事件推送给开发者。
+</li></ol>
+<p><b>1. 用户未关注时，进行关注后的事件推送</b>
+</p><p>推送XML数据包示例：
+</p>
+<pre>&lt;xml&gt;&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[FromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;123456789&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[event]]&gt;&lt;/MsgType&gt;
+&lt;Event&gt;&lt;![CDATA[subscribe]]&gt;&lt;/Event&gt;
+&lt;EventKey&gt;&lt;![CDATA[qrscene_123123]]&gt;&lt;/EventKey&gt;
+&lt;Ticket&gt;&lt;![CDATA[TICKET]]&gt;&lt;/Ticket&gt;
+&lt;/xml&gt;
 </pre>
-<p><b>广东联通</b>
+<p>参数说明：
 </p>
-<div class="center"><div class="floatnone"><a href="#" class="image"><img alt="广东联通.png" src="../static/assets/52364d366ef5b9d9d32537984a925742.png" width="600" height="464"></a></div></div>
-<p>你可以在微信里绑定手机号、积分流量，套餐余量、手机上网流量，微信专属流量查询，客服咨询。
+<table border="1" cellspacing="0" cellpadding="4" align="center">
+<tbody><tr>
+<th style="width:180px">参数
+</th>
+<th style="width:470px">描述
+</th>
+<th style="width:470px">wechat4j
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> <b>开发者</b>微信号
+</td><td> wechatRequest.getToUserName();
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 发送方帐号（一个OpenID）
+</td><td> wechatRequest.getFromUserName();
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 消息创建时间 （整型）
+</td><td> wechatRequest.getCreateTime();
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 消息类型，event
+</td><td> wechatRequest.getMsgType();
+</td></tr>
+<tr>
+<td> Event
+</td>
+<td> 事件类型，subscribe
+</td><td> wechatRequest.getEvent();
+</td></tr>
+<tr>
+<td> EventKey
+</td>
+<td> 事件KEY值，qrscene_为前缀，后面为二维码的参数值
+</td><td> wechatRequest.getEventKey();
+</td></tr>
+<tr>
+<td> Ticket
+</td>
+<td> 二维码的ticket，可用来换取二维码图片
+</td><td> wechatRequest.getTicket();
+</td></tr>
+</tbody></table>
+<p><b>2. 用户已关注时的事件推送</b>
+</p><p>推送XML数据包示例：
 </p>
-<pre>广东联通公众号可以绑定手机号，来查询流量、套餐等等功能。
-广东联通更与微信深度合作，购买微信沃卡可以获得微信五大特权。
+<pre>&lt;xml&gt;
+&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[FromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;123456789&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[event]]&gt;&lt;/MsgType&gt;
+&lt;Event&gt;&lt;![CDATA[SCAN]]&gt;&lt;/Event&gt;
+&lt;EventKey&gt;&lt;![CDATA[SCENE_VALUE]]&gt;&lt;/EventKey&gt;
+&lt;Ticket&gt;&lt;![CDATA[TICKET]]&gt;&lt;/Ticket&gt;
+&lt;/xml&gt;
 </pre>
+<p>参数说明：
+</p>
+<table border="1" cellspacing="0" cellpadding="4" align="center">
+<tbody><tr>
+<th style="width:100px">参数
+</th>
+<th style="width:470px">描述
+</th>
+<th style="width:270px">wechat4j
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> <b>开发者</b>微信号
+</td><td> wechatRequest.getToUserName();
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 发送方帐号（一个OpenID）
+</td><td> wechatRequest.getFromUserName();
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 消息创建时间 （整型）
+</td><td> wechatRequest.getCreateTime();
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 消息类型，event
+</td><td> wechatRequest.getMsgType();
+</td></tr>
+<tr>
+<td> Event
+</td>
+<td> 事件类型，SCAN
+</td><td> wechatRequest.getEvent();
+</td></tr>
+<tr>
+<td> EventKey
+</td>
+<td> 事件KEY值，是一个32位无符号整数，即创建二维码时的二维码scene_id
+</td><td> wechatRequest.getEventKey();
+</td></tr>
+<tr>
+<td> Ticket
+</td>
+<td> 二维码的ticket，可用来换取二维码图片
+</td><td> wechatRequest.getTicket();
+</td></tr>
+</tbody></table>
+<p><a href="https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&amp;type=消息接口调试&amp;form=事件消息" class="external text" rel="nofollow" target="_blank">使用网页调试工具调试该接口</a>
+</p>
+<h2> <span class="mw-headline" id=".E4.B8.8A.E6.8A.A5.E5.9C.B0.E7.90.86.E4.BD.8D.E7.BD.AE.E4.BA.8B.E4.BB.B6"><b>上报地理位置事件</b></span></h2>
+<p>用户同意上报地理位置后，每次进入公众号会话时，都会在进入时上报地理位置，或在进入会话后每5秒上报一次地理位置，公众号可以在公众平台网站中修改以上设置。上报地理位置时，微信会将上报地理位置事件推送到开发者填写的URL。
+</p><p>推送XML数据包示例：
+</p>
+<pre>&lt;xml&gt;
+&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;123456789&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[event]]&gt;&lt;/MsgType&gt;
+&lt;Event&gt;&lt;![CDATA[LOCATION]]&gt;&lt;/Event&gt;
+&lt;Latitude&gt;23.137466&lt;/Latitude&gt;
+&lt;Longitude&gt;113.352425&lt;/Longitude&gt;
+&lt;Precision&gt;119.385040&lt;/Precision&gt;
+&lt;/xml&gt;
+</pre>
+<p>参数说明：
+</p>
+<table border="1" cellspacing="0" cellpadding="4" align="center">
+<tbody><tr>
+<th style="width:180px">参数
+</th>
+<th style="width:470px">描述
+</th>
+<th style="width:270px">wechat4j
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> <b>开发者</b>微信号
+</td><td> wechatRequest.getToUserName();
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 发送方帐号（一个OpenID）
+</td><td> wechatRequest.getFromUserName();
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 消息创建时间 （整型）
+</td><td> wechatRequest.getCreateTime();
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 消息类型，event
+</td><td> wechatRequest.getEvent();
+</td></tr>
+<tr>
+<td> Event
+</td>
+<td> 事件类型，LOCATION
+</td><td> wechatRequest.getLocation();
+</td></tr>
+<tr>
+<td> Latitude
+</td>
+<td> 地理位置纬度
+</td><td> wechatRequest.getLatitude();
+</td></tr>
+<tr>
+<td> Longitude
+</td>
+<td> 地理位置经度
+</td><td> wechatRequest.getLongitude();
+</td></tr>
+<tr>
+<td> Precision
+</td>
+<td> 地理位置精度
+</td><td> wechatRequest.getPrecision();
+</td></tr>
+</tbody></table>
+<p><a href="https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&amp;type=消息接口调试&amp;form=事件消息" class="external text" rel="nofollow" target="_blank">使用网页调试工具调试该接口</a>
+</p>
+<h2> <span class="mw-headline" id=".E8.87.AA.E5.AE.9A.E4.B9.89.E8.8F.9C.E5.8D.95.E4.BA.8B.E4.BB.B6"><b>自定义菜单事件</b></span></h2>
+<p>用户点击自定义菜单后，微信会把点击事件推送给开发者，请注意，点击菜单弹出子菜单，不会产生上报。
+</p>
+<h2> <span class="mw-headline" id=".E7.82.B9.E5.87.BB.E8.8F.9C.E5.8D.95.E6.8B.89.E5.8F.96.E6.B6.88.E6.81.AF.E6.97.B6.E7.9A.84.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81"> 点击菜单拉取消息时的事件推送 </span></h2>
+<p>推送XML数据包示例：
+</p>
+<pre>&lt;xml&gt;
+&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[FromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;123456789&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[event]]&gt;&lt;/MsgType&gt;
+&lt;Event&gt;&lt;![CDATA[CLICK]]&gt;&lt;/Event&gt;
+&lt;EventKey&gt;&lt;![CDATA[EVENTKEY]]&gt;&lt;/EventKey&gt;
+&lt;/xml&gt;
+</pre>
+<p>参数说明：
+</p>
+<table border="1" cellspacing="0" cellpadding="4" align="center">
+<tbody><tr>
+<th style="width:180px">参数
+</th>
+<th style="width:470px">描述
+</th>
+<th style="width:270px">wechat4j
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> <b>开发者</b>微信号
+</td><td> wechatRequest.getToUserName();
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 发送方帐号（一个OpenID）
+</td><td> wechatRequest.getFromUserName();
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 消息创建时间 （整型）
+</td><td> wechatRequest.getCreateTime();
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 消息类型，event
+</td><td> wechatRequest.getMsgType();
+</td></tr>
+<tr>
+<td> Event
+</td>
+<td> 事件类型，CLICK
+</td><td> wechatRequest.getEvent();
+</td></tr>
+<tr>
+<td> EventKey
+</td>
+<td> 事件KEY值，与自定义菜单接口中KEY值对应
+</td><td> wechatRequest.getEventKey();
+</td></tr>
+</tbody></table>
+<p><br>
+</p>
+<h2> <span class="mw-headline" id=".E7.82.B9.E5.87.BB.E8.8F.9C.E5.8D.95.E8.B7.B3.E8.BD.AC.E9.93.BE.E6.8E.A5.E6.97.B6.E7.9A.84.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81"> 点击菜单跳转链接时的事件推送 </span></h2>
+<p>推送XML数据包示例：
+</p>
+<pre>&lt;xml&gt;
+&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[FromUser]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;123456789&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[event]]&gt;&lt;/MsgType&gt;
+&lt;Event&gt;&lt;![CDATA[VIEW]]&gt;&lt;/Event&gt;
+&lt;EventKey&gt;&lt;![CDATA[www.qq.com]]&gt;&lt;/EventKey&gt;
+&lt;/xml&gt;
+</pre>
+<p>参数说明：
+</p>
+<table border="1" cellspacing="0" cellpadding="4" align="center">
+<tbody><tr>
+<th style="width:180px">参数
+</th>
+<th style="width:470px">描述
+</th>
+<th style="width:270px">wechat4j
+</th></tr>
+<tr>
+<td> ToUserName
+</td>
+<td> <b>开发者</b>微信号
+</td><td> wechatRequest.getToUserName();
+</td></tr>
+<tr>
+<td> FromUserName
+</td>
+<td> 发送方帐号（一个OpenID）
+</td><td> wechatRequest.getFromUserName();
+</td></tr>
+<tr>
+<td> CreateTime
+</td>
+<td> 消息创建时间 （整型）
+</td><td> wechatRequest.getCreateTime();
+</td></tr>
+<tr>
+<td> MsgType
+</td>
+<td> 消息类型，event
+</td><td> wechatRequest.getMsgType();
+</td></tr>
+<tr>
+<td> Event
+</td>
+<td> 事件类型，VIEW
+</td><td> wechatRequest.getEvent();
+</td></tr>
+<tr>
+<td> EventKey
+</td>
+<td> 事件KEY值，设置的跳转URL
+</td><td> wechatRequest.getEventKey();
+</td></tr>
+</tbody></table>
+<p><a href="https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&amp;type=消息接口调试&amp;form=事件消息" class="external text" rel="nofollow" target="_blank">使用网页调试工具调试该接口</a>
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 22/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+<div class="printfooter">
+取自“<a href="../14/f79bdec63116f376113937e173652ba2.html">../14/f79bdec63116f376113937e173652ba2.html</a>”</div>
+						<!-- /bodytext -->
+												<!-- catlinks -->
+						<div id="catlinks" class="catlinks catlinks-allhidden"></div>						<!-- /catlinks -->
+																		<div class="visualClear"></div>
+					</div>
 <!-- 
 NewPP limit report
 Preprocessor node count: 6/1000000

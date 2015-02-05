@@ -155,7 +155,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 					<li id="n-.E9.AA.8C.E8.AF.81.E6.B6.88.E6.81.AF.E7.9C.9F.E5.AE.9E.E6.80.A7"><a href="msgValidation.html">验证消息真实性</a></li>
 					<li id="n-.E6.8E.A5.E6.94.B6.E6.99.AE.E9.80.9A.E6.B6.88.E6.81.AF"><a href="commonMsg.html">接收普通消息</a></li>
 					<li id="n-.E6.8E.A5.E6.94.B6.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81"><a href="eventMsg.html">接收事件推送</a></li>
-					<li id="n-.E6.8E.A5.E6.94.B6.E8.AF.AD.E9.9F.B3.E8.AF.86.E5.88.AB.E7.BB.93.E6.9E.9C"><a href="voiceText.html">接收语音识别结果</a></li>
+					<li id="n-.E6.8E.A5.E6.94.B6.E8.AF.AD.E9.9F.B3.E8.AF.86.E5.88.AB.E7.BB.93.E6.9E.9C"><a href="voiceTextMsg.html">接收语音识别结果</a></li>
 				</ul>
 			</div>
 </div>
@@ -441,7 +441,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 						</div>
 						<!-- /jumpto -->
 												<!-- bodytext -->
-						<p>当普通微信用户向公众账号发消息时，微信服务器将POST消息的XML数据包到开发者填写的URL上。各消息类型的推送XML数据包结构如下：
+						<p><b>开发者通过继承WechatSupport类，实现其抽象方法来接收普通消息，如果不处理对应的消息，则其抽象方法为空实现。</b></p><p>当普通微信用户向公众账号发消息时，微信服务器将POST消息的XML数据包到开发者填写的URL上。各消息类型的推送XML数据包结构如下：
 </p><p><b>微信服务器在五秒内收不到响应会断掉连接，并且重新发起请求，总共重试三次</b>
 </p><p>关于重试的消息排重，推荐使用msgid排重。
 </p><p><b>假如服务器无法保证在五秒内处理并回复，可以直接回复空串，微信服务器不会对此作任何处理，并且不会发起重试。</b>
@@ -456,7 +456,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 <li class="toclevel-1 tocsection-6"><a href="#.E9.93.BE.E6.8E.A5.E6.B6.88.E6.81.AF"><span class="tocnumber">6</span> <span class="toctext">链接消息</span></a></li>
 </ul>
 </td></tr></tbody></table>
-<h3> <span class="mw-headline" id=".E6.96.87.E6.9C.AC.E6.B6.88.E6.81.AF"><b>文本消息</b></span></h3>
+<h3> <span class="mw-headline" id=".E6.96.87.E6.9C.AC.E6.B6.88.E6.81.AF"><b>文本消息onText</b></span></h3>
 <pre> &lt;xml&gt;
  &lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
  &lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt; 
@@ -472,7 +472,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </th>
 <th style="width:470px">描述
 </th>
-<th style="width:470px">获取
+<th style="width:470px">wechat4j
 </th></tr>
 <tr>
 <td> ToUserName
@@ -513,7 +513,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </tbody></table>
 <p><a href="https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&amp;type=消息接口调试&amp;form=文本消息" class="external text" rel="nofollow" target="_blank">使用网页调试工具调试该接口</a>
 </p>
-<h3> <span class="mw-headline" id=".E5.9B.BE.E7.89.87.E6.B6.88.E6.81.AF"><b>图片消息</b></span></h3>
+<h3> <span class="mw-headline" id=".E5.9B.BE.E7.89.87.E6.B6.88.E6.81.AF"><b>图片消息onImage</b></span></h3>
 <pre> &lt;xml&gt;
  &lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
  &lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
@@ -530,7 +530,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </th>
 <th style="width:470px">描述
 </th>
-<th style="width:470px">获取
+<th style="width:470px">wechat4j
 </th></tr>
 <tr>
 <td> ToUserName
@@ -577,7 +577,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </tbody></table>
 <p><a href="https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&amp;type=消息接口调试&amp;form=图片消息" class="external text" rel="nofollow" target="_blank">使用网页调试工具调试该接口</a>
 </p>
-<h3> <span class="mw-headline" id=".E8.AF.AD.E9.9F.B3.E6.B6.88.E6.81.AF"><b>语音消息</b></span></h3>
+<h3> <span class="mw-headline" id=".E8.AF.AD.E9.9F.B3.E6.B6.88.E6.81.AF"><b>语音消息onVoice</b></span></h3>
 <pre>&lt;xml&gt;
 &lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
 &lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
@@ -594,7 +594,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </th>
 <th style="width:470px">描述
 </th>
-<th style="width:470px">获取
+<th style="width:470px">wechat4j
 </th></tr>
 <tr>
 <td> ToUserName
@@ -640,7 +640,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </td></tr></tbody></table>
 <p><a href="https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&amp;type=消息接口调试&amp;form=语音消息" class="external text" rel="nofollow" target="_blank">使用网页调试工具调试该接口</a>
 </p>
-<h3> <span class="mw-headline" id=".E8.A7.86.E9.A2.91.E6.B6.88.E6.81.AF"><b>视频消息</b></span></h3>
+<h3> <span class="mw-headline" id=".E8.A7.86.E9.A2.91.E6.B6.88.E6.81.AF"><b>视频消息onVideo</b></span></h3>
 <pre>&lt;xml&gt;
 &lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
 &lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
@@ -657,7 +657,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </th>
 <th style="width:470px">描述
 </th>
-<th style="width:270px">获取
+<th style="width:270px">wechat4j
 </th></tr>
 <tr>
 <td> ToUserName
@@ -703,7 +703,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </td></tr></tbody></table>
 <p><a href="https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&amp;type=消息接口调试&amp;form=视频消息" class="external text" rel="nofollow" target="_blank">使用网页调试工具调试该接口</a>
 </p>
-<h3> <span class="mw-headline" id=".E5.9C.B0.E7.90.86.E4.BD.8D.E7.BD.AE.E6.B6.88.E6.81.AF"><b>地理位置消息</b></span></h3>
+<h3> <span class="mw-headline" id=".E5.9C.B0.E7.90.86.E4.BD.8D.E7.BD.AE.E6.B6.88.E6.81.AF"><b>地理位置消息onLocation</b></span></h3>
 <pre>&lt;xml&gt;
 &lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
 &lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
@@ -722,7 +722,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </th>
 <th style="width:470px">描述
 </th>
-<th style="width:280px">获取
+<th style="width:280px">wechat4j
 </th></tr>
 <tr>
 <td> ToUserName
@@ -781,7 +781,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </tbody></table>
 <p><a href="https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&amp;type=消息接口调试&amp;form=地理位置消息" class="external text" rel="nofollow" target="_blank">使用网页调试工具调试该接口</a>
 </p>
-<h3> <span class="mw-headline" id=".E9.93.BE.E6.8E.A5.E6.B6.88.E6.81.AF"><b>链接消息</b></span></h3>
+<h3> <span class="mw-headline" id=".E9.93.BE.E6.8E.A5.E6.B6.88.E6.81.AF"><b>链接消息onLink</b></span></h3>
 <pre>&lt;xml&gt;
 &lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;
 &lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;
@@ -799,7 +799,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 </th>
 <th style="width:470px">描述
 </th>
-<th style="width:470px">获取
+<th style="width:470px">wechat4j
 </th></tr>
 <tr>
 <td> ToUserName
