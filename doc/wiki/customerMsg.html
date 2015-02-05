@@ -49,7 +49,7 @@
 <div class="headWrap">
 	<div class="header" id="header">
 		<div class="inner">
-            <a class="logo" href="/index.html"><img src="static/assets/ac9be2eafdeb95d50b28fa7cd75bb499.png" alt="微信公众平台开发者文档"></a>
+            <a class="logo" href="./index.html"><img src="static/assets/ac9be2eafdeb95d50b28fa7cd75bb499.jpg" alt="微信公众平台开发者文档"></a>
 		</div>
 	</div>
 </div>		
@@ -155,7 +155,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 					<li id="n-.E9.AA.8C.E8.AF.81.E6.B6.88.E6.81.AF.E7.9C.9F.E5.AE.9E.E6.80.A7"><a href="msgValidation.html">验证消息真实性</a></li>
 					<li id="n-.E6.8E.A5.E6.94.B6.E6.99.AE.E9.80.9A.E6.B6.88.E6.81.AF"><a href="commonMsg.html">接收普通消息</a></li>
 					<li id="n-.E6.8E.A5.E6.94.B6.E4.BA.8B.E4.BB.B6.E6.8E.A8.E9.80.81"><a href="eventMsg.html">接收事件推送</a></li>
-					<li id="n-.E6.8E.A5.E6.94.B6.E8.AF.AD.E9.9F.B3.E8.AF.86.E5.88.AB.E7.BB.93.E6.9E.9C"><a href="voiceText.html">接收语音识别结果</a></li>
+					<li id="n-.E6.8E.A5.E6.94.B6.E8.AF.AD.E9.9F.B3.E8.AF.86.E5.88.AB.E7.BB.93.E6.9E.9C"><a href="voiceTextMsg.html">接收语音识别结果</a></li>
 				</ul>
 			</div>
 </div>
@@ -187,7 +187,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 					<li id="n-.E8.AE.BE.E7.BD.AE.E7.94.A8.E6.88.B7.E5.A4.87.E6.B3.A8.E5.90.8D"><a href="../1/4a566d20d67def0b3c1afc55121d2419.html">设置用户备注名</a></li>
 					<li id="n-.E8.8E.B7.E5.8F.96.E7.94.A8.E6.88.B7.E5.9F.BA.E6.9C.AC.E4.BF.A1.E6.81.AF.28UnionID.E6.9C.BA.E5.88.B6.29"><a href="../14/bb5031008f1494a59c6f71fa0f319c66.html">获取用户基本信息(UnionID机制)</a></li>
 					-->
-					<li id="n-.E8.8E.B7.E5.8F.96.E7.94.A8.E6.88.B7.E5.88.97.E8.A1.A8"><a href="../0/d0e07720fc711c02a3eab6ec33054804.html">获取用户列表</a></li>
+					<li id="n-.E8.8E.B7.E5.8F.96.E7.94.A8.E6.88.B7.E5.88.97.E8.A1.A8"><a href="getUserList.html">获取用户列表</a></li>
 					<!--
 					<li id="n-.E8.8E.B7.E5.8F.96.E7.94.A8.E6.88.B7.E5.9C.B0.E7.90.86.E4.BD.8D.E7.BD.AE"><a href="../8/1b86529d05db9f960e48c3c7ca5be288.html">获取用户地理位置</a></li>
 					<li id="n-.E7.BD.91.E9.A1.B5.E6.8E.88.E6.9D.83.E8.8E.B7.E5.8F.96.E7.94.A8.E6.88.B7.E5.9F.BA.E6.9C.AC.E4.BF.A1.E6.81.AF"><a href="../17/c0f37d5704f0b64713d5d2c37b468d75.html">网页授权获取用户基本信息</a></li>
@@ -420,7 +420,7 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 					<div id="mw-js-message" style="display:none;"></div>
 										<!-- firstHeading -->
 					<div class="content_hd">
-						<h2 id="firstHeading" class="">首页</h2>
+						<h2 id="firstHeading" class="">发送客服消息</h2>
 						<div class="info">
 							 
 						</div>
@@ -440,37 +440,39 @@ html{background-image:url(about:blank);background-attachment:fixed;}
 							<a href="#p-search">搜索</a>
 						</div>
 						<!-- /jumpto -->
-												<!-- bodytext -->
-						<h3> <span class="mw-headline" id=".E5.85.AC.E4.BC.97.E5.B9.B3.E5.8F.B0.E5.BC.80.E5.8F.91.E6.8E.A5.E5.8F.A3.E4.BB.8B.E7.BB.8D"><b>公众平台开发接口介绍</b></span></h3>
-<p>公众平台是为微信用户提供服务的平台，而公众平台开发接口则是提供服务的基础，开发者在公众平台网站中创建公众号、获取接口权限后，可以通过阅读本接口文档来帮助开发。
-</p><p>公众平台开发接口提供与用户进行消息交互、自定义菜单交互的能力。对于成功接入公众平台开发接口的公众账号，当用户发消息给公众号，微信公众平台服务器会使用http请求对接入的网址进行消息推送，第三方服务器可通过响应包回复特定结构，从而达到回复消息的目的。
-</p>
-<h3> <span class="mw-headline" id=".E5.85.B8.E5.9E.8B.E6.A1.88.E4.BE.8B.E4.BB.8B.E7.BB.8D"><b>典型案例介绍</b></span></h3>
-<p>值得借鉴的公众帐号主要是服务号，试列举并介绍如下：
-</p><p><b>招商银行信用卡中心</b>
-</p>
-<div class="center"><div class="floatnone"><a href="#" class="image"><img alt="招商银行.png" src="../static/assets/bff467b80a54da10cf47cc92cc3c1ff5.png" width="600" height="467"></a></div></div>
-<p>如果你是持卡人，可快捷查询信用卡账单、额度及积分；快速还款、申请账单分期；微信转接人工服务；信用卡消费，微信免费笔笔提醒。如果不是持卡人，可以微信办卡！
-</p>
-<pre>招商银行公众号通过提示消息引导用户将自己的微信号和信用卡号安全绑定。
-用户可以通过该公众号查询账单、收取刷卡通知等功能，这是由招行开发人员通过公众号接口实现的功能。
+						<!-- bodytext -->
+
+<p>具体的发送消息参数同响应被动消息，请参阅，这里不再说明</p>						
+<pre>
+	String toUserOpenId; //接收消息的用户openid
+	CustomerMsg customerMsg = new CustomerMsg(toUserOpenId);
+
+
+	//发送文本
+	customerMsg.sendText(content); 
+
+	//发送图片消息
+	customerMsg.sendImage(mediaId); 
+
+	//发送音乐消息
+	customerMsg.sendMusic(MusicResponse);
+	customerMsg.sendMusic(String title,String description,String musicURL,String hQMusicUrl,String thumbMediaId);
+
+	//发送图文消息
+	customerMsg.sendNew(String title,String description,String picUrl,String url); 
+	customerMsg.sendNews(ArticleResponse); 
+	customerMsg.sendNews(List<ArticleResponse>); 
+
+	//发送视频消息
+	customerMsg.sendVideo(String title,String description,String mediaId,String thumbMediaId); 
+	customerMsg.sendVideo(VideoResponse); 
+
+	//发送语音消息
+	customerMsg.sendVoice(String mediaId);
+
 </pre>
-<p><b>中国南方航空</b>
-</p>
-<div class="center"><div class="floatnone"><a href="#" class="image"><img alt="南方航空.png" src="../static/assets/14b7fb732f5e42bedce86fa717e38556.png" width="600" height="465"></a></div></div>
-<p>你可以办理值机手续，挑选座位，查询航班信息，查询目的地城市天气，并为明珠会员提供专业的服务。
-</p>
-<pre>南方航空公众号可以让用户将明珠会员服务和微信号绑定起来。
-用户可以通过该公众号预订机票、查询订单，甚至办理登机牌。
-</pre>
-<p><b>广东联通</b>
-</p>
-<div class="center"><div class="floatnone"><a href="#" class="image"><img alt="广东联通.png" src="../static/assets/52364d366ef5b9d9d32537984a925742.png" width="600" height="464"></a></div></div>
-<p>你可以在微信里绑定手机号、积分流量，套餐余量、手机上网流量，微信专属流量查询，客服咨询。
-</p>
-<pre>广东联通公众号可以绑定手机号，来查询流量、套餐等等功能。
-广东联通更与微信深度合作，购买微信沃卡可以获得微信五大特权。
-</pre>
+
+
 <!-- 
 NewPP limit report
 Preprocessor node count: 6/1000000
