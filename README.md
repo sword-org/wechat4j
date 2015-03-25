@@ -48,8 +48,8 @@ wechat.encodingaeskey=
 创建自己的微信公众号服务类，需要继承wechat4j的WechatSupport类，然后实现其抽象方法即可，下面以文本消息处理为例子
 ```java
 public class Lejian extends WechatSupport{
-	public Lejian(HttpServletRequest request, String token) {
-		super(request, token);
+	public Lejian(HttpServletRequest request) {
+		super(request);
 	}
 
 	@Override
@@ -66,12 +66,12 @@ public class Lejian extends WechatSupport{
 创建微信服务地址（微信公众平台中配置的自己服务器地址）servlet类。如果是springmvc则创建对应的controller，如果是struts则创建对应的action类。servlet类示例如下：
 ```java
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Lejian lejian = new Lejian(request, TOKEN);
+		Lejian lejian = new Lejian(request);
 		String result = lejian.execute();
 		response.getOutputStream().write(result.getBytes());
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Lejian lejian = new Lejian(request, TOKEN);
+		Lejian lejian = new Lejian(request);
 		String result = lejian.execute();
 		response.getOutputStream().write(result.getBytes());
 
