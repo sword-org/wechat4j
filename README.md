@@ -8,7 +8,7 @@ wechat develop framework for java(微信开发框架JAVA版，最简单易用微
   wechat4j是一个帮助你开发微信应用的jar包，使用它，你开发微信公众号应用只需要几秒钟的时间，完全不用关注太细节的东西。
 
 ##wechat4j快速开始
-   可以去下载wechat4j示例项目[wechat4jDemo](https://github.com/repoproject/wechat4jDemo)，然后在其基础之上修改即可。如果你要自己搭建，那么使用wechat4j只需要两步就可以搭建微信开发环境。 
+   可以去下载wechat4j示例项目[wechat4jDemo](https://github.com/repoproject/wechat4jDemo)，然后在其基础之上修改即可。如果你要自己搭建，那么使用wechat4j只需要三步就可以搭建微信开发环境。 
  1. 创建一个web工程，导入jdk和相关的web工程jar包。 
  2. 下载wechat4j.jar包，下载地址[wechat4j下载](https://github.com/sword-org/wechat4j/releases)。 
  3. 创建wechat4j配置文件，在src目录下（java根目录）创建wechat4j.properties文件，配置你微信公众号的相关信息。内容如下：
