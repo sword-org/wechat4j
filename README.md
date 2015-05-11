@@ -19,8 +19,6 @@ wechat.token=token
 wechat.appid=appid
 #wechat app secret
 wechat.appsecret=secret
-#message secret key,if don't set then message is cleartext
-wechat.encodingaeskey=
 ```
 你也可以在jar包的META-INF目录下找到wechat4j.properties.sample文件，复制到src目录下修改名称即可。wechat4j.properties配置文件的详细配置项意义参见[wechat4j配置文件解读](https://github.com/sword-org/wechat4j/wiki/wechat4j%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A7%A3%E8%AF%BB)
 

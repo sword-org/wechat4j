@@ -1,6 +1,4 @@
 
-#you server url
-wechat.url=
 #you wechat token
 wechat.token=token
 #message secret key,if don't set then message is cleartext
