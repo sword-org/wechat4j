@@ -38,7 +38,6 @@ public class MenuManager {
 	
 	/**
 	 * 查询菜单
-	 * @throws WeChatException 
 	 */
 	public Menu getMenu() {	
 		logger.info("查询菜单");
