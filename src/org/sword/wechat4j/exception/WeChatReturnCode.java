@@ -56,6 +56,7 @@ public class WeChatReturnCode {
         returnCodeMap.put(40039, "不合法的URL长度");
         returnCodeMap.put(40050, "不合法的分组id");
         returnCodeMap.put(40051, "分组名字不合法");
+        returnCodeMap.put(40053, "无效的操作信息,请检查文档");
         returnCodeMap.put(40054, "无效的url域名");
         returnCodeMap.put(40117, "分组名字不合法");
         returnCodeMap.put(40118, "media_id大小不合法");

@@ -20,6 +20,9 @@ public class WeChatUtil {
 		Integer errCode =jsonObject.getIntValue("errcode");
 		if (errCode!=null && errCode!=0) {
 			String errMsg = WeChatReturnCode.getMsg(errCode);
+			if (errMsg.equals("")) {
+				errMsg = jsonObject.getString("errmsg");
+			}
 			throw new WeChatException("异常码:"+errCode+";异常说明:"+errMsg);
 		}
 	}
