@@ -6,7 +6,8 @@ import java.util.Map;
 /**
  * 微信全局返回码
  * @author Zhangxs
- * @version 2015-7-4
+ * @date 2015-7-8 
+ * @version
  */
 public class WeChatReturnCode {
 
@@ -114,6 +115,8 @@ public class WeChatReturnCode {
         returnCodeMap.put(61455, "客服帐号名包含非法字符(仅允许英文+数字)(illegalcharacterinkf_account)");
         returnCodeMap.put(61456, "客服帐号个数超过限制(10个客服账号)(kf_accountcountexceeded)");
         returnCodeMap.put(61457, "无效头像文件类型(invalidfiletype)");
+        returnCodeMap.put(61458, "客户正在被其他客服接待(customer accepted by xxx@xxxx)");
+        returnCodeMap.put(61459, "客服不在线(kf offline)");
         returnCodeMap.put(61450, "系统错误(systemerror)");
         returnCodeMap.put(61500, "日期格式错误");
         returnCodeMap.put(61501, "日期范围错误");
