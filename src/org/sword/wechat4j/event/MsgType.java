@@ -16,6 +16,8 @@ public enum MsgType {
 	link,
 	voice,
 	video,
+	shortvideo,	  //小视频消息
 	music,
-	news;
+	news,
+	transfer_customer_service;//客服系统
 }

@@ -33,5 +33,8 @@ public enum EventType {
 	pic_weixin,            //弹出微信相册发图器的事件
 	location_select,       //弹出地理位置选择器的事件
 	media_id,			   //下发消息(除文本消息)
-	view_limited;		   //跳转图文消息URL 
+	view_limited,		   //跳转图文消息URL 
+	kf_create_session,	   //接入会话
+	kf_close_session,	   //关闭会话
+	kf_switch_session,	   //转接会话
 }
