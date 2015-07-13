@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.sword.wechat4j.event.EventType;
 import org.sword.wechat4j.exception.WeChatException;
 /**
  * 微信自定义菜单接口测试
@@ -25,55 +26,55 @@ public class MenuTest {
 		//单击按钮
 		MenuButton btnClick= new MenuButton();
 		btnClick.setName("单击按钮");
-		btnClick.setType(MenuButtonType.click);
+		btnClick.setType(EventType.click);
 		btnClick.setKey("单击按钮");
 		//跳转URL
 		MenuButton btnView= new MenuButton();
 		btnView.setName("跳转URL");
-		btnView.setType(MenuButtonType.view);
+		btnView.setType(EventType.view);
 		btnView.setUrl("http://www.baidu.com");
 		//扫码推事件
 		MenuButton btnScanCodePush= new MenuButton();
 		btnScanCodePush.setName("扫码推事件");
-		btnScanCodePush.setType(MenuButtonType.scancode_push);
+		btnScanCodePush.setType(EventType.scancode_push);
 		btnScanCodePush.setKey("扫码推事件");
 		//扫码带提示
 		MenuButton btnScanCodeWaitMsg= new MenuButton();
 		btnScanCodeWaitMsg.setName("扫码带提示");
-		btnScanCodeWaitMsg.setType(MenuButtonType.scancode_waitmsg);
+		btnScanCodeWaitMsg.setType(EventType.scancode_waitmsg);
 		btnScanCodeWaitMsg.setKey("扫码带提示");
 		
 		//弹出系统拍照发图
 		MenuButton btnPicSysPhoto= new MenuButton();
 		btnPicSysPhoto.setName("拍照发图");
-		btnPicSysPhoto.setType(MenuButtonType.pic_sysphoto);
+		btnPicSysPhoto.setType(EventType.pic_sysphoto);
 		btnPicSysPhoto.setKey("拍照发图");
 		//弹出拍照或者相册发图
 		MenuButton btnPicPhotoOrAlbum= new MenuButton();
 		btnPicPhotoOrAlbum.setName("拍照/相册发图");
-		btnPicPhotoOrAlbum.setType(MenuButtonType.pic_photo_or_album);
+		btnPicPhotoOrAlbum.setType(EventType.pic_photo_or_album);
 		btnPicPhotoOrAlbum.setKey("拍照/相册发图");
 		//弹出微信相册发图器
 		MenuButton btnPicWeixin= new MenuButton();
 		btnPicWeixin.setName("相册发图");
-		btnPicWeixin.setType(MenuButtonType.pic_weixin);
+		btnPicWeixin.setType(EventType.pic_weixin);
 		btnPicWeixin.setKey("相册发图");
 		//弹出地理位置选择器
 		MenuButton btnLocationSelect= new MenuButton();
 		btnLocationSelect.setName("地理位置");
-		btnLocationSelect.setType(MenuButtonType.location_select);
+		btnLocationSelect.setType(EventType.location_select);
 		btnLocationSelect.setKey("地理位置");
 		
 		//下发消息（除文本消息）
-		btnLocationSelect.setType(MenuButtonType.location_select);
+		btnLocationSelect.setType(EventType.location_select);
 		MenuButton btnMediaId  = new MenuButton();
 		btnMediaId.setName("");
-		btnMediaId.setType(MenuButtonType.media_id);
+		btnMediaId.setType(EventType.media_id);
 		btnMediaId.setMediaId("");
 		//跳转图文消息URL
 		MenuButton btnViewLimited  = new MenuButton();
 		btnViewLimited.setName("");
-		btnViewLimited.setType(MenuButtonType.view_limited);
+		btnViewLimited.setType(EventType.view_limited);
 		btnViewLimited.setMediaId("");
 		
 		List<MenuButton> subBut1 = new ArrayList<MenuButton>();

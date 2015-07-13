@@ -146,6 +146,8 @@ public abstract class WechatSupport {
 		case video:
 			onVideo();
 			break;
+		case shortvideo:
+			onShortVideo();
 		case location:
 			onLocation();
 			break;
@@ -204,6 +206,15 @@ public abstract class WechatSupport {
 		case location_select:
 			locationSelect();
 		    break;
+		case kf_create_session:
+			kfCreateSession();
+			break;
+		case kf_close_session:
+			kfCloseSession();
+			break;
+		case kf_switch_session:
+			kfSwitchSession();
+			break;
 		default:
 			break;
 		}
@@ -379,6 +390,10 @@ public abstract class WechatSupport {
 	 * 视频 消息Msgtype=video
 	 */
     protected abstract void onVideo();
+    /**
+     * 小视频 消息Msgtype=shortvideo
+     */
+    protected abstract void onShortVideo();
 	/**
 	 * 地理位置消息Msgtype=location
 	 */
@@ -445,4 +460,16 @@ public abstract class WechatSupport {
 	 * 弹出地理位置选择器的事件
 	 */
 	protected abstract void locationSelect();
+	/**
+	 * 客服人员有接入会话
+	 */
+	protected abstract void kfCreateSession();
+	/**
+	 * 客服人员有关闭会话
+	 */
+	protected abstract void kfCloseSession();
+	/**
+	 * 客服人员有转接会话
+	 */
+	protected abstract void kfSwitchSession();
 }
