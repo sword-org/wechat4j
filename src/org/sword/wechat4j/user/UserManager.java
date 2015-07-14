@@ -1,119 +1,268 @@
-/**
- * 
- */
 package org.sword.wechat4j.user;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.sword.lang.HttpUtils;
+import org.sword.wechat4j.exception.WeChatException;
 import org.sword.wechat4j.token.TokenProxy;
+import org.sword.wechat4j.util.WeChatUtil;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-
-
 /**
  * 用户管理
- * @author ChengNing
- * @date   2015年1月7日
+ * @author Zhangxs
+ * @version 2015-7-5
  */
 public class UserManager {
-	
-	private static Logger logger = Logger.getLogger(UserManager.class);
-	
-	private static final String USRE_GET_URL = "https://api.weixin.qq.com/cgi-bin/user/get?access_token=";
-	
-	
+
+	Logger logger = Logger.getLogger(UserManager.class);
 	private String accessToken;
-	private String nextOpenId;
-	private long total = 0;
+	//获取用户列表
+	private static final String USRE_GET_URL = "https://api.weixin.qq.com/cgi-bin/user/get?access_token=";
+	//设置用户备注名
+	private static final String USER_UPDATE_REMARK_POST_URL="https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token=";
+	//获取用户基本信息
+	private static final String USER_INFO_GET_URL="https://api.weixin.qq.com/cgi-bin/user/info?access_token=";
+	//创建分组
+	private static final String GROUP_CREATE_POST_URL="https://api.weixin.qq.com/cgi-bin/groups/create?access_token=";
+	//查询所有分组
+	private static final String GROUP_GET_POST_URL="https://api.weixin.qq.com/cgi-bin/groups/get?access_token=";
+	//查询用户所在分组
+	private static final String GROUP_GETID_POST_URL="https://api.weixin.qq.com/cgi-bin/groups/getid?access_token=";
+	//修改分组名
+	private static final String GROUP_UPDATE_POST_URL="https://api.weixin.qq.com/cgi-bin/groups/update?access_token=";
+	//移动用户分组
+	private static final String GROUP_MEMBERS_UPDATE_POST_URL="https://api.weixin.qq.com/cgi-bin/groups/members/update?access_token=";
+	//批量移动用户分组
+	private static final String GROUP_MEMBERS_DATCHUPDATE_POST_URL="https://api.weixin.qq.com/cgi-bin/groups/members/batchupdate?access_token=";
+	//删除分组
+	private static final String GROUP_DELETE_POST_URL="https://api.weixin.qq.com/cgi-bin/groups/delete?access_token=";
 	
-	
-	public UserManager(){
+	public UserManager() {
 		this.accessToken = TokenProxy.accessToken();
 	}
-	
-	/**
-	 * 调用之后的nextOpenId
-	 * @return 下一个开始的openid
-	 */
-	public String getNextOpenId(){
-		return this.nextOpenId;
-	}
-	
-	/**
-	 * 关注者总数,必须先调用一下subscriberList方法才能得到total
-	 * @return 关注者总数
-	 */
-	public long getTotal(){
-		return this.total;
-	}
-	
-	/**
-	 * 获取帐号的关注者列表前10000人
-	 * https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID
-	 * @return openid 的list
-	 */
-	public List<Object> subscriberList(){
-		return subscriberList(null);
-	}
-	
 	/**
 	 * 获取所有的关注者列表
-	 * @return openid 的list
+	 * @return
 	 */
-	public List<Object> allSubscriber(){
-		List<Object> all = new ArrayList<Object>();
-		List<Object> firstPage = subscriberList();
-		all.addAll(firstPage);
-		//遍历
-		if(StringUtils.isNotBlank(this.nextOpenId)){
-			List<Object> list = subscriberList(this.nextOpenId);
-			all.addAll(list);
+	public List<String> allSubscriber(){
+		Follwers follwers = subscriberList();
+		String nextOpenId = follwers.getNextOpenid();
+		while (StringUtils.isNotBlank(nextOpenId)) {
+			Follwers f = subscriberList(nextOpenId);
+			nextOpenId = f.getNextOpenid();
+			if (f.getData()!=null) {
+				follwers.getData().getOpenid().addAll(f.getData().getOpenid());				
+			}
 		}
-		return all;
+		return follwers.getData().getOpenid();
 	}
-	
+	/**
+	 * 获取帐号的关注者列表前10000人
+	 * @return
+	 */
+	public Follwers subscriberList(){
+		return subscriberList(null);
+	}
 	/**
 	 * 获取帐号的关注者列表
-	 * https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID
-	 * @return List<String> openid 的列表
+	 * @param nextOpenId
+	 * @return
 	 */
-	public List<Object> subscriberList(String nextOpenId){
+	public Follwers subscriberList(String nextOpenId){
 		String url = USRE_GET_URL + accessToken;
 		if(StringUtils.isNotBlank(nextOpenId)){
 			url += "&next_openid=" + nextOpenId;
 		}
-		String result = HttpUtils.get(url);
-		if(StringUtils.isBlank(result))
+		String resultStr = HttpUtils.get(url);
+		logger.info("return data "+resultStr);
+		try {
+			WeChatUtil.isSuccess(resultStr);
+		} catch (WeChatException e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return null;
-		return parseUserResult(result);
+		}
+		return JSONObject.parseObject(resultStr, Follwers.class);
+	}
+	/**
+	 * 设置用户备注名
+	 * @param openid 用户openid
+	 * @param remark 新的备注名，长度必须小于30字符
+	 * @return
+	 * @throws WeChatException 
+	 */
+	public void updateRemark(String openId,String remark) throws WeChatException{
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("openid", openId);
+		jsonObject.put("remark", remark);
+		String requestData = jsonObject.toString();
+		logger.info("request data "+requestData);
+		String resultStr = HttpUtils.post(USER_UPDATE_REMARK_POST_URL+this.accessToken,requestData);
+		logger.info("return data "+resultStr);
+		WeChatUtil.isSuccess(resultStr);
+	}
+	/**
+	 * 获取用户基本信息
+	 * @param openid 普通用户的标识，对当前公众号唯一
+	 * @return
+	 */
+	public User getUserInfo(String openId){
+		return getUserInfo(openId, null);
+	}
+	/**
+	 * 获取用户基本信息
+	 * @param openid 普通用户的标识，对当前公众号唯一
+	 * @param lang 返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
+	 * @return
+	 */
+	public User getUserInfo(String openId,LanguageType lang){
+		String url = USER_INFO_GET_URL+this.accessToken+"&openid="+openId;
+		if (lang!=null) {
+			url+="&lang="+lang.name();
+		}
+		String resultStr = HttpUtils.get(url);
+		logger.info("return data "+resultStr);
+		try {
+			WeChatUtil.isSuccess(resultStr);
+		} catch (WeChatException e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+		User user = JSONObject.parseObject(resultStr, User.class);
+		return user;
 	}
 	
 	/**
-	 * 成功 {"total":2,"count":2,"data":{"openid":["","OPENID1","OPENID2"]},"next_openid":"NEXT_OPENID"}
-	 * 失败{"errcode":40013,"errmsg":"invalid appid"}
-	 * @param result  
+	 * 创建分组
+	 * @param name  分组名字（30个字符以内）
+	 * @return 
+	 * @throws WeChatException 
+	 */
+	public Group createGroup(String name) throws WeChatException{
+		JSONObject nameJson =new JSONObject();
+		JSONObject groupJson =new JSONObject();
+		nameJson.put("name", name);
+		groupJson.put("group", nameJson);
+		String requestData=groupJson.toString();
+		logger.info("request data "+requestData);
+		String resultStr = HttpUtils.post(GROUP_CREATE_POST_URL+this.accessToken, requestData);
+		logger.info("return data "+resultStr);
+		WeChatUtil.isSuccess(resultStr);
+		return JSONObject.parseObject(resultStr).getObject("group", Group.class);
+	}
+	/**
+	 * 查询所有分组
 	 * @return
 	 */
-	private List<Object> parseUserResult(String result){
-		JSONObject json = JSONObject.parseObject(result);
-		//获取错误
-		if(json.containsKey("errcode")){
-			logger.error("获取帐号的关注者列表错误:" + json.getString("errmsg"));
+	public List<Group> getGroup(){
+		String resultStr = HttpUtils.post(GROUP_GET_POST_URL+this.accessToken);
+		logger.info("return data "+resultStr);
+		try {
+			WeChatUtil.isSuccess(resultStr);
+		} catch (WeChatException e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return null;
 		}
-		//获取成功
-		this.nextOpenId = json.getString("next_openid");
-		//第一次设置total，每次的total都一样
-		if(total == 0){
-			this.total = Long.valueOf(json.getString("total"));
+		JSONObject jsonObject = JSONObject.parseObject(resultStr);
+		List<Group> groups = JSON.parseArray(jsonObject.getString("groups"), Group.class);
+		return groups;
+	}
+	/**
+	 *  查询用户所在分组
+	 * @param openId 用户的OpenID
+	 * @return 用户所属的groupid
+	 */
+	public Integer getIdGroup(String openId){
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("openid", openId);
+
+		String requestData = jsonObject.toString();
+		logger.info("request data "+requestData);
+		String resultStr = HttpUtils.post(GROUP_GETID_POST_URL+this.accessToken, requestData);
+		logger.info("return data "+resultStr);
+		try {
+			WeChatUtil.isSuccess(resultStr);
+		} catch (WeChatException e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return null;
 		}
-		JSONArray list =json.getJSONObject("data").getJSONArray("openid");
-		logger.info("获取帐号的关注者列表成功:本次获取" + list.size());
-		return list;
+		JSONObject resultJson = JSONObject.parseObject(resultStr);
+		int groupId = resultJson.getIntValue("groupid");
+		return groupId;
+	}
+	/**
+	 * 修改分组名
+	 * @param groupId 分组id
+	 * @param name 分组名称
+	 * @throws WeChatException 
+	 */
+	public void updateGroup(int groupId,String name) throws WeChatException{
+		JSONObject nameJson =new JSONObject();
+		JSONObject groupJson =new JSONObject();
+		nameJson.put("id", groupId);
+		nameJson.put("name", name);
+		groupJson.put("group", nameJson);
+		String requestData = groupJson.toString();
+		logger.info("request data "+requestData);
+		String resultStr = HttpUtils.post(GROUP_UPDATE_POST_URL+this.accessToken,requestData);
+		logger.info("return data "+resultStr);
+		WeChatUtil.isSuccess(resultStr);
+	}
+	/**
+	 * 移动用户分组
+	 * @param openid 用户的OpenID
+	 * @param groupId 分组id
+	 * @throws WeChatException 
+	 */
+	public void membersUpdateGroup(String openId,int groupId) throws WeChatException{
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("openid", openId);
+		jsonObject.put("to_groupid", groupId);
+		String requestData = jsonObject.toString();
+		logger.info("request data "+requestData);
+		String resultStr = HttpUtils.post(GROUP_MEMBERS_UPDATE_POST_URL+this.accessToken,requestData);
+		logger.info("return data "+resultStr);
+		WeChatUtil.isSuccess(resultStr);
+	}
+	/**
+	 *  批量移动用户分组
+	 * @param openids 用户唯一标识符openid的列表（size不能超过50）
+	 * @param toGroupid 分组id
+	 * @return 是否修改成功
+	 * @throws WeChatException 
+	 */
+	public void membersDatchUpdateGroup(String [] openIds,int groupId) throws WeChatException{
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("openid_list", openIds);
+		jsonObject.put("to_groupid", groupId);
+		String requestData = jsonObject.toString();
+		logger.info("request data "+requestData);
+		String resultStr = HttpUtils.post(GROUP_MEMBERS_DATCHUPDATE_POST_URL+this.accessToken,requestData);
+		logger.info("return data "+resultStr);
+		WeChatUtil.isSuccess(resultStr);
+	}
+	/**
+	 * 删除分组
+	 * @param groupId
+	 * @throws WeChatException 
+	 */
+	public void deleteGroup(int groupId) throws WeChatException{
+		JSONObject idJson = new JSONObject();
+		idJson.put("id", groupId);
+		JSONObject groupJson = new JSONObject();
+		groupJson.put("group", idJson);
+		String requestData = groupJson.toJSONString();
+		logger.info("request data "+requestData);
+		String resultStr = HttpUtils.post(GROUP_DELETE_POST_URL+this.accessToken,requestData);
+		logger.info("return data "+resultStr);
+		WeChatUtil.isSuccess(resultStr);
 	}
 }

@@ -101,7 +101,7 @@ public class WechatRequest {
 	public void setLocation_Y(String location_Y) {
 		Location_Y = location_Y;
 	}
-	@XmlElement(name="scale")
+	@XmlElement(name="Scale")
 	public String getScale() {
 		return Scale;
 	}
