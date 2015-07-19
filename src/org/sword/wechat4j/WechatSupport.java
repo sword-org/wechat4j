@@ -22,6 +22,7 @@ import org.sword.wechat4j.request.WechatRequest;
 import org.sword.wechat4j.response.ArticleResponse;
 import org.sword.wechat4j.response.ImageResponse;
 import org.sword.wechat4j.response.MusicResponse;
+import org.sword.wechat4j.response.TransInfoResponse;
 import org.sword.wechat4j.response.VideoResponse;
 import org.sword.wechat4j.response.VoiceResponse;
 import org.sword.wechat4j.response.WechatResponse;
@@ -148,6 +149,7 @@ public abstract class WechatSupport {
 			break;
 		case shortvideo:
 			onShortVideo();
+			break;
 		case location:
 			onLocation();
 			break;
@@ -372,6 +374,33 @@ public abstract class WechatSupport {
 		
 	}
 	
+	/**
+	 * 消息转发到多客服
+	 */
+	public void responseCustomerService(){
+		responseBase();
+		wechatResponse.setMsgType(MsgType.transfer_customer_service.name());
+	}
+	/**
+	 * 消息转发到指定客服
+	 * @param kfAccount 客服账号
+	 */
+	public void responseCustomerService(String kfAccount){
+		responseBase();
+		wechatResponse.setMsgType(MsgType.transfer_customer_service.name());
+		wechatResponse.setTransInfo(new TransInfoResponse(kfAccount));
+		
+	}
+	/**
+	 * 消息转发到指定客服
+	 * @param kfAccount 客服
+	 */
+	public void responseCustomerService(TransInfoResponse transInfo){
+		responseBase();
+		wechatResponse.setMsgType(MsgType.transfer_customer_service.name());
+		wechatResponse.setTransInfo(transInfo);
+		
+	}
 	
 	
 	/**
