@@ -30,6 +30,7 @@ public class WechatResponse {
 	private VideoResponse Video;
 	private MusicResponse Music;
 	private List<ArticleResponse> article;
+	private TransInfoResponse TransInfo;
 	
 	
 	
@@ -117,6 +118,13 @@ public class WechatResponse {
 	}
 	public void setArticle(List<ArticleResponse> article) {
 		this.article = article;
+	}
+	@XmlElement(name="TransInfo")
+	public TransInfoResponse getTransInfo() {
+		return TransInfo;
+	}
+	public void setTransInfo(TransInfoResponse transInfo) {
+		TransInfo = transInfo;
 	}
 	
 	
