@@ -131,4 +131,13 @@ public class AccountManager {
 			e.printStackTrace();
 		}
 	}
+
+    /**
+     * 通过二维码获取二维码URL
+     * @param qrcode
+     * @return
+     */
+    public static String getQrcodeUrl(Qrcode qrcode){
+        return SHOWQRCODE_POST_URL + qrcode.getTicket();
+    }
 }
