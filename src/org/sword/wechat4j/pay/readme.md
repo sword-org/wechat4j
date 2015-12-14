@@ -5,7 +5,7 @@
 选项：设置API密钥
 
 需要在配置文件中配置：
-商户号 mch.id
-商户API密钥 mch.key 
+商户号 wechat.mch.id
+商户API密钥 wechat.mch.key 
 
 开发文档：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=4_1
