@@ -248,7 +248,8 @@ public class PayManager {
         logger.info("post result \n" + postResult);
         PayException exception = null;
         try {
-            exception = (PayException) responseParser.toObj(postResult);
+            Map<String, Object> mapFromXMLString = getMapFromXMLString(postResult);
+            exception = new PayException(mapFromXMLString.get("return_code").toString(),mapFromXMLString.get("return_msg").toString());
         } catch (Exception e) {
             // 如果不是XML则说明对账单下载成功
         }
