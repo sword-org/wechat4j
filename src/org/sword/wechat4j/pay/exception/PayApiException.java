@@ -50,7 +50,7 @@ public class PayApiException extends Exception {
 
     @Override
     public String toString() {
-        return "PayException{" +
+        return "PayApiException{" +
                 "return_code='" + return_code + '\'' +
                 ", return_msg='" + return_msg + '\'' +
                 '}';
