@@ -33,6 +33,7 @@ import org.xml.sax.SAXException;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,6 +42,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -592,15 +594,24 @@ public class PayManager {
                 return o1.getName().compareTo(o2.getName());
             }
         });
-        StringBuffer signatureTemp = new StringBuffer();
         for (Field field : fields) {
             // sign不参与签名
             if ("sign".equals(field.getName())) {
                 continue;
             }
+            XmlElement xmlElement = field.getAnnotation(XmlElement.class);
+            if (xmlElement == null) {
+                try {
+                    Method getMethod = object.getClass().getMethod("get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1));
+                    xmlElement = getMethod.getAnnotation(XmlElement.class);
+                } catch (NoSuchMethodException e) {
+                    logger.warn("get method not found : " + field.getName());
+                    // skip this
+                }
+            }
             field.setAccessible(true);
             try {
-                map.put(field.getName(), field.get(object));
+                map.put(xmlElement != null ? xmlElement.name() : field.getName(), field.get(object));
             } catch (IllegalAccessException e) {
                 // never throws...
             }
