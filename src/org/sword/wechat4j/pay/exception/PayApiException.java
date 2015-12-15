@@ -12,19 +12,19 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by xuwen on 2015-12-11.
  */
 @XmlRootElement(name = "xml")
-public class PayException extends Exception {
+public class PayApiException extends Exception {
 
-    public PayException() {
+    public PayApiException() {
     }
 
 
 
-    public PayException(PayCode payCode, String return_msg) {
+    public PayApiException(PayCode payCode, String return_msg) {
         this.return_code = payCode.toString();
         this.return_msg = return_msg;
     }
 
-    public PayException(String return_code, String return_msg) {
+    public PayApiException(String return_code, String return_msg) {
         this.return_code = return_code;
         this.return_msg = return_msg;
     }

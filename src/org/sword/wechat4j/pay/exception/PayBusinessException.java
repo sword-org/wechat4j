@@ -2,13 +2,16 @@ package org.sword.wechat4j.pay.exception;
 
 import org.sword.wechat4j.pay.PayCode;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * 支付业务异常
  * result_code=FAIL
  * <p/>
  * Created by xuwen on 2015-12-13.
  */
-public abstract class PayBusinessException extends Exception {
+@XmlRootElement(name = "xml")
+public class PayBusinessException extends Exception {
 
     public PayBusinessException() {
     }

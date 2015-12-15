@@ -9,27 +9,20 @@ import org.apache.log4j.Logger;
 import org.sword.lang.JaxbParser;
 import org.sword.wechat4j.common.Config;
 import org.sword.wechat4j.pay.exception.PayBusinessException;
-import org.sword.wechat4j.pay.exception.PayException;
+import org.sword.wechat4j.pay.exception.PayApiException;
 import org.sword.wechat4j.pay.exception.SignatureException;
-import org.sword.wechat4j.pay.protocol.closeorder.CloseorderException;
 import org.sword.wechat4j.pay.protocol.closeorder.CloseorderRequest;
 import org.sword.wechat4j.pay.protocol.closeorder.CloseorderResponse;
 import org.sword.wechat4j.pay.protocol.downloadbill.DownloadbillRequest;
-import org.sword.wechat4j.pay.protocol.orderquery.OrderqueryException;
 import org.sword.wechat4j.pay.protocol.orderquery.OrderqueryRequest;
 import org.sword.wechat4j.pay.protocol.orderquery.OrderqueryResponse;
-import org.sword.wechat4j.pay.protocol.pay_result_notify.PayResultNotifyException;
 import org.sword.wechat4j.pay.protocol.pay_result_notify.PayResultNotifyResponse;
-import org.sword.wechat4j.pay.protocol.refund.RefundException;
 import org.sword.wechat4j.pay.protocol.refund.RefundRequest;
 import org.sword.wechat4j.pay.protocol.refund.RefundResponse;
-import org.sword.wechat4j.pay.protocol.refundquery.RefundqueryException;
 import org.sword.wechat4j.pay.protocol.refundquery.RefundqueryRequest;
 import org.sword.wechat4j.pay.protocol.refundquery.RefundqueryResponse;
-import org.sword.wechat4j.pay.protocol.report.ReportException;
 import org.sword.wechat4j.pay.protocol.report.ReportRequest;
 import org.sword.wechat4j.pay.protocol.report.ReportResponse;
-import org.sword.wechat4j.pay.protocol.unifiedorder.UnifiedorderException;
 import org.sword.wechat4j.pay.protocol.unifiedorder.UnifiedorderRequest;
 import org.sword.wechat4j.pay.protocol.unifiedorder.UnifiedorderResponse;
 import org.w3c.dom.Document;
@@ -40,7 +33,6 @@ import org.xml.sax.SAXException;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,7 +41,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -98,10 +89,10 @@ public class PayManager {
      * @param request
      * @return
      * @throws SignatureException
-     * @throws PayException
-     * @throws UnifiedorderException
+     * @throws PayApiException
+     * @throws PayBusinessException
      */
-    public static UnifiedorderResponse unifiedorder(UnifiedorderRequest request) throws SignatureException, PayException, UnifiedorderException {
+    public static UnifiedorderResponse unifiedorder(UnifiedorderRequest request) throws SignatureException, PayApiException, PayBusinessException {
         JaxbParser requestParser = buildJAXBParser(UnifiedorderRequest.class);
         JaxbParser responseParser = buildJAXBParser(UnifiedorderResponse.class);
         request.setSign(signature(request));
@@ -110,7 +101,7 @@ public class PayManager {
         String postResult = post(HTTPS_API_MCH_WEIXIN_QQ_COM_PAY_UNIFIEDORDER, postData);
         logger.info("post result \n" + postResult);
         checkAccess(postResult);
-        checkBusiness(postResult, UnifiedorderException.class);
+        checkBusiness(postResult);
         validResponseSign(postResult);
         UnifiedorderResponse response = (UnifiedorderResponse) responseParser.toObj(postResult);
         return response;
@@ -123,10 +114,10 @@ public class PayManager {
      * @param request
      * @return
      * @throws SignatureException
-     * @throws PayException
-     * @throws OrderqueryException
+     * @throws PayApiException
+     * @throws PayBusinessException
      */
-    public static OrderqueryResponse orderquery(OrderqueryRequest request) throws SignatureException, PayException, OrderqueryException {
+    public static OrderqueryResponse orderquery(OrderqueryRequest request) throws SignatureException, PayApiException, PayBusinessException {
         JaxbParser requestParser = buildJAXBParser(OrderqueryRequest.class);
         JaxbParser responseParser = buildJAXBParser(OrderqueryResponse.class);
         request.setSign(signature(request));
@@ -135,15 +126,15 @@ public class PayManager {
         String postResult = post(HTTPS_API_MCH_WEIXIN_QQ_COM_PAY_ORDERQUERY, postData);
         logger.info("post result \n" + postResult);
         checkAccess(postResult);
-        checkBusiness(postResult, OrderqueryException.class);
+        checkBusiness(postResult);
         validResponseSign(postResult);
         OrderqueryResponse response = (OrderqueryResponse) responseParser.toObj(postResult);
         try {
             parseCouponsForOrderquery(postResult, response);
         } catch (Exception e) {
             logger.error("解析代金券或立减优惠失败", e);
-            PayException payException = new PayException(PayCode.FAIL, "解析代金券或立减优惠失败");
-            throw payException;
+            PayApiException exception = new PayApiException(PayCode.FAIL, "解析代金券或立减优惠失败");
+            throw exception;
         }
         return response;
     }
@@ -155,10 +146,10 @@ public class PayManager {
      * @param request
      * @return
      * @throws SignatureException
-     * @throws PayException
-     * @throws CloseorderException
+     * @throws PayApiException
+     * @throws PayBusinessException
      */
-    public static CloseorderResponse closeorder(CloseorderRequest request) throws SignatureException, PayException, CloseorderException {
+    public static CloseorderResponse closeorder(CloseorderRequest request) throws SignatureException, PayApiException, PayBusinessException {
         JaxbParser requestParser = buildJAXBParser(CloseorderRequest.class);
         JaxbParser responseParser = buildJAXBParser(CloseorderResponse.class);
         request.setSign(signature(request));
@@ -167,7 +158,7 @@ public class PayManager {
         String postResult = post(HTTPS_API_MCH_WEIXIN_QQ_COM_PAY_CLOSEORDER, postData);
         logger.info("post result \n" + postResult);
         checkAccess(postResult);
-        checkBusiness(postResult, CloseorderException.class);
+        checkBusiness(postResult);
         validResponseSign(postResult);
         CloseorderResponse response = (CloseorderResponse) responseParser.toObj(postResult);
         return response;
@@ -180,10 +171,10 @@ public class PayManager {
      * @param request
      * @return
      * @throws SignatureException
-     * @throws PayException
-     * @throws RefundException
+     * @throws PayApiException
+     * @throws PayBusinessException
      */
-    public static RefundResponse refund(RefundRequest request) throws SignatureException, PayException, RefundException {
+    public static RefundResponse refund(RefundRequest request) throws SignatureException, PayApiException, PayBusinessException {
         JaxbParser requestParser = buildJAXBParser(RefundRequest.class);
         JaxbParser responseParser = buildJAXBParser(RefundResponse.class);
         request.setSign(signature(request));
@@ -192,7 +183,7 @@ public class PayManager {
         String postResult = post(HTTPS_API_MCH_WEIXIN_QQ_COM_SECAPI_PAY_REFUND, postData);
         logger.info("post result \n" + postResult);
         checkAccess(postResult);
-        checkBusiness(postResult, RefundException.class);
+        checkBusiness(postResult);
         validResponseSign(postResult);
         RefundResponse response = (RefundResponse) responseParser.toObj(postResult);
         return response;
@@ -205,10 +196,10 @@ public class PayManager {
      * @param request
      * @return
      * @throws SignatureException
-     * @throws PayException
-     * @throws RefundException
+     * @throws PayApiException
+     * @throws PayBusinessException
      */
-    public static RefundqueryResponse refundquery(RefundqueryRequest request) throws SignatureException, PayException, RefundqueryException {
+    public static RefundqueryResponse refundquery(RefundqueryRequest request) throws SignatureException, PayApiException, PayBusinessException {
         JaxbParser requestParser = buildJAXBParser(RefundqueryRequest.class);
         JaxbParser responseParser = buildJAXBParser(RefundqueryResponse.class);
         request.setSign(signature(request));
@@ -217,15 +208,15 @@ public class PayManager {
         String postResult = post(HTTPS_API_MCH_WEIXIN_QQ_COM_PAY_REFUNDQUERY, postData);
         logger.info("post result \n" + postResult);
         checkAccess(postResult);
-        checkBusiness(postResult, RefundqueryException.class);
+        checkBusiness(postResult);
         validResponseSign(postResult);
         RefundqueryResponse response = (RefundqueryResponse) responseParser.toObj(postResult);
         try {
             parseCouponsForRefundquery(postResult, response);
         } catch (Exception e) {
             logger.error("解析代金券或立减优惠失败", e);
-            PayException payException = new PayException(PayCode.FAIL, "解析代金券或立减优惠失败");
-            throw payException;
+            PayApiException exception = new PayApiException(PayCode.FAIL, "解析代金券或立减优惠失败");
+            throw exception;
         }
         return response;
     }
@@ -236,20 +227,20 @@ public class PayManager {
      *
      * @param request
      * @return
-     * @throws PayException
+     * @throws PayApiException
      */
-    public static String downloadbill(DownloadbillRequest request) throws PayException {
+    public static String downloadbill(DownloadbillRequest request) throws PayApiException {
         JaxbParser requestParser = buildJAXBParser(DownloadbillRequest.class);
-        JaxbParser responseParser = buildJAXBParser(PayException.class);
+        JaxbParser responseParser = buildJAXBParser(PayApiException.class);
         request.setSign(signature(request));
         String postData = requestParser.toXML(request);
         logger.info("post data \n" + postData);
         String postResult = post(HTTPS_API_MCH_WEIXIN_QQ_COM_PAY_DOWNLOADBILL, postData);
         logger.info("post result \n" + postResult);
-        PayException exception = null;
+        PayApiException exception = null;
         try {
             Map<String, Object> mapFromXMLString = getMapFromXMLString(postResult);
-            exception = new PayException(mapFromXMLString.get("return_code").toString(),mapFromXMLString.get("return_msg").toString());
+            exception = new PayApiException(mapFromXMLString.get("return_code").toString(), mapFromXMLString.get("return_msg").toString());
         } catch (Exception e) {
             // 如果不是XML则说明对账单下载成功
         }
@@ -267,10 +258,10 @@ public class PayManager {
      * @param request
      * @return
      * @throws SignatureException
-     * @throws PayException
-     * @throws ReportException
+     * @throws PayApiException
+     * @throws PayBusinessException
      */
-    public static ReportResponse report(ReportRequest request) throws SignatureException, PayException, ReportException {
+    public static ReportResponse report(ReportRequest request) throws SignatureException, PayApiException, PayBusinessException {
         JaxbParser requestParser = buildJAXBParser(ReportRequest.class);
         JaxbParser responseParser = buildJAXBParser(ReportResponse.class);
         request.setSign(signature(request));
@@ -279,7 +270,7 @@ public class PayManager {
         String postResult = post(HTTPS_API_MCH_WEIXIN_QQ_COM_PAYITIL_REPORT, postData);
         logger.info("post result \n" + postResult);
         checkAccess(postResult);
-        checkBusiness(postResult, ReportException.class);
+        checkBusiness(postResult);
         // 测速上报不会返回签名
 //        validResponseSign(postResult);
         ReportResponse response = (ReportResponse) responseParser.toObj(postResult);
@@ -295,13 +286,13 @@ public class PayManager {
      * @param servletRequest
      * @return
      * @throws SignatureException
-     * @throws PayException
-     * @throws PayResultNotifyException
+     * @throws PayApiException
+     * @throws PayBusinessException
      */
-    public static PayResultNotifyResponse parsePayResultNotify(ServletRequest servletRequest, ServletResponse servletResponse) throws SignatureException, PayException, PayResultNotifyException {
+    public static PayResultNotifyResponse parsePayResultNotify(ServletRequest servletRequest, ServletResponse servletResponse) throws SignatureException, PayApiException, PayBusinessException {
         JaxbParser responseParser = buildJAXBParser(PayResultNotifyResponse.class);
-        JaxbParser exceptionParser = buildJAXBParser(PayException.class);
-        PayException exception = new PayException(PayCode.SUCCESS, "OK");
+        JaxbParser exceptionParser = buildJAXBParser(PayApiException.class);
+        PayApiException exception = new PayApiException(PayCode.SUCCESS, "OK");
         String postResult;
         try {
             int len;
@@ -314,7 +305,7 @@ public class PayManager {
             postResult = stream.toString(Consts.UTF_8.name());
         } catch (IOException e) {
             logger.error("支付结果通知数据解析失败", e);
-            exception = new PayException(PayCode.FAIL, "支付结果通知数据解析失败");
+            exception = new PayApiException(PayCode.FAIL, "支付结果通知数据解析失败");
             responseToWechat(servletResponse, exceptionParser.toXML(exception));
             throw exception;
         }
@@ -323,17 +314,17 @@ public class PayManager {
         try {
             validResponseSign(postResult);
         } catch (SignatureException e) {
-            exception = new PayException(PayCode.FAIL, "签名校验失败");
+            exception = new PayApiException(PayCode.FAIL, "签名校验失败");
             responseToWechat(servletResponse, exceptionParser.toXML(exception));
             throw e;
         }
-        checkBusiness(postResult, PayResultNotifyException.class);
+        checkBusiness(postResult);
         PayResultNotifyResponse response = (PayResultNotifyResponse) responseParser.toObj(postResult);
         try {
             parseCouponsForPayResultNotify(postResult, response);
         } catch (Exception e) {
             logger.error("解析代金券或立减优惠失败", e);
-            exception = new PayException(PayCode.FAIL, "解析代金券或立减优惠失败");
+            exception = new PayApiException(PayCode.FAIL, "解析代金券或立减优惠失败");
             responseToWechat(servletResponse, exceptionParser.toXML(exception));
             throw exception;
         }
@@ -346,15 +337,15 @@ public class PayManager {
      *
      * @param servletResponse
      * @param postData
-     * @throws PayException
+     * @throws PayApiException
      */
-    private static void responseToWechat(ServletResponse servletResponse, String postData) throws PayException {
+    private static void responseToWechat(ServletResponse servletResponse, String postData) throws PayApiException {
         try {
             servletResponse.getOutputStream().write(postData.getBytes(Consts.UTF_8));
             servletResponse.getOutputStream().flush();
             servletResponse.getOutputStream().close();
         } catch (IOException e) {
-            throw new PayException(PayCode.FAIL, "支付结果通知同步返回失败");
+            throw new PayApiException(PayCode.FAIL, "支付结果通知同步返回失败");
         }
     }
 
@@ -529,15 +520,19 @@ public class PayManager {
      *
      * @param postResult
      */
-    private static void checkAccess(String postResult) throws PayException {
+    private static void checkAccess(String postResult) throws PayApiException {
+        PayApiException exception = null;
         try {
             Map<String, Object> map = getMapFromXMLString(postResult);
-            if (PayCode.FAIL.equals(map.get("return_code"))) {
-                throw new PayException(PayCode.FAIL, map.get("return_msg").toString());
+            if (PayCode.FAIL.equals(map.get("return_code").toString())) {
+                exception = new PayApiException(PayCode.FAIL, map.get("return_msg").toString());
             }
         } catch (Exception e) {
             logger.error("回包数据解析失败", e);
-            throw new PayException(PayCode.FAIL, "回包数据解析失败");
+            exception = new PayApiException(PayCode.FAIL, "回包数据解析失败");
+        }
+        if (exception != null) {
+            throw exception;
         }
     }
 
@@ -546,26 +541,19 @@ public class PayManager {
      *
      * @param postResult
      */
-    private static <E extends PayBusinessException> void checkBusiness(String postResult, Class<E> clazz) throws E {
-        E payBusinessException = null;
+    private static void checkBusiness(String postResult) throws PayBusinessException {
+        PayBusinessException exception = null;
         try {
             Map<String, Object> map = getMapFromXMLString(postResult);
-            if (PayCode.FAIL.equals(map.get("result_code"))) {
-                payBusinessException = clazz.newInstance();
-                payBusinessException.setResult_code(PayCode.FAIL.toString());
-                payBusinessException.setErr_code(map.get("error_code").toString());
-                payBusinessException.setErr_code_des(map.get("err_code_des").toString());
+            if (PayCode.FAIL.equals(map.get("result_code").toString())) {
+                exception = new PayBusinessException(PayCode.FAIL, map.get("err_code").toString(), map.get("err_code_des").toString());
             }
         } catch (Exception e) {
-            try {
-                payBusinessException = clazz.newInstance();
-                payBusinessException.setResult_code(PayCode.FAIL.toString());
-                payBusinessException.setErr_code("RESPONSE_PARSE_ERROR");
-                payBusinessException.setErr_code_des("回包数据解析失败");
-            } catch (Exception e1) {
-                logger.error("回包数据解析失败", e);
-            }
-            throw payBusinessException;
+            logger.error("回包数据解析失败", e);
+            exception = new PayBusinessException(PayCode.FAIL, "RESPONSE_PARSE_ERROR", "回包数据解析失败");
+        }
+        if (exception != null) {
+            throw exception;
         }
     }
 
@@ -610,19 +598,9 @@ public class PayManager {
             if ("sign".equals(field.getName())) {
                 continue;
             }
-            XmlElement xmlElement = field.getAnnotation(XmlElement.class);
-            if (xmlElement == null) {
-                try {
-                    Method getMethod = object.getClass().getMethod("get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1));
-                    xmlElement = getMethod.getAnnotation(XmlElement.class);
-                } catch (NoSuchMethodException e) {
-                    logger.warn("get method not found : " + field.getName());
-                    // skip this
-                }
-            }
             field.setAccessible(true);
             try {
-                map.put(xmlElement != null ? xmlElement.name() : field.getName(), field.get(object));
+                map.put(field.getName(), field.get(object));
             } catch (IllegalAccessException e) {
                 // never throws...
             }

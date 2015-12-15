@@ -1,25 +1,20 @@
 package org.sword.wechat4j.pay;
 
 import org.junit.Test;
-import org.sword.wechat4j.pay.exception.PayException;
+import org.sword.wechat4j.pay.exception.PayBusinessException;
+import org.sword.wechat4j.pay.exception.PayApiException;
 import org.sword.wechat4j.pay.exception.SignatureException;
-import org.sword.wechat4j.pay.protocol.closeorder.CloseorderException;
 import org.sword.wechat4j.pay.protocol.closeorder.CloseorderRequest;
 import org.sword.wechat4j.pay.protocol.closeorder.CloseorderResponse;
 import org.sword.wechat4j.pay.protocol.downloadbill.DownloadbillRequest;
-import org.sword.wechat4j.pay.protocol.orderquery.OrderqueryException;
 import org.sword.wechat4j.pay.protocol.orderquery.OrderqueryRequest;
 import org.sword.wechat4j.pay.protocol.orderquery.OrderqueryResponse;
-import org.sword.wechat4j.pay.protocol.refund.RefundException;
 import org.sword.wechat4j.pay.protocol.refund.RefundRequest;
 import org.sword.wechat4j.pay.protocol.refund.RefundResponse;
-import org.sword.wechat4j.pay.protocol.refundquery.RefundqueryException;
 import org.sword.wechat4j.pay.protocol.refundquery.RefundqueryRequest;
 import org.sword.wechat4j.pay.protocol.refundquery.RefundqueryResponse;
-import org.sword.wechat4j.pay.protocol.report.ReportException;
 import org.sword.wechat4j.pay.protocol.report.ReportRequest;
 import org.sword.wechat4j.pay.protocol.report.ReportResponse;
-import org.sword.wechat4j.pay.protocol.unifiedorder.UnifiedorderException;
 import org.sword.wechat4j.pay.protocol.unifiedorder.UnifiedorderRequest;
 import org.sword.wechat4j.pay.protocol.unifiedorder.UnifiedorderResponse;
 import org.sword.wechat4j.util.RandomStringGenerator;
@@ -36,8 +31,8 @@ import java.util.Date;
  */
 public class PayTest {
 
-//    @Test
-    public void testOrder() throws SignatureException, UnifiedorderException, PayException, OrderqueryException, CloseorderException {
+    @Test
+    public void testOrder() throws SignatureException, PayApiException, PayBusinessException {
         String outTradeNo = RandomStringGenerator.generate();
         // 统一下单
         UnifiedorderRequest unifiedorderRequest = new UnifiedorderRequest();
@@ -72,7 +67,7 @@ public class PayTest {
     }
 
 //    @Test
-    public void testReport() throws ReportException, SignatureException, PayException {
+    public void testReport() throws SignatureException, PayApiException, PayBusinessException {
         ReportRequest reportRequest = new ReportRequest();
         reportRequest.setNonce_str(RandomStringGenerator.generate());
         reportRequest.setInterface_url("https://api.mch.weixin.qq.com/pay/unifiedorder");
@@ -80,7 +75,7 @@ public class PayTest {
         reportRequest.setReturn_code(PayCode.SUCCESS.toString());
         reportRequest.setReturn_msg("成功");
         reportRequest.setResult_code(PayCode.SUCCESS.toString());
-        reportRequest.setOut_trade_no("ssdlkfjlk34j2345lk23j4");
+        reportRequest.setOut_trade_no(RandomStringGenerator.generate());
         reportRequest.setUser_ip("127.0.0.1");
         reportRequest.setTime("201512130235");
         ReportResponse reportResponse = PayManager.report(reportRequest);
@@ -88,7 +83,7 @@ public class PayTest {
     }
 
 //    @Test
-    public void testDownloadbill() throws PayException {
+    public void testDownloadbill() throws PayApiException {
         DownloadbillRequest downloadbillRequest = new DownloadbillRequest();
         downloadbillRequest.setNonce_str(RandomStringGenerator.generate());
         downloadbillRequest.setBill_date("20151211");
@@ -97,7 +92,7 @@ public class PayTest {
     }
 
 //    @Test
-    public void testRefund() throws RefundException, SignatureException, PayException, RefundqueryException {
+    public void testRefund() throws SignatureException, PayApiException, PayBusinessException {
         String transactionId = "1000080905201512112018328757";
         // 此用例需要安装商户证书，并获取一个真实的交易ID
         String outRefundNo = RandomStringGenerator.generate();
