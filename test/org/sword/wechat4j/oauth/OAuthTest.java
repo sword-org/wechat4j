@@ -20,7 +20,7 @@ public class OAuthTest {
         System.out.println(OAuthManager.generateRedirectURI("http://uncoseason.xicp.net/", "snsapi_userinfo", "test info"));
     }
 
-    @Test
+//    @Test
     public void testOAuth() throws OAuthException {
         // 这个用例需要重定向URI带回的code参数
         String code = "重定向URI带回的code参数";
