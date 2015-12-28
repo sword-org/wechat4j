@@ -1,14 +1,14 @@
 package org.sword.wechat4j.oauth;
 
 import org.junit.Test;
-import org.sword.wechat4j.oauth.protocol.getAccessToken.GetAccessTokenRequest;
-import org.sword.wechat4j.oauth.protocol.getAccessToken.GetAccessTokenResponse;
-import org.sword.wechat4j.oauth.protocol.getUserinfo.GetUserinfoRequest;
-import org.sword.wechat4j.oauth.protocol.getUserinfo.GetUserinfoResponse;
-import org.sword.wechat4j.oauth.protocol.refreshAccessToken.RefreshAccessTokenRequest;
-import org.sword.wechat4j.oauth.protocol.refreshAccessToken.RefreshAccessTokenResponse;
-import org.sword.wechat4j.oauth.protocol.validAccessToken.ValidAccessTokenRequest;
-import org.sword.wechat4j.oauth.protocol.validAccessToken.ValidAccessTokenResponse;
+import org.sword.wechat4j.oauth.protocol.get_access_token.GetAccessTokenRequest;
+import org.sword.wechat4j.oauth.protocol.get_access_token.GetAccessTokenResponse;
+import org.sword.wechat4j.oauth.protocol.get_userinfo.GetUserinfoRequest;
+import org.sword.wechat4j.oauth.protocol.get_userinfo.GetUserinfoResponse;
+import org.sword.wechat4j.oauth.protocol.refresh_access_token.RefreshAccessTokenRequest;
+import org.sword.wechat4j.oauth.protocol.refresh_access_token.RefreshAccessTokenResponse;
+import org.sword.wechat4j.oauth.protocol.valid_access_token.ValidAccessTokenRequest;
+import org.sword.wechat4j.oauth.protocol.valid_access_token.ValidAccessTokenResponse;
 
 /**
  * Created by xuwen on 2015-12-13.
@@ -20,7 +20,7 @@ public class OAuthTest {
         System.out.println(OAuthManager.generateRedirectURI("http://uncoseason.xicp.net/", "snsapi_userinfo", "test info"));
     }
 
-//    @Test
+    @Test
     public void testOAuth() throws OAuthException {
         // 这个用例需要重定向URI带回的code参数
         String code = "重定向URI带回的code参数";

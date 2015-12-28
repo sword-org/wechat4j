@@ -1,16 +1,17 @@
-package org.sword.wechat4j.oauth.protocol.refreshAccessToken;
+package org.sword.wechat4j.oauth.protocol.get_access_token;
 
 /**
- * 响应：刷新access_token（如果需要）
+ * 响应：通过code换取网页授权access_token
  * Created by xuwen on 2015-12-11.
  */
-public class RefreshAccessTokenResponse {
+public class GetAccessTokenResponse {
 
     private String access_token;
     private int expires_in;
     private String refresh_token;
     private String openid;
     private String scope;
+    private String unionid;
 
     public String getAccess_token() {
         return access_token;
@@ -52,14 +53,23 @@ public class RefreshAccessTokenResponse {
         this.scope = scope;
     }
 
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public void setUnionid(String unionid) {
+        this.unionid = unionid;
+    }
+
     @Override
     public String toString() {
-        return "RefreshAccessTokenResponse{" +
+        return "GetAccessTokenResponse{" +
                 "access_token='" + access_token + '\'' +
                 ", expires_in=" + expires_in +
                 ", refresh_token='" + refresh_token + '\'' +
                 ", openid='" + openid + '\'' +
                 ", scope='" + scope + '\'' +
+                ", unionid='" + unionid + '\'' +
                 '}';
     }
 }

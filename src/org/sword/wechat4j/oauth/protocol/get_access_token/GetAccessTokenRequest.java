@@ -1,4 +1,4 @@
-package org.sword.wechat4j.oauth.protocol.getAccessToken;
+package org.sword.wechat4j.oauth.protocol.get_access_token;
 
 import org.sword.wechat4j.common.Config;
 

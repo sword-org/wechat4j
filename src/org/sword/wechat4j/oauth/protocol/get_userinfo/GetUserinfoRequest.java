@@ -1,4 +1,4 @@
-package org.sword.wechat4j.oauth.protocol.getUserinfo;
+package org.sword.wechat4j.oauth.protocol.get_userinfo;
 
 /**
  * 请求：拉取用户信息(需scope为 snsapi_userinfo)

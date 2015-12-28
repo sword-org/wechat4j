@@ -1,4 +1,4 @@
-package org.sword.wechat4j.oauth.protocol.refreshAccessToken;
+package org.sword.wechat4j.oauth.protocol.refresh_access_token;
 
 import org.sword.wechat4j.common.Config;
 

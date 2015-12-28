@@ -1,4 +1,4 @@
-package org.sword.wechat4j.oauth.protocol.getUserinfo;
+package org.sword.wechat4j.oauth.protocol.get_userinfo;
 
 import java.util.Arrays;
 

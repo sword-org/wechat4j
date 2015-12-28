@@ -1,4 +1,4 @@
-package org.sword.wechat4j.oauth.protocol.validAccessToken;
+package org.sword.wechat4j.oauth.protocol.valid_access_token;
 
 /**
  * 响应：检验授权凭证（access_token）是否有效
