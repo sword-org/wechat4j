@@ -62,7 +62,7 @@ public class AccountTest {
 	public void getQrcode(){
 		String ticket="gQHE7zoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL1RVd1BodWpsQkJSOUdGeW5JMkp6AAIEZUaZVQMERAcAAA==";
 		String qrcodeFile="D://qrcode.png";
-		AccountManager.getQrcode(ticket, qrcodeFile);
+		//AccountManager.getQrcode(ticket, qrcodeFile);
 	}
 	
 }

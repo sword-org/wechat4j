@@ -40,6 +40,7 @@ project(':wechat4j.core'){
     apply plugin: 'war'
     dependencies{
         compile project(':wechat4j.lang')
+        compile 'com.alibaba:fastjson:1.2.7'
         providedCompile 'javax.servlet:servlet-api:2.5'// 编译期
         providedRuntime 'javax.servlet:jstl:1.2'    // 运行时
         testCompile 'junit:junit:4.12'
@@ -50,6 +51,8 @@ project(':wechat4j.lang'){
     dependencies{
         compile 'org.apache.httpcomponents:fluent-hc:4.3.4'
         compile 'org.apache.httpcomponents:httpmime:4.3.5'
+        ext.jarTree = fileTree(dir: './lib', include: '**/*.jar')
+        compile jarTree
     }
 }
 
