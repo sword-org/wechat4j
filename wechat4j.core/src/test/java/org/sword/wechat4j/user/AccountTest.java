@@ -64,5 +64,4 @@ public class AccountTest {
 		String qrcodeFile="D://qrcode.png";
 		//AccountManager.getQrcode(ticket, qrcodeFile);
 	}
-	
 }
