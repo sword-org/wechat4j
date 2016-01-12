@@ -91,7 +91,7 @@ public class UserManager {
 	}
 	/**
 	 * 设置用户备注名
-	 * @param openid 用户openid
+	 * @param openId 用户openid
 	 * @param remark 新的备注名，长度必须小于30字符
 	 * @return
 	 * @throws WeChatException 
@@ -108,7 +108,7 @@ public class UserManager {
 	}
 	/**
 	 * 获取用户基本信息
-	 * @param openid 普通用户的标识，对当前公众号唯一
+	 * @param openId 普通用户的标识，对当前公众号唯一
 	 * @return
 	 */
 	public User getUserInfo(String openId){
@@ -116,7 +116,7 @@ public class UserManager {
 	}
 	/**
 	 * 获取用户基本信息
-	 * @param openid 普通用户的标识，对当前公众号唯一
+	 * @param openId 普通用户的标识，对当前公众号唯一
 	 * @param lang 返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
 	 * @return
 	 */

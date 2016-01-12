@@ -87,7 +87,8 @@ public class HttpUtils {
 			HttpEntity entity = Request.Post(url)
 					.bodyString(data,ContentType.create("text/html", Consts.UTF_8))
 					.execute().returnResponse().getEntity();
-			return entity != null ? EntityUtils.toString(entity) : null;
+			// TODO: 16-1-11 Neil:需要加上默认编码要不然会乱码
+			return entity != null ? EntityUtils.toString(entity,Consts.UTF_8) : null;
 		} catch (Exception e) {
 			logger.error("post请求异常，" + e.getMessage() + "\n post url:" + url);
 			e.printStackTrace();
