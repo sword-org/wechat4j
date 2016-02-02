@@ -20,6 +20,7 @@ public class AccessTokenTimer extends TimerTask{
 	private static Logger logger = Logger.getLogger(AccessTokenTimer.class);
 	
 	//accessToken有效期7200秒,提前200秒请求新的token
+    // @TODO 未来微信可能修改7200秒的设置，需要灵活处理一下，比如放到配置文件
 	public static final long PERIOD = 7000 * 1000;
 	public static final long DELAY = 0; //此任务的延迟时间为0，即立即执行
 

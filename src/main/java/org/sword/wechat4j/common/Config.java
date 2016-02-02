@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.sword.wechat4j.common;
 
@@ -14,11 +14,11 @@ import org.apache.log4j.Logger;
  * @date   2014年12月8日
  */
 public class Config {
-	
+
 	private static Logger logger = Logger.getLogger(Config.class);
-	
+
 	private static final String configFile = "/wechat4j.properties";
-	
+
 	private String url;
 	private String token;
 	private String encodingAESKey;
@@ -27,7 +27,7 @@ public class Config {
 	private String accessTokenServer;
 	private String jsApiTicketServer;
 	private static Config config = new Config();
-	
+
 	private Config(){
 		Properties p = new Properties();
 		InputStream inStream = this.getClass().getResourceAsStream(configFile);
@@ -37,13 +37,13 @@ public class Config {
 		}
 		try {
 			p.load(inStream);
-			this.url = p.getProperty("wechat.url").trim();
-			this.encodingAESKey = p.getProperty("wechat.encodingaeskey").trim();
-			this.token = p.getProperty("wechat.token").trim();
-			this.appid = p.getProperty("wechat.appid").trim();
-			this.appSecret = p.getProperty("wechat.appsecret").trim();
-			this.accessTokenServer = p.getProperty("wechat.accessToken.server.class").trim();
-			this.jsApiTicketServer = p.getProperty("wechat.ticket.jsapi.server.class").trim();
+			this.url = p.getProperty("wechat.url") == null ? null : p.getProperty("wechat.url").trim();
+			this.encodingAESKey = p.getProperty("wechat.encodingaeskey") == null ? null : p.getProperty("wechat.encodingaeskey").trim();
+			this.token = p.getProperty("wechat.token") == null ? null : p.getProperty("wechat.token").trim();
+			this.appid = p.getProperty("wechat.appid") == null ? null: p.getProperty("wechat.appid").trim();
+			this.appSecret = p.getProperty("wechat.appsecret") == null ? null : p.getProperty("wechat.appsecret").trim();
+			this.accessTokenServer = p.getProperty("wechat.accessToken.server.class") == null ? null : p.getProperty("wechat.accessToken.server.class").trim();
+			this.jsApiTicketServer = p.getProperty("wechat.ticket.jsapi.server.class") == null ? null : p.getProperty("wechat.ticket.jsapi.server.class").trim();
 			inStream.close();
 		} catch (IOException e) {
 			logger.error("load wechat4j.properties error,class根目录下找不到wechat4j.properties文件");
@@ -51,7 +51,7 @@ public class Config {
 		}
 		logger.info("load wechat4j.properties success");
 	}
-	
+
 	public static Config instance(){
 		return config;
 	}
@@ -72,7 +72,7 @@ public class Config {
 	public String getEncodingAESKey() {
 		return encodingAESKey;
 	}
-	
+
 	public String getAccessTokenServer(){
 		return accessTokenServer;
 	}
@@ -80,6 +80,6 @@ public class Config {
 	public String getJsApiTicketServer() {
 		return jsApiTicketServer;
 	}
-	
-	
+
+
 }
