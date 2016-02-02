@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.sword.wechat4j;
 
@@ -33,19 +33,22 @@ import org.sword.wechat4j.response.WechatResponse;
 /**
  * wechat支持入口
  * 抽象方法中，on开头的是msgtype的事件，无on的是event事件
+ * 
+ * ＠TODO 考虑将事件分类处理，比如微信店铺支持独立成为一个类
+ * 
  * @author ChengNing
  * @date   2014-12-4
  */
 public abstract class WechatSupport {
-	
+
 	Logger logger = Logger.getLogger(WechatSupport.class);
-	
+
 	private HttpServletRequest request;
-	
+
 	protected WechatRequest wechatRequest;
 	protected WechatResponse wechatResponse;
-	
-	
+
+
 	/**
 	 * 构建微信处理
 	 * @param request   微信服务发过来的http请求
@@ -68,8 +71,8 @@ public abstract class WechatSupport {
 		String nonce = param.getNonce();
 		String echostr = param.getEchostr();
 		String token = Config.instance().getToken();
-		
-		ValidateSignature validateSignature = new ValidateSignature(signature, 
+
+		ValidateSignature validateSignature = new ValidateSignature(signature,
 				timestamp, nonce, token);
 		if(!validateSignature.check()){
 			return "error";
@@ -82,7 +85,7 @@ public abstract class WechatSupport {
 		logger.info("response data:" + result);
 		return result;
 	}
-	
+
 	/**
 	 * 分发处理，得到响应
 	 * @return
@@ -103,9 +106,9 @@ public abstract class WechatSupport {
 		String result = response();
 		return result;
 	}
-	
 
-	
+
+
 	/**
 	 * 得到post数据，对象化
 	 * @param xmlStr
@@ -161,7 +164,7 @@ public abstract class WechatSupport {
 			break;
 		}
 	}
-	
+
 	/**
 	 * event事件分发
 	 */
@@ -217,11 +220,13 @@ public abstract class WechatSupport {
 		case kf_switch_session:
 			kfSwitchSession();
 			break;
+        case merchant_order:
+            orderPaid();
 		default:
 			break;
 		}
 	}
-	
+
 
 	/**
 	 * 返回响应数据
@@ -239,7 +244,7 @@ public abstract class WechatSupport {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 响应数据基础构造
 	 */
@@ -248,7 +253,7 @@ public abstract class WechatSupport {
 		wechatResponse.setFromUserName(wechatRequest.getToUserName());
 		wechatResponse.setCreateTime(wechatRequest.getCreateTime());
 	}
-	
+
 	/**
 	 * 回复文本消息
 	 * @param content 回复的消息内容（换行：在content中能够换行，微信客户端就支持换行显示）
@@ -258,7 +263,7 @@ public abstract class WechatSupport {
 		wechatResponse.setMsgType(MsgType.text.name());
 		wechatResponse.setContent(content);
 	}
-	
+
 	/**
 	 * 回复图片消息
 	 * @param mediaId 通过上传多媒体文件，得到的id
@@ -270,7 +275,7 @@ public abstract class WechatSupport {
 		image.setMediaId(mediaId);
 		wechatResponse.setImage(image);
 	}
-	
+
 	/**
 	 * 回复语音消息
 	 * @param mediaId  通过上传多媒体文件，得到的id
@@ -282,7 +287,7 @@ public abstract class WechatSupport {
 		voice.setMediaId(mediaId);
 		wechatResponse.setVoice(voice);
 	}
-	
+
 	/**
 	 * 回复视频消息
 	 * @param mediaId      通过上传多媒体文件，得到的id
@@ -296,7 +301,7 @@ public abstract class WechatSupport {
 		video.setDescription(description);
 		responseVideo(video);
 	}
-	
+
 	/**
 	 * 回复视频消息
 	 * @param video  视频消息
@@ -306,7 +311,7 @@ public abstract class WechatSupport {
 		wechatResponse.setMsgType(MsgType.video.name());
 		wechatResponse.setVideo(video);
 	}
-	
+
 	/**
 	 * 回复音乐消息
 	 * @param title         音乐标题
@@ -325,7 +330,7 @@ public abstract class WechatSupport {
 		music.setThumbMediaId(thumbMediaId);
 		responseMusic(music);
 	}
-	
+
 	/**
 	 * 回复音乐消息
 	 * @param music  音乐消息
@@ -335,7 +340,7 @@ public abstract class WechatSupport {
 		wechatResponse.setMsgType(MsgType.music.name());
 		wechatResponse.setMusic(music);
 	}
-	
+
 	/**
 	 * 回复图文消息，单条图文消息
 	 * @param title         图文消息标题
@@ -351,7 +356,7 @@ public abstract class WechatSupport {
 		item.setUrl(url);
 		responseNews(item);
 	}
-	
+
 	/**
 	 * 回复图文消息单条
 	 * @param item
@@ -361,7 +366,7 @@ public abstract class WechatSupport {
 		items.add(item);
 		responseNews(items);
 	}
-	
+
 	/**
 	 * 回复图文消息
 	 * @param items
@@ -371,9 +376,9 @@ public abstract class WechatSupport {
 		wechatResponse.setMsgType(MsgType.news.name());
 		wechatResponse.setArticleCount(String.valueOf(items.size()));
 		wechatResponse.setArticle(items);
-		
+
 	}
-	
+
 	/**
 	 * 消息转发到多客服
 	 */
@@ -389,7 +394,7 @@ public abstract class WechatSupport {
 		responseBase();
 		wechatResponse.setMsgType(MsgType.transfer_customer_service.name());
 		wechatResponse.setTransInfo(new TransInfoResponse(kfAccount));
-		
+
 	}
 	/**
 	 * 消息转发到指定客服
@@ -399,10 +404,10 @@ public abstract class WechatSupport {
 		responseBase();
 		wechatResponse.setMsgType(MsgType.transfer_customer_service.name());
 		wechatResponse.setTransInfo(transInfo);
-		
+
 	}
-	
-	
+
+
 	/**
 	 * 文本消息处理Msgtype=text
 	 */
@@ -435,8 +440,14 @@ public abstract class WechatSupport {
 	 * 未知消息类型的错误处理逻辑，不需要处理则空方法即可
 	 */
     protected abstract void onUnknown();
-	
-	
+
+    /**
+     * 订单付款通知，微信小店（微信店铺）的唯一通知接口
+     * 从此接口获取订单ID然后再发送查询订单详情请求
+     */
+    protected abstract void orderPaid();
+
+
 	/**
 	 * click点击事件处理event=location
 	 */
