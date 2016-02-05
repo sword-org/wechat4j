@@ -11,6 +11,11 @@ wechat.appid=appid
 #wechat app secret
 wechat.appsecret=appsecret
 
+#wechat mch id
+wechat.mch.id=
+#wechat mch api secret key, must be 32 length
+wechat.mch.key=
+
 #wechat access token server ,when you save in db,must implement you server class
 #this class must extend org.sword.wechat4j.token.server.CustomerServer
 #if no this property,then token server is default memery accesstoken server

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -24,6 +25,8 @@ public class Config {
 	private String encodingAESKey;
 	private String appid;
 	private String appSecret;
+	private String mchId;
+	private String mchKey;
 	private String accessTokenServer;
 	private String jsApiTicketServer;
 	private static Config config = new Config();
@@ -37,13 +40,24 @@ public class Config {
 		}
 		try {
 			p.load(inStream);
-			this.url = p.getProperty("wechat.url").trim();
-			this.encodingAESKey = p.getProperty("wechat.encodingaeskey").trim();
-			this.token = p.getProperty("wechat.token").trim();
-			this.appid = p.getProperty("wechat.appid").trim();
-			this.appSecret = p.getProperty("wechat.appsecret").trim();
-			this.accessTokenServer = p.getProperty("wechat.accessToken.server.class").trim();
-			this.jsApiTicketServer = p.getProperty("wechat.ticket.jsapi.server.class").trim();
+			this.url = p.getProperty("wechat.url");
+            if(StringUtils.isNotBlank(url))this.url = this.url.trim();
+			this.encodingAESKey = p.getProperty("wechat.encodingaeskey");
+            if(StringUtils.isNotBlank(encodingAESKey))this.encodingAESKey = this.encodingAESKey.trim();
+			this.token = p.getProperty("wechat.token");
+            if(StringUtils.isNotBlank(token))this.token = this.token.trim();
+			this.appid = p.getProperty("wechat.appid");
+            if(StringUtils.isNotBlank(appid))this.appid = this.appid.trim();
+			this.appSecret = p.getProperty("wechat.appsecret");
+            if(StringUtils.isNotBlank(appSecret))this.appSecret = this.appSecret.trim();
+			this.mchId = p.getProperty("wechat.mch.id");
+            if(StringUtils.isNotBlank(url))this.mchId = this.mchId.trim();
+			this.mchKey = p.getProperty("wechat.mch.key");
+            if(StringUtils.isNotBlank(mchKey))this.mchKey = this.mchKey.trim();
+			this.accessTokenServer = p.getProperty("wechat.accessToken.server.class");
+            if(StringUtils.isNotBlank(accessTokenServer))this.accessTokenServer = this.accessTokenServer.trim();
+			this.jsApiTicketServer = p.getProperty("wechat.ticket.jsapi.server.class");
+            if(StringUtils.isNotBlank(jsApiTicketServer))this.jsApiTicketServer = this.jsApiTicketServer.trim();
 			inStream.close();
 		} catch (IOException e) {
 			logger.error("load wechat4j.properties error,class根目录下找不到wechat4j.properties文件");
@@ -63,6 +77,14 @@ public class Config {
 	}
 	public String getAppSecret() {
 		return appSecret;
+	}
+
+	public String getMchId() {
+		return mchId;
+	}
+
+	public String getMchKey() {
+		return mchKey;
 	}
 
 	public String getUrl() {
