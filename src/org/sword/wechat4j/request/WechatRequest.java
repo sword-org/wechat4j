@@ -43,8 +43,15 @@ public class WechatRequest {
 	private ScanCodeInfo ScanCodeInfo; //扫描信息
 	private SendPicsInfo SendPicsInfo; //发送的图片信息
 	private SendLocationInfo SendLocationInfo;   //发送的位置信息
+	private String Recognition;
 	
-
+	@XmlElement(name="Recognition")
+	public String getRecognition() {
+		return Recognition;
+	}
+	public void setRecognition(String recognition) {
+		Recognition = recognition;
+	}
 	@XmlElement(name="Format")
 	public String getFormat() {
 		return Format;

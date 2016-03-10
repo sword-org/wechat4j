@@ -60,9 +60,11 @@ public class AccountTest {
 	 */
 	@Test
 	public void getQrcode(){
-		String ticket="gQHE7zoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL1RVd1BodWpsQkJSOUdGeW5JMkp6AAIEZUaZVQMERAcAAA==";
-		String qrcodeFile="D://qrcode.png";
-		AccountManager.getQrcode(ticket, qrcodeFile);
+		String qrcodeFile="/tmp/qrcode.png";
+		long sceneId =100;
+		int expireSeconds = 1860;
+		Qrcode qrcode= accountManager.createQrcodeTemporary(sceneId, expireSeconds);
+		qrcode.getQrcode(qrcodeFile);
 	}
 	
 }

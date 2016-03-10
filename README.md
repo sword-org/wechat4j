@@ -97,7 +97,6 @@ public class Lejian extends WechatSupport{
 
 
 ##贡献代码
-
 1. 如果你觉得本项目不错，希望你能够点击一下右上角的star
 2. 如果你希望参与改进本项目，那么请点击右上角的fork，修改之后pull request即可。如果你的贡献不错，你就会收到加入[sword](https://github.com/sword-org)开源社区的邀请。
 3. 如果你发现了一个bug，请你创建一个issue来报告。
@@ -108,6 +107,13 @@ public class Lejian extends WechatSupport{
 * [@truecn](https://github.com/truecn)
 * [@Zhangys-hh](https://github.com/Zhangys-hh)
 * [@uncoseason](https://github.com/uncoseason)
+* [@neilrence](https://github.com/neilrence)
+* [@subaochen](https://github.com/subaochen)
+
+###分支
+* [maven版](https://github.com/subaochen/wechat4j)
+* [gradle版](https://github.com/neilrencn/wechat4j)
+
 
 
 
