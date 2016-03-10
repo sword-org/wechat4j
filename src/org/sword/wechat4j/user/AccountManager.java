@@ -23,11 +23,6 @@ public class AccountManager {
     private static final String SHORTURL_POST_URL = "https://api.weixin.qq.com/cgi-bin/shorturl?access_token=";
     //生成带参数的二维码
     private static final String QRCODE_POST_URL = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=";
-    private String accessToken;
-
-    public AccountManager() {
-        this.accessToken = TokenProxy.accessToken();
-    }
 
     /**
      * 长链接转短链接接口
@@ -41,7 +36,7 @@ public class AccountManager {
         jsonObject.put("long_url", longUrl);
         String requestData = jsonObject.toString();
         logger.info("request data " + requestData);
-        String resultStr = HttpUtils.post(SHORTURL_POST_URL + this.accessToken, requestData);
+        String resultStr = HttpUtils.post(SHORTURL_POST_URL + TokenProxy.accessToken(), requestData);
         logger.info("return data " + resultStr);
         try {
             WeChatUtil.isSuccess(resultStr);
@@ -106,7 +101,7 @@ public class AccountManager {
         ticketJson.put("action_info", actionInfoJson);
         String requestData = ticketJson.toString();
         logger.info("request data " + requestData);
-        String resultStr = HttpUtils.post(QRCODE_POST_URL + this.accessToken, requestData);
+        String resultStr = HttpUtils.post(QRCODE_POST_URL + TokenProxy.accessToken(), requestData);
         logger.info("return data " + resultStr);
         try {
             WeChatUtil.isSuccess(resultStr);

@@ -20,7 +20,6 @@ import com.alibaba.fastjson.JSONObject;
 public class UserManager {
 
 	Logger logger = Logger.getLogger(UserManager.class);
-	private String accessToken;
 	//获取用户列表
 	private static final String USRE_GET_URL = "https://api.weixin.qq.com/cgi-bin/user/get?access_token=";
 	//设置用户备注名
@@ -42,9 +41,6 @@ public class UserManager {
 	//删除分组
 	private static final String GROUP_DELETE_POST_URL="https://api.weixin.qq.com/cgi-bin/groups/delete?access_token=";
 	
-	public UserManager() {
-		this.accessToken = TokenProxy.accessToken();
-	}
 	/**
 	 * 获取所有的关注者列表
 	 * @return
@@ -102,7 +98,7 @@ public class UserManager {
 		jsonObject.put("remark", remark);
 		String requestData = jsonObject.toString();
 		logger.info("request data "+requestData);
-		String resultStr = HttpUtils.post(USER_UPDATE_REMARK_POST_URL+this.accessToken,requestData);
+		String resultStr = HttpUtils.post(USER_UPDATE_REMARK_POST_URL+TokenProxy.accessToken(),requestData);
 		logger.info("return data "+resultStr);
 		WeChatUtil.isSuccess(resultStr);
 	}
@@ -121,7 +117,7 @@ public class UserManager {
 	 * @return
 	 */
 	public User getUserInfo(String openId,LanguageType lang){
-		String url = USER_INFO_GET_URL+this.accessToken+"&openid="+openId;
+		String url = USER_INFO_GET_URL+TokenProxy.accessToken()+"&openid="+openId;
 		if (lang!=null) {
 			url+="&lang="+lang.name();
 		}
@@ -151,7 +147,7 @@ public class UserManager {
 		groupJson.put("group", nameJson);
 		String requestData=groupJson.toString();
 		logger.info("request data "+requestData);
-		String resultStr = HttpUtils.post(GROUP_CREATE_POST_URL+this.accessToken, requestData);
+		String resultStr = HttpUtils.post(GROUP_CREATE_POST_URL+TokenProxy.accessToken(), requestData);
 		logger.info("return data "+resultStr);
 		WeChatUtil.isSuccess(resultStr);
 		return JSONObject.parseObject(resultStr).getObject("group", Group.class);
@@ -161,7 +157,7 @@ public class UserManager {
 	 * @return
 	 */
 	public List<Group> getGroup(){
-		String resultStr = HttpUtils.post(GROUP_GET_POST_URL+this.accessToken);
+		String resultStr = HttpUtils.post(GROUP_GET_POST_URL+TokenProxy.accessToken());
 		logger.info("return data "+resultStr);
 		try {
 			WeChatUtil.isSuccess(resultStr);
@@ -185,7 +181,7 @@ public class UserManager {
 
 		String requestData = jsonObject.toString();
 		logger.info("request data "+requestData);
-		String resultStr = HttpUtils.post(GROUP_GETID_POST_URL+this.accessToken, requestData);
+		String resultStr = HttpUtils.post(GROUP_GETID_POST_URL+TokenProxy.accessToken(), requestData);
 		logger.info("return data "+resultStr);
 		try {
 			WeChatUtil.isSuccess(resultStr);
@@ -212,7 +208,7 @@ public class UserManager {
 		groupJson.put("group", nameJson);
 		String requestData = groupJson.toString();
 		logger.info("request data "+requestData);
-		String resultStr = HttpUtils.post(GROUP_UPDATE_POST_URL+this.accessToken,requestData);
+		String resultStr = HttpUtils.post(GROUP_UPDATE_POST_URL+TokenProxy.accessToken(),requestData);
 		logger.info("return data "+resultStr);
 		WeChatUtil.isSuccess(resultStr);
 	}
@@ -228,7 +224,7 @@ public class UserManager {
 		jsonObject.put("to_groupid", groupId);
 		String requestData = jsonObject.toString();
 		logger.info("request data "+requestData);
-		String resultStr = HttpUtils.post(GROUP_MEMBERS_UPDATE_POST_URL+this.accessToken,requestData);
+		String resultStr = HttpUtils.post(GROUP_MEMBERS_UPDATE_POST_URL+TokenProxy.accessToken(),requestData);
 		logger.info("return data "+resultStr);
 		WeChatUtil.isSuccess(resultStr);
 	}
@@ -245,7 +241,7 @@ public class UserManager {
 		jsonObject.put("to_groupid", groupId);
 		String requestData = jsonObject.toString();
 		logger.info("request data "+requestData);
-		String resultStr = HttpUtils.post(GROUP_MEMBERS_DATCHUPDATE_POST_URL+this.accessToken,requestData);
+		String resultStr = HttpUtils.post(GROUP_MEMBERS_DATCHUPDATE_POST_URL+TokenProxy.accessToken(),requestData);
 		logger.info("return data "+resultStr);
 		WeChatUtil.isSuccess(resultStr);
 	}
@@ -261,7 +257,7 @@ public class UserManager {
 		groupJson.put("group", idJson);
 		String requestData = groupJson.toJSONString();
 		logger.info("request data "+requestData);
-		String resultStr = HttpUtils.post(GROUP_DELETE_POST_URL+this.accessToken,requestData);
+		String resultStr = HttpUtils.post(GROUP_DELETE_POST_URL+TokenProxy.accessToken(),requestData);
 		logger.info("return data "+resultStr);
 		WeChatUtil.isSuccess(resultStr);
 	}
