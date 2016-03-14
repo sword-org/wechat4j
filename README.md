@@ -109,6 +109,7 @@ public class Lejian extends WechatSupport{
 * [@uncoseason](https://github.com/uncoseason)
 * [@neilrence](https://github.com/neilrence)
 * [@subaochen](https://github.com/subaochen)
+* [@Brandon007](https://github.com/Brandon007)
 
 ###分支
 * [maven版](https://github.com/subaochen/wechat4j)
