@@ -93,7 +93,6 @@ public class Lejian extends WechatSupport{
 * [wechat4j开发者文档中心](http://www.chengn.com/wechat4j/)
 * [wechat4j开发文档](https://github.com/sword-org/wechat4j/wiki) 
 * wechat4j技术交流QQ群  **423134346**
-* 支持邮件 sword_org@163.com
 
 
 ##贡献代码
