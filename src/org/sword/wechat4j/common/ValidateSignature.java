@@ -51,6 +51,6 @@ public class ValidateSignature {
 		String[] sa = {this.token,this.timestamp, this.nonce};
 		Arrays.sort(sa);
 		String sortStr = sa[0] + sa[1] + sa[2];
-		return DigestUtils.sha1Hex(sortStr);
+		return DigestUtils.shaHex(sortStr);
 	}
 }
