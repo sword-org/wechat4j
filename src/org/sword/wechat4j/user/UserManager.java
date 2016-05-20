@@ -70,7 +70,7 @@ public class UserManager {
 	 * @return
 	 */
 	public Follwers subscriberList(String nextOpenId){
-		String url = USRE_GET_URL + accessToken;
+		String url = USRE_GET_URL + TokenProxy.accessToken();
 		if(StringUtils.isNotBlank(nextOpenId)){
 			url += "&next_openid=" + nextOpenId;
 		}
