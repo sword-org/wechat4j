@@ -51,7 +51,7 @@ public class Config {
 			this.appSecret = p.getProperty("wechat.appsecret");
             if(StringUtils.isNotBlank(appSecret))this.appSecret = this.appSecret.trim();
 			this.mchId = p.getProperty("wechat.mch.id");
-            if(StringUtils.isNotBlank(url))this.mchId = this.mchId.trim();
+            if(StringUtils.isNotBlank(mchId))this.mchId = this.mchId.trim();
 			this.mchKey = p.getProperty("wechat.mch.key");
             if(StringUtils.isNotBlank(mchKey))this.mchKey = this.mchKey.trim();
 			this.accessTokenServer = p.getProperty("wechat.accessToken.server.class");
